@@ -1,0 +1,16 @@
+body {
+	padding-top: 80px;
+}
+
+.headroom {	
+	position: fixed;
+	transition: top 0.2s ease-out;
+}
+
+.headroom--pinned {
+	top: 0;
+}
+
+.headroom--unpinned {
+	top: -50px;
+}
