@@ -1,6 +1,6 @@
 /**
  * Handles debouncing of events via requestAnimationFrame
- * See: http://www.html5rocks.com/en/tutorials/speed/animations/
+ * @see http://www.html5rocks.com/en/tutorials/speed/animations/
  * @param {Function} callback The callback to handle whichever event
  */
 function Debouncer (callback) {

@@ -1,4 +1,4 @@
-// headroom.js v0.1.0 - Give your page room to breathe. Hide your header until you need it
+// headroom.js v0.1.1 - Give your page room to breathe. Hide your header until you need it
 // Copyright (c) 2013 Nick Williams - http://wicky.nillia.ms/
 // License: MIT
 
@@ -8,7 +8,7 @@
 
 /**
  * Handles debouncing of events via requestAnimationFrame
- * See: http://www.html5rocks.com/en/tutorials/speed/animations/
+ * @see http://www.html5rocks.com/en/tutorials/speed/animations/
  * @param {Function} callback The callback to handle whichever event
  */
 function Debouncer (callback) {
@@ -48,6 +48,7 @@ Debouncer.prototype = {
  * UI enhancement for fixed headers.
  * Hides header when scrolling down
  * Shows header when scrolling up
+ * @constructor
  * @param {DOMElement} elem the header element
  */
 function Headroom (elem) {
@@ -62,7 +63,7 @@ Headroom.prototype = {
 	 * Initialises the widget
 	 */
 	init : function() {
-		this.elem.classList.add(Headroom.classes.default, Headroom.classes.pinned);
+		this.elem.classList.add(Headroom.classes.initial, Headroom.classes.pinned);
 
 		// defer event registration to handle browser 
 		// potentially restoring previous scroll position
@@ -70,19 +71,21 @@ Headroom.prototype = {
 	},
 
 	/**
-	 * Attaches the scroll event
-	 */
-	attachEvent : function() {
-		this.eventHandler = this.debouncer.handleEvent.bind(this.debouncer);
-		window.addEventListener('scroll', this.eventHandler, false);
-	},
-
-	/**
-	 * Removes the event listener
+	 * Destroys the widget
 	 */
 	destroy : function() {
 		window.removeEventListener('scroll', this.eventHandler, false);
-		this.elem.classList.remove(Headroom.classes.unpinned, Headroom.classes.pinned);
+		this.elem.classList.remove(Headroom.classes.unpinned, Headroom.classes.pinned, Headroom.classes.initial);
+	},
+
+	/**
+	 * Attaches the scroll event
+	 */
+	attachEvent : function() {
+		if(!this.eventHandler){
+			this.eventHandler = this.debouncer.handleEvent.bind(this.debouncer);
+			window.addEventListener('scroll', this.eventHandler, false);
+		}
 	},
 	
 	/**
@@ -132,7 +135,7 @@ Headroom.prototype = {
 Headroom.classes = {
 	pinned : 'headroom--pinned',
 	unpinned : 'headroom--unpinned',
-	default : 'headroom'
+	initial : 'headroom'
 };
 
 global.Headroom = Headroom;

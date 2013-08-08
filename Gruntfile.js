@@ -53,7 +53,7 @@ module.exports = function(grunt) {
         },
 
         watch: {
-            files: '<%= jshint.prebuild %>',
+            files: ['<%= jshint.prebuild %>', 'package.json'],
             tasks: 'default'
         }
     });
