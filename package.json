@@ -1,6 +1,6 @@
 {
   "name": "headroom.js",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Give your page room to breathe. Hide your header until you need it",
   "main": "headroom.js",
   "scripts": {

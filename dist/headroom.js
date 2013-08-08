@@ -1,4 +1,4 @@
-// headroom.js v0.2.0 - Give your page room to breathe. Hide your header until you need it
+// headroom.js v0.3.0 - Give your page room to breathe. Hide your header until you need it
 // Copyright (c) 2013 Nick Williams - http://wicky.nillia.ms/
 // License: MIT
 
@@ -53,12 +53,14 @@ Debouncer.prototype = {
  * @param {Object} options options for the widget
  */
 function Headroom (elem, options) {
-	this.options = options || Headroom.options;
-	this.elem = elem;
-	this.debouncer = new Debouncer(this.update.bind(this));
+	options = options || Headroom.options;
+
 	this.lastKnownScrollY = 0;
-	this.tolerance = this.options.tolerance;
-	this.classes = this.options.classes;
+	this.elem             = elem;
+	this.debouncer        = new Debouncer(this.update.bind(this));
+	this.tolerance        = options.tolerance;
+	this.classes          = options.classes;
+	this.offset           = options.offset;
 }
 Headroom.prototype = {
 	constructor : Headroom,
@@ -67,7 +69,7 @@ Headroom.prototype = {
 	 * Initialises the widget
 	 */
 	init : function() {
-		this.elem.classList.add(this.classes.initial, this.classes.pinned);
+		this.elem.classList.add(this.classes.initial);
 
 		// defer event registration to handle browser 
 		// potentially restoring previous scroll position
@@ -97,11 +99,8 @@ Headroom.prototype = {
 	 */
 	unpin : function() {
 		var elem = this.elem;
-
-		if(elem.classList.contains(this.classes.pinned)) {
-			elem.classList.add(this.classes.unpinned);
-			elem.classList.remove(this.classes.pinned);
-		}
+		elem.classList.add(this.classes.unpinned);
+		elem.classList.remove(this.classes.pinned);
 	},
 
 	/**
@@ -109,11 +108,8 @@ Headroom.prototype = {
 	 */
 	pin : function() {
 		var elem = this.elem;
-
-		if(elem.classList.contains(this.classes.unpinned)) {
-			elem.classList.remove(this.classes.unpinned);
-			elem.classList.add(this.classes.pinned);
-		}
+		elem.classList.remove(this.classes.unpinned);
+		elem.classList.add(this.classes.pinned);
 	},
 
 	/**
@@ -122,9 +118,10 @@ Headroom.prototype = {
 	update : function() {
 		var currentScrollY    = window.scrollY,
 			notBouncing       = currentScrollY > 0,
-			toleranceExceeded = Math.abs(currentScrollY-this.lastKnownScrollY) > this.tolerance;
+			toleranceExceeded = Math.abs(currentScrollY-this.lastKnownScrollY) > this.tolerance,
+			offsetExceeded    = currentScrollY > this.offset;
 
-		if(toleranceExceeded) {
+		if(toleranceExceeded && offsetExceeded) {
 			if(currentScrollY > this.lastKnownScrollY && notBouncing) { // Down
 				this.unpin();
 			}
@@ -135,14 +132,14 @@ Headroom.prototype = {
 
 		this.lastKnownScrollY = currentScrollY;
 	}
-	
 };
 /**
  * Default options
  * @type {Object}
  */
 Headroom.options = {
-	tolerance : 2,
+	tolerance : 0,
+	offset: 0,
 	classes : {
 		pinned : 'headroom--pinned',
 		unpinned : 'headroom--unpinned',

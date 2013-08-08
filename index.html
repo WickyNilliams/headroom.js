@@ -8,6 +8,8 @@
 
 </head>
 <body>
+
+    <a href="#" id="btt" class="btn btt">Back to top</a>
     <header class="navbar navbar-inverse navbar-fixed-top" data-headroom>
         <div class="navbar-inner">
             <nav class="container">
@@ -139,13 +141,26 @@
     </section>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="dist/headroom.min.js"></script>
-    <!--script src="dist/jQuery.headroom.min.js"></script-->
+    <script src="dist/headroom.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="dist/jQuery.headroom.min.js"></script>
     <script>
         (function() {
+            // use raw object
             var target = document.querySelector("[data-headroom]");
             var headroom = new Headroom(target);
             headroom.init();
+
+            // or jQuery plugin!
+            $("#btt").headroom({
+                tolerance : 10,
+                offset : 500,
+                classes : {
+                    pinned : "btt--pinned",
+                    unpinned : "btt--unpinned",
+                    initial : "btt"
+                }
+            });
         }());
     </script>
 

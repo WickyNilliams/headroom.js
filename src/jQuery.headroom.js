@@ -1,8 +1,8 @@
 ;(function($) {
 
-	$.fn.headroom = function() {
+	$.fn.headroom = function(options) {
 		this.each(function() {
-			var headroom = new Headroom(this);
+			var headroom = new Headroom(this, options);
 			headroom.init();
 		});
 	};
