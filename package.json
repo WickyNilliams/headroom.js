@@ -1,0 +1,32 @@
+{
+  "name": "headroom.js",
+  "version": "0.1.0",
+  "description": "Give your page room to breathe. Hide your header until you need it",
+  "main": "headroom.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WickyNilliams/headroom.js"
+  },
+  "keywords": [
+    "header",
+    "fixed",
+    "scroll",
+    "menu"
+  ],
+  "author": "Nick Williams",
+  "homepage": "http://wicky.nillia.ms/",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WickyNilliams/headroom.js/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-rigger": "~0.5.0",
+    "grunt-contrib-jshint": "~0.6.2",
+    "grunt-contrib-watch": "~0.5.1"
+  }
+}

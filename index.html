@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Headroom</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
 
@@ -138,6 +138,19 @@
         </code></pre>
     </section>
 
-    <script type="text/javascript" src="js/headroom.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="dist/headroom.min.js"></script>
+    <!--script src="dist/jQuery.headroom.min.js"></script-->
+    <script>
+        (function() {
+            var target = document.querySelector("[data-headroom]");
+            var headroom = new Headroom(target);
+            headroom.init();
+
+            window.headroomInstance = headroom;
+
+        }());
+    </script>
+
 </body>
 </html>
