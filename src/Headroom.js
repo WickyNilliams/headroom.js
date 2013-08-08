@@ -4,11 +4,15 @@
  * Shows header when scrolling up
  * @constructor
  * @param {DOMElement} elem the header element
+ * @param {Object} options options for the widget
  */
-function Headroom (elem) {
+function Headroom (elem, options) {
+	this.options = options || Headroom.options;
 	this.elem = elem;
 	this.debouncer = new Debouncer(this.update.bind(this));
 	this.lastKnownScrollY = 0;
+	this.tolerance = this.options.tolerance;
+	this.classes = this.options.classes;
 }
 Headroom.prototype = {
 	constructor : Headroom,
@@ -17,7 +21,7 @@ Headroom.prototype = {
 	 * Initialises the widget
 	 */
 	init : function() {
-		this.elem.classList.add(Headroom.classes.initial, Headroom.classes.pinned);
+		this.elem.classList.add(this.classes.initial, this.classes.pinned);
 
 		// defer event registration to handle browser 
 		// potentially restoring previous scroll position
@@ -29,7 +33,7 @@ Headroom.prototype = {
 	 */
 	destroy : function() {
 		window.removeEventListener('scroll', this.eventHandler, false);
-		this.elem.classList.remove(Headroom.classes.unpinned, Headroom.classes.pinned, Headroom.classes.initial);
+		this.elem.classList.remove(this.classes.unpinned, this.classes.pinned, this.classes.initial);
 	},
 
 	/**
@@ -48,9 +52,9 @@ Headroom.prototype = {
 	unpin : function() {
 		var elem = this.elem;
 
-		if(elem.classList.contains(Headroom.classes.pinned)) {
-			elem.classList.add(Headroom.classes.unpinned);
-			elem.classList.remove(Headroom.classes.pinned);
+		if(elem.classList.contains(this.classes.pinned)) {
+			elem.classList.add(this.classes.unpinned);
+			elem.classList.remove(this.classes.pinned);
 		}
 	},
 
@@ -60,9 +64,9 @@ Headroom.prototype = {
 	pin : function() {
 		var elem = this.elem;
 
-		if(elem.classList.contains(Headroom.classes.unpinned)) {
-			elem.classList.remove(Headroom.classes.unpinned);
-			elem.classList.add(Headroom.classes.pinned);
+		if(elem.classList.contains(this.classes.unpinned)) {
+			elem.classList.remove(this.classes.unpinned);
+			elem.classList.add(this.classes.pinned);
 		}
 	},
 
@@ -70,13 +74,17 @@ Headroom.prototype = {
 	 * Handles updating the state of the widget
 	 */
 	update : function() {
-		var currentScrollY = window.scrollY;
+		var currentScrollY    = window.scrollY,
+			notBouncing       = currentScrollY > 0,
+			toleranceExceeded = Math.abs(currentScrollY-this.lastKnownScrollY) > this.tolerance;
 
-		if(currentScrollY > this.lastKnownScrollY && currentScrollY > 0) { // Down (and not bouncing)
-			this.unpin();
-		}
-		else if(currentScrollY < this.lastKnownScrollY) { // Up
-			this.pin();
+		if(toleranceExceeded) {
+			if(currentScrollY > this.lastKnownScrollY && notBouncing) { // Down
+				this.unpin();
+			}
+			else if(currentScrollY < this.lastKnownScrollY) { // Up
+				this.pin();
+			}
 		}
 
 		this.lastKnownScrollY = currentScrollY;
@@ -84,10 +92,14 @@ Headroom.prototype = {
 	
 };
 /**
- * The CSS classes used by Headroom
+ * Default options
+ * @type {Object}
  */
-Headroom.classes = {
-	pinned : 'headroom--pinned',
-	unpinned : 'headroom--unpinned',
-	initial : 'headroom'
+Headroom.options = {
+	tolerance : 2,
+	classes : {
+		pinned : 'headroom--pinned',
+		unpinned : 'headroom--unpinned',
+		initial : 'headroom'
+	}
 };
