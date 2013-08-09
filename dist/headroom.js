@@ -1,7 +1,8 @@
-// headroom.js v0.3.0 - Give your page room to breathe. Hide your header until you need it
-// Copyright (c) 2013 Nick Williams - http://wicky.nillia.ms/
-// License: MIT
-
+/*!
+ * headroom.js v0.3.1 - Give your page room to breathe. Hide your header until you need it
+ * Copyright (c) 2013 Nick Williams - http://wicky.nillia.ms/
+ * License: MIT
+ */
 ;(function(global) {
 
 'use strict';

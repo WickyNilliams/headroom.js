@@ -7,9 +7,11 @@ module.exports = function(grunt) {
 
         pkg: grunt.file.readJSON('package.json'),
         meta: {
-            banner: '// <%= pkg.name %> v<%= pkg.version %> - <%= pkg.description %>\n' +
-            '// Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %> - <%= pkg.homepage %>\n' +
-            '// License: <%= pkg.license %>\n\n',
+            banner : '/*!\n' +
+            ' * <%= pkg.name %> v<%= pkg.version %> - <%= pkg.description %>\n' +
+            ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %> - <%= pkg.homepage %>\n' +
+            ' * License: <%= pkg.license %>\n' +
+            ' */\n',
             outputDir: 'dist',
             output : '<%= meta.outputDir %>/<%= pkg.name %>',
             outputMin : '<%= meta.outputDir %>/<%= pkg.name.replace("js", "min.js") %>'
