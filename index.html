@@ -10,7 +10,7 @@
 <body>
 
     <a href="#" id="btt" class="btn btt">Back to top</a>
-    <header class="navbar navbar-inverse navbar-fixed-top" data-headroom>
+    <header id="header" class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
             <nav class="container">
                 <a class="brand" href="#">Headroom.js</a>
@@ -146,12 +146,9 @@
     <script src="dist/jQuery.headroom.min.js"></script>
     <script>
         (function() {
-            // use raw object
-            var target = document.querySelector("[data-headroom]");
-            var headroom = new Headroom(target);
-            headroom.init();
-
-            // or jQuery plugin!
+            $("#header").headroom({
+                offset : 200
+            });
             $("#btt").headroom({
                 tolerance : 10,
                 offset : 500,

@@ -83,7 +83,7 @@ Headroom.prototype = {
 		var currentScrollY    = window.scrollY,
 			notBouncing       = currentScrollY > 0; //OSX has bouncy scrolling
 
-		if(this.toleranceAndOffsetExceeded()) {
+		if(this.toleranceAndOffsetExceeded(currentScrollY)) {
 			if(currentScrollY > this.lastKnownScrollY && notBouncing) { // Down
 				this.unpin();
 			}
