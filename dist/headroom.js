@@ -98,18 +98,16 @@ Headroom.prototype = {
 	 * Unpins the header if it's currently pinned
 	 */
 	unpin : function() {
-		var elem = this.elem;
-		elem.classList.add(this.classes.unpinned);
-		elem.classList.remove(this.classes.pinned);
+		this.elem.classList.add(this.classes.unpinned);
+		this.elem.classList.remove(this.classes.pinned);
 	},
 
 	/**
 	 * Pins the header if it's currently unpinned
 	 */
 	pin : function() {
-		var elem = this.elem;
-		elem.classList.remove(this.classes.unpinned);
-		elem.classList.add(this.classes.pinned);
+		this.elem.classList.remove(this.classes.unpinned);
+		this.elem.classList.add(this.classes.pinned);
 	},
 
 	/**
