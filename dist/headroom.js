@@ -1,5 +1,5 @@
 /*!
- * headroom.js v0.3.1 - Give your page room to breathe. Hide your header until you need it
+ * headroom.js v0.3.2 - Give your page room to breathe. Hide your header until you need it
  * Copyright (c) 2013 Nick Williams - http://wicky.nillia.ms/
  * License: MIT
  */
@@ -112,15 +112,25 @@ Headroom.prototype = {
 	},
 
 	/**
+	 * Test whether tolerance and offset have been exceeded
+	 * @param  {Number} currentScrollY the current scroll position
+	 * @return {Boolean} true if exceeded, false otherwise
+	 */
+	toleranceAndOffsetExceeded : function(currentScrollY) {
+		var toleranceExceeded = Math.abs(currentScrollY-this.lastKnownScrollY) > this.tolerance,
+			offsetExceeded    = currentScrollY > this.offset;
+
+		return toleranceExceeded && offsetExceeded;
+	},
+
+	/**
 	 * Handles updating the state of the widget
 	 */
 	update : function() {
 		var currentScrollY    = window.scrollY,
-			notBouncing       = currentScrollY > 0,
-			toleranceExceeded = Math.abs(currentScrollY-this.lastKnownScrollY) > this.tolerance,
-			offsetExceeded    = currentScrollY > this.offset;
+			notBouncing       = currentScrollY > 0; //OSX has bouncy scrolling
 
-		if(toleranceExceeded && offsetExceeded) {
+		if(this.toleranceAndOffsetExceeded()) {
 			if(currentScrollY > this.lastKnownScrollY && notBouncing) { // Down
 				this.unpin();
 			}

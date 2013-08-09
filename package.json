@@ -1,6 +1,6 @@
 {
   "name": "headroom.js",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Give your page room to breathe. Hide your header until you need it",
   "main": "headroom.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-rigger": "~0.5.0",
     "grunt-contrib-jshint": "~0.6.2",
-    "grunt-contrib-watch": "~0.5.1"
+    "grunt-contrib-watch": "~0.5.1",
+    "grunt-contrib-jasmine": "~0.5.1"
   }
 }

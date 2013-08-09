@@ -47,24 +47,34 @@ module.exports = function(grunt) {
             },
             prebuild : [
                 'Gruntfile.js',
-                'src/*.js'
+                'src/*.js',
+                'spec/*.js'
             ],
             postbuild : [
                 '<%= meta.output %>'
             ]
         },
 
+         jasmine : {
+            options : {
+                specs : 'spec/*.js',
+                vendor: 'http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'
+            },
+            src : 'src/*.js'
+        },
+
         watch: {
             files: ['<%= jshint.prebuild %>', 'package.json'],
-            tasks: 'default'
+            tasks: 'test'
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-rigger');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('test', ['jshint:prebuild']);
+    grunt.registerTask('test', ['jshint:prebuild', 'jasmine']);
     grunt.registerTask('default', ['test', 'rig', 'jshint:postbuild', 'uglify']);
 };
