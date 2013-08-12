@@ -11,7 +11,7 @@ module.exports = function(grunt) {
             ' * <%= pkg.name %> v<%= pkg.version %> - <%= pkg.description %>\n' +
             ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %> - <%= pkg.homepage %>\n' +
             ' * License: <%= pkg.license %>\n' +
-            ' */\n',
+            ' */\n\n',
             outputDir: 'dist',
             output : '<%= meta.outputDir %>/<%= pkg.name %>',
             outputMin : '<%= meta.outputDir %>/<%= pkg.name.replace("js", "min.js") %>'
@@ -23,7 +23,8 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    '<%= meta.output %>' : ['src/include/wrapper.js']
+                    '<%= meta.output %>' : ['src/include/wrapper.js'],
+                    'dist/jQuery.headroom.js' : ['src/jQuery.headroom.js']
                 }
             }
         },
@@ -36,7 +37,7 @@ module.exports = function(grunt) {
             dist: {
                 files : {
                     '<%= meta.outputMin %>'  : '<%= meta.output %>',
-                    'dist/jQuery.headroom.min.js': 'src/jQuery.headroom.js'
+                    'dist/jQuery.headroom.min.js': 'dist/jQuery.headroom.js'
                 }
             }
         },
@@ -65,7 +66,7 @@ module.exports = function(grunt) {
 
         watch: {
             files: ['<%= jshint.prebuild %>', 'package.json'],
-            tasks: 'test'
+            tasks: 'default'
         }
     });
 
