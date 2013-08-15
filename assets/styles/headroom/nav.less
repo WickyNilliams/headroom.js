@@ -1,0 +1,127 @@
+// TODO: refactor some of this into more logical groupings
+
+.nav {
+	list-style: none;
+	padding: 0;
+
+	margin-bottom: 0;
+
+	&__item {
+
+		@media @navBreakpoint {
+			display: inline-block;
+		}
+
+		a {
+			//give us nice big targets
+			display:block;
+			padding: 1em 1.5em;
+
+			border: none;
+		}
+	}
+
+	&__toggle {
+
+		float: right;
+		display: none;
+		padding: 1em 0;
+
+		&:after {
+			.nano;
+			margin-left: 0.5em;
+		}
+
+		&:hover:after,
+		&:focus:after {
+			color: @primaryColor;
+		}
+
+		&--open:after {
+			content: "\25BC";
+		}
+		&--close:after {
+			content: "\25B2";
+		}
+
+		@media @navBreakpoint {
+			display: none !important;
+		}
+	}
+}
+
+
+.nav--main {
+
+	@media @lapBreakpoint {
+		float: right;
+	}
+
+	.nav__item {		
+
+		&:hover {
+			background-color: fade(@primaryColor,10);
+		}
+
+		&--current {
+			& a {
+				color: @primaryColor;
+			}
+		}			
+	}
+}
+
+.nav-wrapper {
+	.nav__toggle--open {
+		display: inline;
+	}
+	.nav__toggle--close {
+		display:none;
+	}
+
+	&:target {
+
+		.nav__toggle--open {
+			display: none;
+		}
+
+		.nav__toggle--close {
+			display: inline;
+		}
+	}
+}
+
+
+
+
+.nav--collapsible {
+	display: none;
+
+	@media @navBreakpoint {
+		display: block;
+	}
+
+	.nav-wrapper:target & {
+		display: block;
+	}
+}
+
+.nav--divided {
+
+	.nav__item {
+		border-top: 1px solid lighten(@darkColor, 10);
+		border-bottom: 1px solid darken(@darkColor,10);
+
+		@media @navBreakpoint {
+			border: none;
+		}
+	}
+
+	//TODO: hacky workaround, fix!
+	li:first-child .nav__item {
+		border-top: none;
+	}
+	li:last-child .nav__item {
+		border-bottom: none;
+	}
+}

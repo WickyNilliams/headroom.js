@@ -1,0 +1,114 @@
+.heading {
+	border-bottom: 3px solid @primaryColor;
+	margin-bottom: 1em;
+	padding-bottom: 0.25em;
+}
+
+.sub-heading {
+	border-bottom: 1px solid fade(@darkColor, 10);
+}
+
+.feature {
+	background-color: @primaryColor;
+	padding: 5em 0 2em 0;
+
+	a {
+		text-decoration: underline;
+		color: @darkColor;
+	}
+
+	strong {
+		color: @lightColor;
+		font-weight: normal;
+		text-shadow: 1px 1px 1px @darkColor;
+	}
+}
+
+
+.headroom {	
+	position: fixed;
+	transition: top 0.2s ease-in-out;
+	
+	&--pinned {
+		top: 0;
+	}
+	&--unpinned {
+		top: -3.5em;
+	}
+}
+
+.btt {
+	display:none;
+	position: fixed;
+	left:0;
+	bottom: 0;
+	.micro;
+
+	@media @deskBreakpoint {
+		display:block;
+	}
+
+	@media @wideDeskBreakpoint {
+		left: 0.5em;
+	}
+}
+
+
+.fade {
+	transition: all 0.2s ease-out;
+
+	&--in {
+		opacity:1;
+	}
+	&--out {
+		opacity:0;
+	}
+}
+
+.slide-fade {
+	transition: all 0.1s ease-out;
+	opacity:0;
+
+	&--in {
+		opacity:1;
+		-webkit-transform: translateY(0);
+	}
+	&--out {
+		-webkit-transform: translateY(-4em);
+	}
+}
+
+.step {
+	transition: all 0.1s ease-out;
+	-webkit-transform: translateX(-5em);
+
+	&--in {
+		-webkit-transform: translateX(0);
+	}
+
+	&--out {
+	}
+}
+
+.headroom-title {
+	.mega;
+
+	@media @lapBreakpoint {
+		.giga;
+	}
+	@media @deskBreakpoint {
+		.tera;
+	}
+}
+
+.icon:before {
+	.micro;
+	display: inline-block;
+	height:1em;
+	width:1em;
+	line-height: 1;
+}
+
+.icon--up:before {
+	content: "\25B2";
+}

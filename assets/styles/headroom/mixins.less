@@ -1,0 +1,19 @@
+.transition(@properties : all, @duration: 0.2s, @timing: ease-out) {
+    -webkit-transition: @properties @duration @timing;
+    -moz-transition   : @properties @duration @timing;
+    -o-transition     : @properties @duration @timing;
+    transition        : @properties @duration @timing;
+}
+
+.selection(@bgColor, @color, @shadow) {
+	::selection {
+		background-color: @bgColor !important;
+		color: @color !important;
+		text-shadow: 1px 1px 1px @shadow;
+	}
+	::-moz-selection {
+		background-color: @bgColor !important;
+		color: @color !important;
+		text-shadow: 1px 1px 1px @shadow;
+	}
+}

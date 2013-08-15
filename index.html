@@ -1,164 +1,251 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Headroom</title>
+    <title>Headroom.js</title>
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-
+    <link rel="stylesheet" href="assets/styles/main.css">
 </head>
-<body>
+<body class="language-javascript">
 
-    <a href="#" id="btt" class="btn btt">Back to top</a>
-    <header id="header" class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <nav class="container">
-                <a class="brand" href="#">Headroom.js</a>
-                <ul class="nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
-                </ul>   
+    
+
+    <header id="header" class="header header--fixed" role="banner" data-headroom data-offset="205">
+        <div class="container" >
+        
+            <nav id="nav" class="nav-wrapper" role="navigation">
+                <ul class="nav nav--main nav--collapsible">
+                    <li class="nav__item ">
+                        <a class="header__link" href="/blog">Blog</a>
+                    </li>
+
+                    <li class="nav__item ">
+                        <a class="header__link" href="/about">About</a>
+                    </li>
+
+                    <li class="nav__item ">
+                        <a class="header__link" href="/monkey">Monkey</a>
+                    </li>
+
+                    <li class="nav__item ">
+                        <a class="header__link" href="/projects">Projects</a>
+                    </li>
+                </ul>
+                <a href="#nav" class="header__link nav__toggle nav__toggle--open">menu</a>
+                <a href="#" class="header__link nav__toggle nav__toggle--close">menu</a>
             </nav>
             
-        </div>        
+            <a href="/" class="brand header__link">
+                <b class="brand__forename">Headroom</b><b class="brand__surname">.js</b>
+            </a>
+        </div>
     </header>
+    
+    <div class="feature">
+        <div class="container container--wide feature-title">
+            <h1 class="feature-title__title headroom-title">Headroom.js</h1>
+            <p class="feature-title__subtitle">Give your pages some headroom. Hide your header until you need it.</p>
+        </div>
+    </div>
+    <div class="container block main" role="main">
+        <article>
 
-    <section class="container" role="main">
-        <div class="hero-unit">
-            <h1>Headroom.js</h1>
-            <p>Headroom gives your page room to breathe. Keep your header out of the way until you scroll up when it pops into view.</p>
+<h2>What is it?</h2>
+
+<p>Headroom.js is a, high-performance JS widget that allows you to hide (<em>or do anything else with</em>) your header (<em>or any other element!</em>) until the user scrolls up.</p>
+
+<h2>Why use it?</h2>
+
+<p>Fixed headers are a popular approach for keeping a website's primary navigation in close proximity to the user. This can reduce the effort required for a user to quickly navigate a site, though they are not without problems&hellp; </p>
+
+<p>Large screens are usually landscape-oriented, meaning a width greater than height. Having an omnipresent header (combined with the browser's chrome) can seriously reduce the amount of vertical space left to display content, especially since the advent of screens with a 16:9 aspect ratio.</p>
+
+<p>Small screen are typically used in a portrait orientation. Whilst in this configuration we have more vertical space than horizontal space, because of the overall height of the screen a meaningfully-sized header can still be quite imposing on the user.</p>
+
+<p>Headroom.js allows you to have a fixed header for the times when the user needs it (scroll up), and hide it the rest of the time (scroll down).</p>
+
+<h2>How does it work?</h2>
+
+<p>At it's most basic headroom.js simply adds and removes CSS classes from an element in response to a scroll event:</p>
+
+<pre class="language-markup"><code>&lt;!-- initially --&gt;
+&lt;header id="header" class="headroom"&gt;
+
+&lt;!-- scrolling down --&gt;
+&lt;header id="header" class="headroom headroom--unpinned"&gt;
+
+&lt;!-- scrolling up --&gt;
+&lt;header id="header" class="headroom headroom--pinned"&gt;
+</code></pre>
+
+<p>By relying on CSS classes, headroom.js is incredibly flexible. The choice of what to do when scrolling up or down is now entirely yours - so anything you can do with CSS you can now do in response to the user's scroll!</p>
+
+<h2>How do I use it?</h2>
+
+<h3>With plain JS</h3>
+
+<pre><code>// Grab an element
+var myElement = document.getElementById("header")[0];
+// Construct an instance of Headroom, passing the element
+var headroom  = new Headroom(myElement);
+// Initialise
+headroom.init(); 
+</code></pre>
+
+<h3>With jQuery/Zepto</h3>
+
+<pre><code>// Simple as this!
+$("# header").headroom();
+</code></pre>
+
+<p>The plugin also offers a data-* API if you prefer a declarative approach.</p>
+
+<pre class="language-markup"><code>&lt;!-- selects $("[data-headroom]") --&gt;
+&lt;header id="header" data-headroom&gt;
+</code></pre>
+
+<h3>Options</h3>
+
+<p>Headroom.js can also accept an options object to alter the way it behaves. You can see the default options by inspecting <code>Headroom.options</code>. The structure of an options object is as follows:</p>
+
+<pre><code>{
+    offset : 0,
+    tolerance : 0,
+    classes : {
+        initial : "headroom",
+        pinned : "headroom-pinned",
+        unpinned : "headroom--unpinned"
+    }
+}
+</code></pre>
+
+<p>Offset is the distance in pixels from the top of the page before headroom starts working, when <code>window.scrollY &gt; offset</code>. Tolerance makes headroom.js less sensitive to scrolling. A tolerance of <code>5</code> means the user must have scrolled at least 5px for the state to change from pinned to unpinned or vice versa. Classes are the CSS classes applied depending on state. <code>initial</code> is applied when <code>init()</code> is called (<code>init()</code> is implicitly called when the using jQuery/Zepto plugin). <code>pinned</code> and <code>unpinned</code> are mutually-exclusive and are applied when scrolling up and down respectively.</p>
+
+<p>Custom options are merged with the defaults if you don't wish to redefine every property. </p>
+
+<p>If you're using plain JS, pass the options as the second argument to the constructor. Be aware that when using headroom in this way, the options aren't automatically merged with the defaults.</p>
+
+<pre><code>var headroom = new Headroom(myElement, {
+    offset: 200,
+    tolerance : 0,
+    classes : {
+        initial : "foo",
+        pinned : "foo-up",
+        unpinned : "foo-down"
+    }
+});
+</code></pre>
+
+<p>If you're using the jQuery/Zepto plugin, pass options as the second parameter. Options are automatically merged with the defaults using this approach (deep merged using <code>$.extend(true, {}, defaultOptions, yourOptions)</code>)</p>
+
+<pre><code>$("#header").headroom({
+    offset: 200
+});
+</code></pre>
+
+<p>If you're using the data-* API, define each property as a data attribute</p>
+
+<pre class="language-markup"><code>&lt;header id="header" data-headroom data-offset="200" data-tolerance="5"&gt;
+</code></pre>
+
+<p>Options supplied via the data-* API are merged with defaults as with the plugin. Supply a JSON object to alter classes used by headroom.js</p>
+
+<pre class="language-markup"><code>&lt;header id="header" data-headroom data-offset="200" data-tolerance="5" data-classes="{pinned : 'foo'}"&gt;
+</code></pre>
+
+<h3>Destroy</h3>
+
+<p>Headroom.js can cleanup after itself by calling the <code>destroy</code> method on an instance of Headroom. This detaches event handlers and removes any classes added to the target element. </p>
+
+<pre><code>//with plain JS
+headroom.destroy();
+
+//with jQuery plugin
+$("#header").headroom("destroy");
+</code></pre>
+
+<h2>Examples</h2>
+
+<ul>
+<li>Plain JS</li>
+<li>jQuery/Zepto plugin</li>
+<li>Offset</li>
+<li>Tolerance</li>
+<li>Custom CSS classes</li>
+<li>Other use cases</li>
+</ul>
+            
+        </article>
+            
+                
+        <h2 class="gamma">Share this on:</h2>
+        <div class="grid">
+            <div class="grid__item one-third">
+                <a class="btn btn--full" href="http://facebook.com/sharer.php?u=http://wicky.nillia.ms/blog/writing-maintainable-css/">Facebook</a>
+            </div>
+            <div class="grid__item one-third">
+                <a class="btn btn--full" href="http://twitter.com/intent/tweet?url=http://wicky.nillia.ms/blog/writing-maintainable-css/&amp;text=Writing Maintainable CSS&amp;via=WickyNilliams">Twitter</a>
+            </div>
+            <div class="grid__item one-third">
+                <a class="btn btn--full" href="https://plus.google.com/share?url=http://wicky.nillia.ms/blog/writing-maintainable-css/">Google+</a>
+            </div>
         </div>
 
-        <h1>Headroom</h1>
-        <p class="lead">
-            Headroom gives your page room to breathe. Keep your header out of the way until you scroll up when it pops into view.
-        </p>
-           
-        <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+            <a class="btt step btn btn--plain" href="#">Top <i class="icon icon--up"></i></a>
 
-        <h2 id="jump">Header Level 2</h2>
-                   
-        <ol>
-           <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-           <li>Aliquam tincidunt mauris eu risus.</li>
-        </ol>
+        </div>
 
-        <blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
+    <!--script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+    <script src="assets/scripts/zepto.min.js"></script>
+    <script src="assets/scripts/prism.js"></script>
+    <!--script src="https://rawgithub.com/WickyNilliams/headroom.js/master/dist/headroom.js"></script-->
+    <script src="assets/scripts/headroom.js"></script>
 
-        <h3>Header Level 3</h3>
-
-        <ul>
-           <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-           <li>Aliquam tincidunt mauris eu risus.</li>
-        </ul>
-
-        <pre><code>
-        #header h1 a { 
-            display: block; 
-            width: 300px; 
-            height: 80px; 
-        }
-        </code></pre>
-           
-        <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
-
-        <h2>Header Level 2</h2>
-                   
-        <ol>
-           <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-           <li>Aliquam tincidunt mauris eu risus.</li>
-        </ol>
-
-        <blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
-
-        <h3>Header Level 3</h3>
-
-        <ul>
-           <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-           <li>Aliquam tincidunt mauris eu risus.</li>
-        </ul>
-
-        <pre><code>
-        #header h1 a { 
-            display: block; 
-            width: 300px; 
-            height: 80px; 
-        }
-        </code></pre>
-
-        <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
-
-        <h2 id="jump">Header Level 2</h2>
-                   
-        <ol>
-           <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-           <li>Aliquam tincidunt mauris eu risus.</li>
-        </ol>
-
-        <blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
-
-        <h3>Header Level 3</h3>
-
-        <ul>
-           <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-           <li>Aliquam tincidunt mauris eu risus.</li>
-        </ul>
-
-        <pre><code>
-        #header h1 a { 
-            display: block; 
-            width: 300px; 
-            height: 80px; 
-        }
-        </code></pre>
-           
-        <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
-
-        <h2>Header Level 2</h2>
-                   
-        <ol>
-           <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-           <li>Aliquam tincidunt mauris eu risus.</li>
-        </ol>
-
-        <blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
-
-        <h3>Header Level 3</h3>
-
-        <ul>
-           <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-           <li>Aliquam tincidunt mauris eu risus.</li>
-        </ul>
-
-        <pre><code>
-        #header h1 a { 
-            display: block; 
-            width: 300px; 
-            height: 80px; 
-        }
-        </code></pre>
-    </section>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="dist/headroom.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="dist/jQuery.headroom.min.js"></script>
     <script>
-        (function() {
-            $("#header").headroom({
-                offset : 200
-            });
-            $("#btt").headroom({
-                tolerance : 10,
-                offset : 500,
-                classes : {
-                    pinned : "btt--pinned",
-                    unpinned : "btt--unpinned",
-                    initial : "btt"
+    ;(function($) {
+
+        ////////////
+        // Plugin //
+        ////////////
+
+        $.fn.headroom = function(option) {
+            return this.each(function() {
+                var $this   = $(this),
+                    data    = $this.data('headroom'),
+                    options = typeof option === 'object' && option;
+
+                options = $.extend(true, {}, Headroom.options, options);
+
+                if (!data) {
+                    data = new Headroom(this, options);
+                    data.init();
+                    $this.data('headroom', data);
+                }
+                if (typeof option === 'string') {
+                    data[option]();
                 }
             });
-        }());
+        };
+
+        //////////////
+        // Data API //
+        //////////////
+
+        $('[data-headroom]').each(function() {
+            var $this = $(this);
+            $this.headroom($this.data());
+        });
+
+    }(window.Zepto || window.jQuery));
+    </script>
+    <script>
+        $(".btt").headroom({
+            tolerance : 5,
+            offset : 500,
+            classes : {
+                pinned : "step--in",
+                unpinned : "step--out"
+            }
+        });
     </script>
 
 </body>

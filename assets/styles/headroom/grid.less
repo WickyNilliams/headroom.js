@@ -1,0 +1,75 @@
+.grid {
+    margin-left:-@gridGutter;
+
+    list-style:none; // allow us to use the `.grid` class on lists.
+    margin-bottom:0;
+    .clearfix;
+
+    &--rev > .g {
+        float:right;
+    }
+
+    // Very infrequently occuring grid wrappers as children of grid wrappers.
+    & > & {
+        margin-left:0;
+    }
+
+    &__item {
+        float:left;
+        padding-left: @gridGutter;
+    }
+}
+
+
+.one-whole      { width : 100%; }
+
+.one-half       { width : 50%; }
+
+.one-third      { width : 33.333%; }
+.two-thirds     { width : 66.666%; }
+
+.one-quarter    { width : 25%; }
+.two-quarters   { width : 50%; }
+.three-quarters { width : 75%; }
+
+.one-fifth      { width : 20%; }
+.two-fifths     { width : 40%; }
+.three-fifths   { width : 60%; }
+.four-fifths    { width : 80%; }
+
+
+@media @lapBreakpoint {
+    .lap--one-whole         { width : 100%; }
+
+    .lap--one-half          { width : 50%; }
+
+    .lap--one-third         { width : 33.333%; }
+    .lap--two-thirds        { width : 66.666%; }
+
+    .lap--one-quarter       { width : 25%;}
+    .lap--two-quarters      { width : 50%; }
+    .lap--three-quarters    { width : 75%; }
+
+    .lap--one-fifth         { width : 20%;}
+    .lap--two-fifths        { width : 40%; }
+    .lap--three-fifths      { width : 60%; }
+    .lap--four-fifths       { width : 80%; }
+}
+
+@media @deskBreakpoint {
+    .desk--one-whole        { width : 100%; }
+
+    .desk--one-half         { width : 50%; }
+
+    .desk--one-third        { width : 33.333%; }
+    .desk--two-thirds       { width : 66.666%; }
+
+    .desk--one-quarter      { width : 25%; }
+    .desk--two-quarters     { width : 50%; }
+    .desk--three-quarters   { width : 75%; }
+
+    .desk--one-fifth        { width : 20%; }
+    .desk--two-fifths       { width : 40%; }
+    .desk--three-fifths     { width : 60%; }
+    .desk--four-fifths      { width : 80%; }
+}

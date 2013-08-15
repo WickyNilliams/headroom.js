@@ -1,0 +1,30 @@
+// Colours
+@primaryColor: #A5EB3C;
+@secondaryColor: #EA2E49;
+@darkColor: #333745;
+@midColor: lighten(@darkColor, 50);
+@lightColor: #fff;
+
+// Font stuff
+@decorativeFont: "Pacifico", Georgia;
+@baseFontSize: 16px;
+
+// Atomic unit
+@atom : 0.5em;
+
+// Breakpoint widths
+@mediumWidth : 40em;
+@largeWidth : 50em;
+@extraLargeWidth : 65em;
+
+// Media query breakpoints (see http://static.lukew.com/unified_device_design.png)
+@palmBreakpoint :~"screen and (max-width: @{mediumWidth})";
+@lapBreakpoint : ~"screen and (min-width: @{mediumWidth})";
+@deskBreakpoint : ~"screen and (min-width: @{largeWidth})";
+@wideDeskBreakpoint: ~"screen and (min-width: @{extraLargeWidth})";
+
+// Grids
+@gridGutter : 30px;
+
+// Widgets
+@navBreakpoint : @lapBreakpoint;

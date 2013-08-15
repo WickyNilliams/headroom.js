@@ -1,0 +1,93 @@
+////////////////////////////////////
+/// Font families
+////////////////////////////////////
+
+@headingFont : 'Cabin', Helvetica, Arial;
+@DecorativeFont : 'Pacifico', Helvetica, Arial;
+@bodyFont : Helvetica, Arial, sans-serif;
+
+
+
+body {
+	font-family : @bodyFont;
+	line-height: 1.5;
+	background-color: @lightColor;
+	color: @darkColor;
+}
+
+.selection(@secondaryColor, @lightColor, @darkColor);
+
+h1, 
+h2, 
+h3,
+h4,
+h5,
+h6 {
+	font-family: @bodyFont;
+	font-weight: bold;
+	color: darken(@darkColor, 5);
+	text-rendering: optimizelegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+.alpha,
+.beta,
+.gamma,
+.delta {
+	line-height: 1.25;
+}
+
+//////////////////////////////////////
+/// Double-stranded typographic scale
+//////////////////////////////////////
+
+h1, .alpha {
+	font-size: 2em; // 32px
+}
+
+h2, .beta {
+	font-size: 1.5em; // 24px
+}
+
+h3, .gamma {
+	font-size: 1.25em; // 20px
+}
+
+h4, .delta {
+	font-size: 1.125em; // 18px
+}
+
+.tera {
+	font-size: 4.5em;
+}
+.giga {
+	font-size: 3.5em;
+}
+.mega {
+	font-size: 3em;
+}
+.micro {
+	font-size: 0.9em;
+}
+
+.nano {
+	font-size: 0.8em;
+}
+
+.pico {
+	font-size: 0.75em;
+}
+
+.responsive-type(@mq, @size) {
+	@media @mq {
+		body {
+			font-size: @size;
+		}
+	}
+}
+
+.responsive-type(@lapBreakpoint, 104%);
+.responsive-type(@deskBreakpoint, 108%);
