@@ -10,7 +10,7 @@
 				data    = $this.data('headroom'),
 			    options = typeof option === 'object' && option;
 
-		    options = $.extend({}, Headroom.options, options);
+		    options = $.extend(true, {}, Headroom.options, options);
 
 			if (!data) {
 				data = new Headroom(this, options);
@@ -32,4 +32,4 @@
 		$this.headroom($this.data());
 	});
 
-}(window.jQuery));
+}(window.Zepto || window.jQuery));

@@ -1,5 +1,5 @@
 /*!
- * headroom.js v0.3.3 - Give your page some headroom. Hide your header until you need it
+ * headroom.js v0.3.4 - Give your page some headroom. Hide your header until you need it
  * Copyright (c) 2013 Nick Williams - http://wicky.nillia.ms/
  * License: MIT
  */
@@ -16,7 +16,7 @@
 				data    = $this.data('headroom'),
 			    options = typeof option === 'object' && option;
 
-		    options = $.extend({}, Headroom.options, options);
+		    options = $.extend(true, {}, Headroom.options, options);
 
 			if (!data) {
 				data = new Headroom(this, options);
@@ -38,4 +38,4 @@
 		$this.headroom($this.data());
 	});
 
-}(window.jQuery));
+}(window.Zepto || window.jQuery));
