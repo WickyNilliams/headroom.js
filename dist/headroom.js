@@ -1,5 +1,5 @@
 /*!
- * headroom.js v0.3.4 - Give your page some headroom. Hide your header until you need it
+ * headroom.js v0.3.5 - Give your page some headroom. Hide your header until you need it
  * Copyright (c) 2013 Nick Williams - http://wicky.nillia.ms/
  * License: MIT
  */
@@ -119,7 +119,7 @@ Headroom.prototype = {
 	 */
 	toleranceAndOffsetExceeded : function(currentScrollY) {
 		var toleranceExceeded = Math.abs(currentScrollY-this.lastKnownScrollY) > this.tolerance,
-			offsetExceeded    = currentScrollY > this.offset;
+			offsetExceeded    = currentScrollY >= this.offset;
 
 		return toleranceExceeded && offsetExceeded;
 	},

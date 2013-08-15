@@ -91,7 +91,7 @@
 			//tolerance and offset
 			headroom.offset = 10;
 			expect(headroom.toleranceAndOffsetExceeded(9)).toBeFalsy();
-			expect(headroom.toleranceAndOffsetExceeded(11)).toBeTruthy();
+			expect(headroom.toleranceAndOffsetExceeded(10)).toBeTruthy();
 		});
 
 		//TODO: clean up repetition in these test (nested describe?)

@@ -71,7 +71,7 @@ Headroom.prototype = {
 	 */
 	toleranceAndOffsetExceeded : function(currentScrollY) {
 		var toleranceExceeded = Math.abs(currentScrollY-this.lastKnownScrollY) > this.tolerance,
-			offsetExceeded    = currentScrollY > this.offset;
+			offsetExceeded    = currentScrollY >= this.offset;
 
 		return toleranceExceeded && offsetExceeded;
 	},
