@@ -59,10 +59,9 @@
   function handleStyleChange() {
     //TODO: can this be cleaned up? Too aware of internal implementation details
     form.style = this;
-    var style = form.getStyle();
-    header.classList.remove(headroom.classes.initial, headroom.classes.unpinned, headroom.classes.pinned);
-    header.classList.add(style.initial);
-    headroom.classes = style;
+    headroom.destroy();
+    headroom.classes = form.getStyle();
+    headroom.init();
   }
 
   var allStyles = document.querySelectorAll('input[name=style]');
