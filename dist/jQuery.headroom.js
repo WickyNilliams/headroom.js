@@ -6,36 +6,36 @@
 
 ;(function($) {
 
-	////////////
-	// Plugin //
-	////////////
+  ////////////
+  // Plugin //
+  ////////////
 
-	$.fn.headroom = function(option) {
-		return this.each(function() {
-			var $this   = $(this),
-				data    = $this.data('headroom'),
-			    options = typeof option === 'object' && option;
+  $.fn.headroom = function(option) {
+    return this.each(function() {
+      var $this   = $(this),
+        data    = $this.data('headroom'),
+          options = typeof option === 'object' && option;
 
-		    options = $.extend(true, {}, Headroom.options, options);
+        options = $.extend(true, {}, Headroom.options, options);
 
-			if (!data) {
-				data = new Headroom(this, options);
-				data.init();
-				$this.data('headroom', data);
-		    }
-			if (typeof option === 'string') {
-				data[option]();
-			}
-		});
-	};
+      if (!data) {
+        data = new Headroom(this, options);
+        data.init();
+        $this.data('headroom', data);
+        }
+      if (typeof option === 'string') {
+        data[option]();
+      }
+    });
+  };
 
-	//////////////
-	// Data API //
-	//////////////
+  //////////////
+  // Data API //
+  //////////////
 
-	$('[data-headroom]').each(function() {
-		var $this = $(this);
-		$this.headroom($this.data());
-	});
+  $('[data-headroom]').each(function() {
+    var $this = $(this);
+    $this.headroom($this.data());
+  });
 
 }(window.Zepto || window.jQuery));
