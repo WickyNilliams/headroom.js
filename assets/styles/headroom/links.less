@@ -1,22 +1,21 @@
-a {	
-	text-decoration: none;
-	border-bottom: 2px solid fade(@primaryColor,60);
-	.transition(border-color, 0.2s);
+a { 
+  text-decoration: none;
+  border-bottom: 2px solid fade(@primaryColor,60);
+  .transition(border-color, 0.2s);
 
-	color: @darkColor;
+  color: @darkColor;
 
-	&:visited {
-		border-color: #ccc;
-	}
+  &:visited {
+    border-color: #ccc;
+  }
 
-	&:hover,
-	&:focus {
-		border-color: @primaryColor;
-	}
+  &:hover,
+  &:focus {
+    border-color: @primaryColor;
+  }
 
-
-	&:target,
-	&:focus {
-		outline: none;
-	}
+  &:target,
+  &:focus {
+    outline: none;
+  }
 }

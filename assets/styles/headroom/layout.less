@@ -5,9 +5,9 @@
 ////////////////////////////////////
 
 *, ::after, ::before {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 ////////////////////////////////////
@@ -23,14 +23,17 @@ h6,
 p,
 ul,
 ol,
-pre, {
-	margin-top: 0;
-	margin-bottom: @baseFontSize;
-	margin-bottom: 1rem;
+pre,
+fieldset,
+form,
+legend {
+  margin-top: 0;
+  margin-bottom: @baseFontSize;
+  margin-bottom: 1rem;
 }
 
 body {
-	margin: 0;
+  margin: 0;
 }
 
 
@@ -39,25 +42,25 @@ body {
 ////////////////////////////////////
 
 .container {
-	max-width: 41em;
-	
-	//TODO: refactor into separate classes?
-	margin: 0 auto;
-	padding: 0 @spacing;
+  max-width: 41em;
+  
+  //TODO: refactor into separate classes?
+  margin: 0 auto;
+  padding: 0 @spacing;
 
-	&--wide {
-		max-width: 51em;
-	}
+  &--wide {
+    max-width: 51em;
+  }
 }
 
 .block {
-	margin-bottom: @spacing;
+  margin-bottom: @spacing;
 
-	&--mini {
-		margin-bottom: 0.5em;
-	}
+  &--mini {
+    margin-bottom: 0.5em;
+  }
 }
 
 .main {
-	margin-top: 1.5em;
+  margin-top: 1.5em;
 }

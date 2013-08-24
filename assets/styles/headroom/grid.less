@@ -1,75 +1,50 @@
 .grid {
-    margin-left:-@gridGutter;
 
-    list-style:none; // allow us to use the `.grid` class on lists.
-    margin-bottom:0;
-    .clearfix;
+  margin-left:-@gridGutter;
+  margin-bottom:0;
+  .clearfix;
+  
+  list-style:none; // allow us to use the `.grid` class on lists.
 
-    &--rev > .g {
-        float:right;
-    }
+  &--rev > &__item {
+    float:right;
+  }
 
-    // Very infrequently occuring grid wrappers as children of grid wrappers.
-    & > & {
-        margin-left:0;
-    }
+  // Very infrequently occuring grid wrappers as children of grid wrappers.
+  & > & {
+    margin-left:0;
+  }
 
-    &__item {
-        float:left;
-        padding-left: @gridGutter;
-    }
+  &__item {
+    float:left;
+    padding-left: @gridGutter;
+  }
+}
+
+.grid-ns(@ns : ~"") {
+  .@{ns}one-whole      { width : 100%; }
+
+  .@{ns}one-half       { width : 50%; }
+
+  .@{ns}one-third      { width : 33.333%; }
+  .@{ns}two-thirds     { width : 66.666%; }
+
+  .@{ns}one-quarter    { width : 25%; }
+  .@{ns}two-quarters   { width : 50%; }
+  .@{ns}three-quarters { width : 75%; }
+
+  .@{ns}one-fifth      { width : 20%; }
+  .@{ns}two-fifths     { width : 40%; }
+  .@{ns}three-fifths   { width : 60%; }
+  .@{ns}four-fifths    { width : 80%; }
 }
 
 
-.one-whole      { width : 100%; }
-
-.one-half       { width : 50%; }
-
-.one-third      { width : 33.333%; }
-.two-thirds     { width : 66.666%; }
-
-.one-quarter    { width : 25%; }
-.two-quarters   { width : 50%; }
-.three-quarters { width : 75%; }
-
-.one-fifth      { width : 20%; }
-.two-fifths     { width : 40%; }
-.three-fifths   { width : 60%; }
-.four-fifths    { width : 80%; }
-
+.grid-ns();
 
 @media @lapBreakpoint {
-    .lap--one-whole         { width : 100%; }
-
-    .lap--one-half          { width : 50%; }
-
-    .lap--one-third         { width : 33.333%; }
-    .lap--two-thirds        { width : 66.666%; }
-
-    .lap--one-quarter       { width : 25%;}
-    .lap--two-quarters      { width : 50%; }
-    .lap--three-quarters    { width : 75%; }
-
-    .lap--one-fifth         { width : 20%;}
-    .lap--two-fifths        { width : 40%; }
-    .lap--three-fifths      { width : 60%; }
-    .lap--four-fifths       { width : 80%; }
+  .grid-ns(lap--);
 }
-
 @media @deskBreakpoint {
-    .desk--one-whole        { width : 100%; }
-
-    .desk--one-half         { width : 50%; }
-
-    .desk--one-third        { width : 33.333%; }
-    .desk--two-thirds       { width : 66.666%; }
-
-    .desk--one-quarter      { width : 25%; }
-    .desk--two-quarters     { width : 50%; }
-    .desk--three-quarters   { width : 75%; }
-
-    .desk--one-fifth        { width : 20%; }
-    .desk--two-fifths       { width : 40%; }
-    .desk--three-fifths     { width : 60%; }
-    .desk--four-fifths      { width : 80%; }
+  .grid-ns(desk--);
 }
