@@ -35,12 +35,16 @@
     });
 
     it('should clean up after itself when destroyed', function() {
+      var eventHandler;
+
       spyOn(global, 'removeEventListener');
+      headroom.eventHandler = eventHandler = function() {};
 
       headroom.destroy();
 
       expect(classList.remove).toHaveBeenCalled();
-      expect(global.removeEventListener).toHaveBeenCalledWith('scroll', headroom.eventHandler, false);
+      expect(global.removeEventListener).toHaveBeenCalledWith('scroll', eventHandler, false);
+      expect(headroom.eventHandler).toBeNull();
     });
 
     it('should set classes correctly when pinning', function(){

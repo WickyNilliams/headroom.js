@@ -1,5 +1,5 @@
 /*!
- * headroom.js v0.3.5 - Give your page some headroom. Hide your header until you need it
+ * headroom.js v0.3.6 - Give your page some headroom. Hide your header until you need it
  * Copyright (c) 2013 Nick Williams - http://wicky.nillia.ms/
  * License: MIT
  */
@@ -79,15 +79,17 @@ Headroom.prototype = {
   },
 
   /**
-   * Destroys the widget
+   * Unattaches events and removes any classes that were added
    */
   destroy : function() {
     window.removeEventListener('scroll', this.eventHandler, false);
+    this.eventHandler = null;
     this.elem.classList.remove(this.classes.unpinned, this.classes.pinned, this.classes.initial);
   },
 
   /**
    * Attaches the scroll event
+   * @private
    */
   attachEvent : function() {
     if(!this.eventHandler){
