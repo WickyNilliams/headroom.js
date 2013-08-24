@@ -4,114 +4,111 @@
 
 ## What is it?
 
-Headroom.js is a lightweight, high-performance JS widget that allows you to hide (*or do anything else with*) your header (*or any other element!*) until the user scrolls up.
+Headroom.js is a lightweight, high-performance pure JS widget that allows you to hide your header until needed - when the user scrolls up. The header is a living example of this.
 
 ## Why use it?
 
-Fixed headers are a popular approach for keeping a website's primary navigation in close proximity to the user. This can reduce the effort required for a user to quickly navigate a site, though they are not without problems&hellp; 
+Fixed headers are a popular approach for keeping a website's primary navigation in close proximity to the user. This can reduce the effort required for a user to quickly navigate a site, though they are not without problems&hellip; 
 
-Large screens are usually landscape-oriented, meaning a width greater than height. Having an omnipresent header (combined with the browser's chrome) can seriously reduce the amount of vertical space left to display content, especially since the advent of screens with a 16:9 aspect ratio.
+Large screens are usually landscape-oriented, meaning less vertical than horizontal space. A fixed header can therefore occupy a significant portion of the content area.
 
-Small screen are typically used in a portrait orientation. Whilst in this configuration we have more vertical space than horizontal space, because of the overall height of the screen, a meaningfully-sized header can still be quite imposing on the user.
+Small screens are typically used in a portrait orientation. Whilst this results in more vertical space, because of the overall height of the screen, a meaningfully-sized header can still be quite imposing on the user.
 
-Headroom.js allows you to have a fixed header for the times when the user needs it (scroll up), and hide it the rest of the time (scroll down).
+Headroom.js allows you to bring elements into view when appropriate, and give focus to your content the rest of the time.
 
 ## How does it work?
 
 At it's most basic headroom.js simply adds and removes CSS classes from an element in response to a scroll event:
 
-	<!-- initially -->
-	<header id="header" class="headroom">
+    <!-- initially -->
+    <header id="header" class="headroom">
 
-	<!-- scrolling down -->
-	<header id="header" class="headroom headroom--unpinned">
+    <!-- scrolling down -->
+    <header id="header" class="headroom headroom--unpinned">
 
-	<!-- scrolling up -->
-	<header id="header" class="headroom headroom--pinned">
+    <!-- scrolling up -->
+    <header id="header" class="headroom headroom--pinned">
 
-By relying on CSS classes, headroom.js is incredibly flexible. The choice of what to do when scrolling up or down is now entirely yours - so anything you can do with CSS you can now do in response to the user's scroll!
+Relying on CSS classes affords headroom.js incredible flexibility. The choice of what to do when scrolling up or down is now entirely yours - anything you can do with CSS you can do in response to the user's scroll.
 
 ## How do I use it?
 
+Using headroom.js is really simple. It has a pure JS API, and an optional jQuery/Zepto compatible plugin.
+
 ### With plain JS
 
-	// Grab an element
-	var myElement = document.getElementById("header")[0];
-	// Construct an instance of Headroom, passing the element
-	var headroom  = new Headroom(myElement);
-	// Initialise
-	headroom.init(); 
-
+    // Grab an element
+    var myElement = document.getElementById("header")[0];
+    // Construct an instance of Headroom, passing the element
+    var headroom  = new Headroom(myElement);
+    // Initialise
+    headroom.init(); 
 
 ### With jQuery/Zepto
 
-	// Simple as this!
-	$("# header").headroom();
+    // Simple as this!
+    // init() is called implicitly with plugin
+    $("# header").headroom();
 
 The plugin also offers a data-* API if you prefer a declarative approach.
 
-	<!-- selects $("[data-headroom]") -->
-	<header id="header" data-headroom>
+    <!-- selects $("[data-headroom]") -->
+    <header id="header" data-headroom>
+
+Note: Zepto's additional [data module](https://github.com/madrobby/zepto#zepto-modules) is required for compatibility.
 
 ### Options
 
 Headroom.js can also accept an options object to alter the way it behaves. You can see the default options by inspecting `Headroom.options`. The structure of an options object is as follows:
 
-	{
-		offset : 0,
-		tolerance : 0,
-		classes : {
-			initial : "headroom",
-			pinned : "headroom-pinned",
-			unpinned : "headroom--unpinned"
-		}
-	}
+    {
+      offset : 0,
+      tolerance : 0,
+      classes : {
+        initial : "headroom",
+        pinned : "headroom-pinned",
+        unpinned : "headroom--unpinned"
+      }
+    }
 
-Offset is the distance in pixels from the top of the page before headroom starts working, when `window.scrollY > offset`. Tolerance makes headroom.js less sensitive to scrolling. A tolerance of `5` means the user must have scrolled at least 5px for the state to change from pinned to unpinned or vice versa. Classes are the CSS classes applied depending on state. `initial` is applied when `init()` is called (`init()` is implicitly called when the using jQuery/Zepto plugin). `pinned` and `unpinned` are mutually-exclusive and are applied when scrolling up and down respectively.
+Offset is the distance in pixels from the top of the page before headroom starts working, i.e. when `window.scrollY >= offset`.
 
-Custom options are merged with the defaults if you don't wish to redefine every property. 
+Tolerance makes headroom.js less sensitive to scrolling. A tolerance of `5` means the user must have scrolled at least 5px for the state to change from pinned to unpinned or vice versa.
+
+Classes are the CSS classes applied depending on state. `initial` is applied when `init()` is called (`init()` is implicitly called when the using jQuery/Zepto plugin). `pinned` and `unpinned` are mutually-exclusive and are applied when scrolling up and down respectively.
 
 If you're using plain JS, pass the options as the second argument to the constructor. Be aware that when using headroom in this way, the options aren't automatically merged with the defaults.
 
-	var headroom = new Headroom(myElement, {
-		offset: 200,
-		tolerance : 0,
-		classes : {
-			initial : "foo",
-			pinned : "foo-up",
-			unpinned : "foo-down"
-		}
-	});
+    var headroom = new Headroom(myElement, {
+      offset: 200,
+      tolerance : 0,
+      classes : {
+        initial : "foo",
+        pinned : "foo-up",
+        unpinned : "foo-down"
+      }
+    });
 
-If you're using the jQuery/Zepto plugin, pass options as the second parameter. Options are automatically merged with the defaults using this approach (deep merged using `$.extend(true, {}, defaultOptions, yourOptions)`)
+If you're using the jQuery/Zepto plugin, pass options as the second parameter. Options are automatically merged with the defaults using this approach (deep merged using `$.extend(true, {}, defaultOptions, yourOptions)`).
 
-	$("#header").headroom({
-		offset: 200
-	});
+    $("#header").headroom({
+      offset: 200
+    });
 
 If you're using the data-* API, define each property as a data attribute
 
-	<header id="header" data-headroom data-offset="200" data-tolerance="5">
+  <header id="header" data-headroom data-offset="200" data-tolerance="5">
 
 Options supplied via the data-* API are merged with defaults as with the plugin. Supply a JSON object to alter classes used by headroom.js
 
-	<header id="header" data-headroom data-offset="200" data-tolerance="5" data-classes="{pinned : 'foo'}">
+    <header id="header" data-headroom data-offset="200" data-tolerance="5" data-classes='{"pinned": "foo", "unpinned" : "bar"}'>
 
 ### Destroy
 
 Headroom.js can cleanup after itself by calling the `destroy` method on an instance of Headroom. This detaches event handlers and removes any classes added to the target element. 
 
-	//with plain JS
-	headroom.destroy();
+    //with plain JS
+    headroom.destroy();
 
-	//with jQuery plugin
-	$("#header").headroom("destroy");
-
-## Examples
-
-* Plain JS
-* jQuery/Zepto plugin
-* Offset
-* Tolerance
-* Custom CSS classes
-* Other use cases
+    //with jQuery plugin
+    $("#header").headroom("destroy");
