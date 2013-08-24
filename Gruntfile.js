@@ -1,32 +1,81 @@
 /*global module:false*/
 module.exports = function(grunt) {
 
-    'use strict';
+  'use strict';
 
-    grunt.initConfig({
+  grunt.initConfig({
 
-        pkg: grunt.file.readJSON('package.json'),
+    pkg: grunt.file.readJSON('package.json'),
 
-        less : {
-            all : {
-                options :{
-                    yuicompress : true,
-                    report : 'gzip'
-                },
-                files : {
-                    'assets/styles/main.css' : 'assets/styles/main.less'
-                }
-            }
+    less : {
+      main : {
+        dest : 'assets/styles/main.css',
+        src : 'assets/styles/main.less'
+      },
+      dist : {
+        options :{
+          yuicompress : true,
+          report : 'gzip'
         },
+        dest : 'assets/styles/main.min.css',
+        src : '<%= less.main.dest %>'
+      }
+    },
 
-        watch : {
-            files : 'assets/styles/headroom/*.less',
-            tasks : 'less'
-        }
-    });
+    concat : {
+      options : {
 
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-contrib-watch');
+      },
+      dist : {
+        dest : 'assets/scripts/main.js',
+        src : [
+          'assets/scripts/vendor/prism.js',
+          'assets/scripts/vendor/zepto.min.js',
+          'assets/scripts/vendor/headroom.js',
+          'assets/scripts/vendor/jQuery.headroom.js'
+        ]
+      }
+    },
 
-    grunt.registerTask('default', ['less']);
+    uglify : {
+      options : {
+        report: 'gzip'
+      },
+      dist : {
+        dest: 'assets/scripts/main.min.js',
+        src: '<%= concat.dist.dest %>'
+      }
+    },
+
+    jshint : {
+      options : {
+        jshintrc : '.jshintrc'
+      },
+      files : [
+        'Gruntfile.js',
+        'assets/scripts/*.js',
+        '!assets/scripts/main*.js'
+      ]
+    },
+
+    watch : {
+      styles : {
+        files : 'assets/styles/**/*.less',
+        tasks : 'less'
+      },
+      scripts : {
+        files : '<%= jshint.files %>',
+        tasks : ['jshint', 'concat']
+      }
+    }
+
+  });
+
+  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+
+  grunt.registerTask('default', ['less', 'jshint', 'concat', 'uglify']);
 };
