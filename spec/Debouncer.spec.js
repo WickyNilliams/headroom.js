@@ -1,4 +1,3 @@
-/*global describe: false, beforeEach: false, it: false, expect: false, jasmine: false, spyOn: false, Debouncer:false */
 ;(function(global){
 
   describe('Debouncer', function() {

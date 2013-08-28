@@ -43,17 +43,33 @@ module.exports = function(grunt) {
         },
 
         jshint: {
-            options: {
+            prebuild : {
+              options : {
                 jshintrc : '.jshintrc'
+              },
+              files : {
+                src : [
+                  'Gruntfile.js',
+                  'src/*.js'
+                ]
+              }
             },
-            prebuild : [
-                'Gruntfile.js',
-                'src/*.js',
-                'spec/*.js'
-            ],
-            postbuild : [
-                '<%= meta.output %>'
-            ]
+            tests : {
+              options : grunt.util._.merge(
+                grunt.file.readJSON('.jshintrc'),
+                grunt.file.readJSON('spec/.jshintrc')),
+              files : {
+                src : ['spec/*.js']
+              }
+            },
+            postbuild : {
+              options : {
+                jshintrc : '.jshintrc'
+              },
+              files :{
+                src : ['<%= meta.output %>']
+              }
+            }
         },
 
          jasmine : {
@@ -65,7 +81,12 @@ module.exports = function(grunt) {
         },
 
         watch: {
-            files: ['<%= jshint.prebuild %>', 'package.json'],
+            files: [
+              'src/*.js',
+              'spec/*.js',
+              'Gruntfile.js',
+              'package.json'
+            ],
             tasks: 'default'
         }
     });
@@ -76,6 +97,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('test', ['jshint:prebuild', 'jasmine']);
+    grunt.registerTask('test', ['jshint:prebuild', 'jshint:tests', 'jasmine']);
     grunt.registerTask('default', ['test', 'rig', 'jshint:postbuild', 'uglify']);
 };

@@ -1,4 +1,3 @@
-/*global describe: false, beforeEach: false, it: false, expect: false, jasmine: false, spyOn: false, Headroom:false */
 ;(function(global){
 
   describe('Headroom', function(){
@@ -10,6 +9,7 @@
       classList = jasmine.createSpyObj('classList', ['add', 'remove', 'contains']);
       elem = {classList : classList};
       headroom = new Headroom(elem);
+      window.scrollY = 0;
     });
 
     it('stores the arguments passed to the constructor', function() {
@@ -83,53 +83,19 @@
       expect(global.addEventListener.calls.length).toBe(1);
     });
 
-    it('should respect the tolerance and offset values', function() {
-      //no tolerance or offset
-      expect(headroom.toleranceAndOffsetExceeded(1)).toBeTruthy();
-      
-      //tolerance, no offset
-      headroom.tolerance = 5;
-      expect(headroom.toleranceAndOffsetExceeded(4)).toBeFalsy();
-      expect(headroom.toleranceAndOffsetExceeded(6)).toBeTruthy();
-
-      //tolerance and offset
-      headroom.offset = 10;
-      expect(headroom.toleranceAndOffsetExceeded(9)).toBeFalsy();
-      expect(headroom.toleranceAndOffsetExceeded(10)).toBeTruthy();
-    });
-
-    //TODO: clean up repetition in these test (nested describe?)
-
-    it('should only update if tolerance and offset are exceeded', function(){
-      spyOn(Headroom.prototype, 'toleranceAndOffsetExceeded').andReturn(false);
-      spyOn(Headroom.prototype, 'unpin');
-      spyOn(Headroom.prototype, 'pin');
-
-      global.scrollY = 10;
-      headroom.update();
-
-      expect(Headroom.prototype.toleranceAndOffsetExceeded).toHaveBeenCalled();
-      expect(Headroom.prototype.unpin).not.toHaveBeenCalled();
-      expect(Headroom.prototype.pin).not.toHaveBeenCalled();
-      expect(headroom.lastKnownScrollY).toBe(10);
-    });
-
     it('should unpin if moving down', function(){
-      spyOn(Headroom.prototype, 'toleranceAndOffsetExceeded').andReturn(true);
       spyOn(Headroom.prototype, 'unpin');
       spyOn(Headroom.prototype, 'pin');
       global.scrollY = 10;
 
       headroom.update();
 
-      expect(Headroom.prototype.toleranceAndOffsetExceeded).toHaveBeenCalled();
       expect(Headroom.prototype.unpin).toHaveBeenCalled();
       expect(Headroom.prototype.pin).not.toHaveBeenCalled();
       expect(headroom.lastKnownScrollY).toBe(10);
     });
 
-    it('should pin if moving up and not bouncing', function(){
-      spyOn(Headroom.prototype, 'toleranceAndOffsetExceeded').andReturn(true);
+    it('should pin if moving up', function(){
       spyOn(Headroom.prototype, 'unpin');
       spyOn(Headroom.prototype, 'pin');
 
@@ -137,25 +103,55 @@
       global.scrollY = 10;
       headroom.update();
 
-      expect(Headroom.prototype.toleranceAndOffsetExceeded).toHaveBeenCalled();
       expect(Headroom.prototype.unpin).not.toHaveBeenCalled();
       expect(Headroom.prototype.pin).toHaveBeenCalled();
       expect(headroom.lastKnownScrollY).toBe(10);
     });
 
-    it('should not pin if moving up and bouncing', function() {
-      spyOn(Headroom.prototype, 'toleranceAndOffsetExceeded').andReturn(true);
+    it('should ignore any scroll values less than zero', function() {
+      global.scrollY = -5;
+
+      headroom.update();
+
+      expect(headroom.lastKnownScrollY).toBe(0);
+    });
+
+    it('should not attempt to pin or unpin if tolerance not exceeded', function(){
       spyOn(Headroom.prototype, 'unpin');
       spyOn(Headroom.prototype, 'pin');
 
-      headroom.lastKnownScrollY = -5;
-      global.scrollY = -2;
+      headroom.tolerance = 10;
+
+      //scroll down
+      window.scrollY = headroom.tolerance - 1;
       headroom.update();
 
-      expect(Headroom.prototype.toleranceAndOffsetExceeded).toHaveBeenCalled();
       expect(Headroom.prototype.unpin).not.toHaveBeenCalled();
+
+      //scroll up
+      window.scrollY = 1;
+      headroom.update();
+
       expect(Headroom.prototype.pin).not.toHaveBeenCalled();
-      expect(headroom.lastKnownScrollY).toBe(-2);
+    });
+
+    it('should only unpin if offset exceeded', function(){
+      spyOn(Headroom.prototype, 'unpin');
+      spyOn(Headroom.prototype, 'pin');
+
+      headroom.offset = 100;
+
+      //scroll down
+      window.scrollY = 50;
+      headroom.update();
+
+      expect(Headroom.prototype.unpin).not.toHaveBeenCalled();
+
+      //scroll up
+      window.scrollY = 110;
+      headroom.update();
+
+      expect(Headroom.prototype.unpin).toHaveBeenCalled();
     });
   });
 

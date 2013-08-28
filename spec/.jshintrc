@@ -1,0 +1,11 @@
+{
+  "globals" : {
+    "describe" : false,
+    "beforeEach" : false,
+    "it" : false,
+    "expect" : false,
+    "jasmine" : false,
+    "spyOn" : false,
+    "Headroom" :false
+  }
+}
