@@ -130,7 +130,7 @@ Headroom.prototype = {
         if(currentScrollY > this.lastKnownScrollY && currentScrollY >= this.offset) {
           this.unpin();
         }
-        else {
+        else if(currentScrollY < this.lastKnownScrollY) {
           this.pin();
         }
       }
