@@ -26,13 +26,11 @@
       expect(debouncer.ticking).toBe(false);
     });
 
-    it('calls updae and request tick when event handled', function() {
-      spyOn(Debouncer.prototype, 'update');
+    it('calls update and request tick when event handled', function() {
       spyOn(Debouncer.prototype, 'requestTick');
 
       debouncer.handleEvent();
 
-      expect(Debouncer.prototype.update).toHaveBeenCalled();
       expect(Debouncer.prototype.requestTick).toHaveBeenCalled();
     });
 

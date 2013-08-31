@@ -12,6 +12,7 @@ Debouncer.prototype = {
 
   /**
    * dispatches the event to the supplied callback
+   * @private
    */
   update : function() {
     this.callback && this.callback();
@@ -20,6 +21,7 @@ Debouncer.prototype = {
 
   /**
    * ensures events don't get stacked
+   * @private
    */
   requestTick : function() {
     if(!this.ticking) {
@@ -32,7 +34,6 @@ Debouncer.prototype = {
    * Attach this as the event listeners
    */
   handleEvent : function() {
-    this.update();
     this.requestTick();
   }
 };
