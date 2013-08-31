@@ -12,32 +12,20 @@
   <meta name="twitter:creator" content="@WickyNilliams">
   <meta name="twitter:card" content="summary">
 
+  <link rel="stylesheet" href="../assets/styles/examples/examples.css">
+
 </head>
 <body class="language-javascript">
 
 <header id="header" class="header header--fixed hide-from-print" role="banner">
   <div class="container">
-    <nav id="nav" class="nav-wrapper" role="navigation">
-      <ul class="nav nav--main nav--collapsible">
-        <li class="nav__item ">
-          <a class="header__link" href="/blog">Blog</a>
-        </li>
-        <li class="nav__item ">
-          <a class="header__link" href="/about">About</a>
-        </li>
-        <li class="nav__item ">
-          <a class="header__link" href="/monkey">Monkey</a>
-        </li>
-        <li class="nav__item ">
-          <a class="header__link" href="/projects">Projects</a>
-        </li>
-      </ul>
-      <a href="#nav" class="header__link nav__toggle nav__toggle--open">menu</a>
-      <a href="#" class="header__link nav__toggle nav__toggle--close">menu</a>
-    </nav>
     <a href="/" class="brand header__link">
       <b class="brand__forename">Headroom</b><b class="brand__surname">.js</b>
     </a>
+    <div style="float:right">
+      <a href="#" class="btn btn--primary btn--slim">Download</a>
+      <a href="#" class="btn btn--primary btn--slim">Fork on github</a>
+    </div>
   </div>
 </header>
 
@@ -54,7 +42,10 @@
   <!-- examples here -->
   <h2>Headroom playground</h2>
   <p>
-    This is a playground where you can tinker with headroom's options and see what effect they have. These options are applied to the [age header as you change them.
+    This is a playground where you can tinker with headroom's options and see what effect they have. The example styles are using slightly tweaked effects from the fantastic <a href="http://daneden.me/animate/">animate.css</a>.
+  </p>
+  <p>
+     As you change the options they are auotomatically applied to the page's header. Example code is also generated as you make changes.
   </p>
 
   <form class="form">
@@ -66,11 +57,11 @@
       <div class="grid">
         <div class="grid__item one-half">
           <label class="question-set__label" for="offset">Offset</label>
-          <input class="question-set__input" type="number" id="offset" value="205">
+          <input class="question-set__input" type="number" name="offset" id="offset" value="205">
         </div>
         <div class="grid__item one-half">
           <label class="question-set__label" for="tolerance">Tolerance</label>
-          <input class="question-set__input" type="number" id="tolerance" value="5">
+          <input class="question-set__input" type="number" name="tolerance" id="tolerance" value="5">
         </div>
       </div>
     </fieldset>
@@ -81,37 +72,34 @@
       </legend>
       <div class="grid">
         <div class="grid__item one-half lap--one-quarter">
-          <input type="radio" id="slide" value="slide" name="style" checked="checked">
-          <label class="question-set__label question-set__label--inline" for="slide">Slide</label>
+          <label class="question-set__label question-set__label--inline" for="slide">
+            <input type="radio" id="slide" value="slide" name="style" checked="checked" class="push--right"> Slide</label>
         </div>
         <div class="grid__item one-half lap--one-quarter">
-          <input type="radio" id="fade" value="fade" name="style" >
-          <label class="question-set__label question-set__label--inline" for="fade">Fade</label>
+          <label class="question-set__label question-set__label--inline" for="swing">
+            <input type="radio" id="swing" value="swing" name="style" class="push--right"> Swing</label>
         </div>
         <div class="grid__item one-half lap--one-quarter">
-          <input type="radio" id="exitLeft" value="exitLeft" name="style">
-          <label class="question-set__label question-set__label--inline" for="exitLeft">Exit left</label>
+          <label class="question-set__label question-set__label--inline" for="flip">
+            <input type="radio" id="flip" value="flip" name="style" class="push--right"> Flip</label>
         </div>
         <div class="grid__item one-half lap--one-quarter">
-          <input type="radio" id="exitRight" value="exitRight" name="style">
-          <label class="question-set__label question-set__label--inline" for="exitRight">Exit right</label>
+          <label class="question-set__label question-set__label--inline" for="bounce">
+            <input type="radio" id="bounce" value="bounce" name="style" class="push--right"> Bounce</label>
         </div>
       </div>
     </fieldset>
 
   </form>
 
-  <h2>Some content to increase page length</h2>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, sequi, magnam, rerum odit consequatur tempore laudantium sed dolore quidem amet numquam fugiat perferendis obcaecati enim repellendus. Eveniet, sed suscipit expedita.</p>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero, ipsam, quis voluptates delectus impedit consequatur natus blanditiis vero harum eius error esse praesentium minima quod cumque placeat nesciunt voluptatibus facere?</p>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, sequi, magnam, rerum odit consequatur tempore laudantium sed dolore quidem amet numquam fugiat perferendis obcaecati enim repellendus. Eveniet, sed suscipit expedita.</p>
-  <h3>More dummy content</h3>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero, ipsam, quis voluptates delectus impedit consequatur natus blanditiis vero harum eius error esse praesentium minima quod cumque placeat nesciunt voluptatibus facere?</p>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, sequi, magnam, rerum odit consequatur tempore laudantium sed dolore quidem amet numquam fugiat perferendis obcaecati enim repellendus. Eveniet, sed suscipit expedita.</p>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero, ipsam, quis voluptates delectus impedit consequatur natus blanditiis vero harum eius error esse praesentium minima quod cumque placeat nesciunt voluptatibus facere?</p>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, sequi, magnam, rerum odit consequatur tempore laudantium sed dolore quidem amet numquam fugiat perferendis obcaecati enim repellendus. Eveniet, sed suscipit expedita.</p>
-  <h2>Blah blah blah</h2>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero, ipsam, quis voluptates delectus impedit consequatur natus blanditiis vero harum eius error esse praesentium minima quod cumque placeat nesciunt voluptatibus facere?</p>
+  <h2>Widget Code</h2>
+  <pre class="language-javascript widget-code"><code></code></pre>
+
+  <h2>Plugin Code</h2>
+  <pre class="language-javascript plugin-code"><code></code></pre>
+  
+  <h2>Data API Code</h2>
+  <pre class="language-markup data-api-code"><code></code></pre>
 
   <div class="sharing hide-from-print">
     <h2 class="gamma">Share this on:</h2>
@@ -131,7 +119,7 @@
 </div>
 </article>
 
+<script src="../assets/scripts/vendor/prism.js"></script>
 <script src="../assets/scripts/main.js"></script>
-<script src="../assets/scripts/example.js"></script>
 </body>
 </html>

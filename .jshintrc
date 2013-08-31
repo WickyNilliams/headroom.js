@@ -17,5 +17,12 @@
   "unused": true,
   "trailing": true,
   "smarttabs": true,
-  "undef": true
+  "laxbreak" : true,
+  "undef": true,
+  "globals" : {
+    "Prism" : false,
+    "CodeGenerator" : false,
+    "Headroom" : false,
+    "HeadroomExample" : false
+  }
 }

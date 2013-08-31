@@ -3,65 +3,79 @@
 <head>
     <title>Headroom.js</title>
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/main.min.css">
+
+    <meta name="description" content="Headroom.js is a lightweight, pure JS widget for hiding elements until needed. Give your pages some headroom">
+    <meta property="og:title" content="Headroom.js - Give your pages some headroom. Hide your header until you need it.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://wicky.nillia.ms/headroom.js/">
+    <meta name="twitter:creator" content="@WickyNilliams">
+    <meta name="twitter:card" content="summary">
 </head>
-<body class="language-javascript">
+<body>
 
+<header id="header" class="header header--fixed hide-from-print" role="banner">
+    <div class="container" >
     
+        <nav id="nav" class="nav-wrapper" role="navigation">
+            <ul class="nav nav--main nav--collapsible">
+                <li class="nav__item ">
+                    <a class="header__link" href="/blog">Blog</a>
+                </li>
 
-    <header id="header" class="header header--fixed" role="banner" data-headroom data-offset="205">
-        <div class="container" >
+                <li class="nav__item ">
+                    <a class="header__link" href="/about">About</a>
+                </li>
+
+                <li class="nav__item ">
+                    <a class="header__link" href="/monkey">Monkey</a>
+                </li>
+
+                <li class="nav__item ">
+                    <a class="header__link" href="/projects">Projects</a>
+                </li>
+            </ul>
+            <a href="#nav" class="header__link nav__toggle nav__toggle--open">menu</a>
+            <a href="#" class="header__link nav__toggle nav__toggle--close">menu</a>
+        </nav>
         
-            <nav id="nav" class="nav-wrapper" role="navigation">
-                <ul class="nav nav--main nav--collapsible">
-                    <li class="nav__item ">
-                        <a class="header__link" href="/blog">Blog</a>
-                    </li>
-
-                    <li class="nav__item ">
-                        <a class="header__link" href="/about">About</a>
-                    </li>
-
-                    <li class="nav__item ">
-                        <a class="header__link" href="/monkey">Monkey</a>
-                    </li>
-
-                    <li class="nav__item ">
-                        <a class="header__link" href="/projects">Projects</a>
-                    </li>
-                </ul>
-                <a href="#nav" class="header__link nav__toggle nav__toggle--open">menu</a>
-                <a href="#" class="header__link nav__toggle nav__toggle--close">menu</a>
-            </nav>
-            
-            <a href="/" class="brand header__link">
-                <b class="brand__forename">Headroom</b><b class="brand__surname">.js</b>
-            </a>
-        </div>
-    </header>
-    
-    <div class="feature">
-        <div class="container container--wide feature-title">
-            <h1 class="feature-title__title headroom-title">Headroom.js</h1>
-            <p class="feature-title__subtitle">Give your pages some headroom. Hide your header until you need it.</p>
-        </div>
+        <a href="/" class="brand header__link">
+            <b class="brand__forename">Headroom</b><b class="brand__surname">.js</b>
+        </a>
     </div>
-    <div class="container block main" role="main">
-        <article>
+</header>
+
+<article>
+<header class="feature">
+    <div class="container container--wide feature-title">
+        <h1 class="feature-title__title headroom-title">Headroom.js</h1>
+        <p class="feature-title__subtitle">Give your pages some headroom. Hide your header until you need it.</p>
+    </div>
+</header>
+
+<div class="container block main" role="main">
+
+<h2>Downloads</h2>
+<div class="downloads" style="margin-bottom:1em">
+    <div class="grid">
+        <div class="grid__item one-half"><a class="btn btn--primary btn--full" href="#">Development</a></div>
+        <div class="grid__item one-half"><a class="btn btn--primary btn--full" href="#">Production</a></div>
+    </div>
+</div>
 
 <h2>What is it?</h2>
 
-<p>Headroom.js is a, high-performance JS widget that allows you to hide (<em>or do anything else with</em>) your header (<em>or any other element!</em>) until the user scrolls up.</p>
+<p>Headroom.js is a lightweight, high-performance pure JS widget that allows you to hide your header until needed - when the user scrolls up. The header is a living example of this.</p>
 
 <h2>Why use it?</h2>
 
-<p>Fixed headers are a popular approach for keeping a website's primary navigation in close proximity to the user. This can reduce the effort required for a user to quickly navigate a site, though they are not without problems&hellp; </p>
+<p>Fixed headers are a popular approach for keeping a website's primary navigation in close proximity to the user. This can reduce the effort required for a user to quickly navigate a site, though they are not without problems&amp;hellip; </p>
 
-<p>Large screens are usually landscape-oriented, meaning a width greater than height. Having an omnipresent header (combined with the browser's chrome) can seriously reduce the amount of vertical space left to display content, especially since the advent of screens with a 16:9 aspect ratio.</p>
+<p>Large screens are usually landscape-oriented, meaning less vertical than horizontal space. A fixed header can therefore occupy a significant portion of the content area.</p>
 
-<p>Small screen are typically used in a portrait orientation. Whilst in this configuration we have more vertical space than horizontal space, because of the overall height of the screen a meaningfully-sized header can still be quite imposing on the user.</p>
+<p>Small screens are typically used in a portrait orientation. Whilst this results in more vertical space, because of the overall height of the screen, a meaningfully-sized header can still be quite imposing on the user.</p>
 
-<p>Headroom.js allows you to have a fixed header for the times when the user needs it (scroll up), and hide it the rest of the time (scroll down).</p>
+<p>Headroom.js allows you to bring elements into view when appropriate, and give focus to your content the rest of the time.</p>
 
 <h2>How does it work?</h2>
 
@@ -77,13 +91,15 @@
 &lt;header id="header" class="headroom headroom--pinned"&gt;
 </code></pre>
 
-<p>By relying on CSS classes, headroom.js is incredibly flexible. The choice of what to do when scrolling up or down is now entirely yours - so anything you can do with CSS you can now do in response to the user's scroll!</p>
+<p>Relying on CSS classes affords headroom.js incredible flexibility. The choice of what to do when scrolling up or down is now entirely yours - anything you can do with CSS you can do in response to the user's scroll.</p>
 
 <h2>How do I use it?</h2>
 
+<p>Using headroom.js is really simple. It has a pure JS API, and an optional jQuery/Zepto compatible plugin.</p>
+
 <h3>With plain JS</h3>
 
-<pre><code>// Grab an element
+<pre class="language-javascript"><code>// Grab an element
 var myElement = document.getElementById("header")[0];
 // Construct an instance of Headroom, passing the element
 var headroom  = new Headroom(myElement);
@@ -93,21 +109,23 @@ headroom.init();
 
 <h3>With jQuery/Zepto</h3>
 
-<pre><code>// Simple as this!
+<pre class="language-javascript"><code>// Simple as this!
 $("# header").headroom();
 </code></pre>
 
 <p>The plugin also offers a data-* API if you prefer a declarative approach.</p>
 
-<pre class="language-markup"><code>&lt;!-- selects $("[data-headroom]") --&gt;
-&lt;header id="header" data-headroom&gt;
+<pre class="language-markup"><code>&lt;!-- selects $(&quot;[data-headroom]&quot;) --&gt;
+&lt;header id=&quot;header&quot; data-headroom&gt;
 </code></pre>
+
+<p>Note: Zepto's additional <a href="https://github.com/madrobby/zepto#zepto-modules" title="https://github.com/madrobby/zepto#zepto-modules">data module</a> is required for compatibility.</p>
 
 <h3>Options</h3>
 
 <p>Headroom.js can also accept an options object to alter the way it behaves. You can see the default options by inspecting <code>Headroom.options</code>. The structure of an options object is as follows:</p>
 
-<pre><code>{
+<pre class="language-javascript"><code>{
     offset : 0,
     tolerance : 0,
     classes : {
@@ -118,13 +136,15 @@ $("# header").headroom();
 }
 </code></pre>
 
-<p>Offset is the distance in pixels from the top of the page before headroom starts working, when <code>window.scrollY &gt; offset</code>. Tolerance makes headroom.js less sensitive to scrolling. A tolerance of <code>5</code> means the user must have scrolled at least 5px for the state to change from pinned to unpinned or vice versa. Classes are the CSS classes applied depending on state. <code>initial</code> is applied when <code>init()</code> is called (<code>init()</code> is implicitly called when the using jQuery/Zepto plugin). <code>pinned</code> and <code>unpinned</code> are mutually-exclusive and are applied when scrolling up and down respectively.</p>
+<p>Offset is the distance in pixels from the top of the page before headroom starts working, i.e. when <code>window.scrollY &gt;= offset</code>.</p>
 
-<p>Custom options are merged with the defaults if you don't wish to redefine every property. </p>
+<p>Tolerance makes headroom.js less sensitive to scrolling. A tolerance of <code>5</code> means the user must have scrolled at least 5px for the state to change from pinned to unpinned or vice versa.</p>
+
+<p>Classes are the CSS classes applied depending on state. <code>initial</code> is applied when <code>init()</code> is called (<code>init()</code> is implicitly called when the using jQuery/Zepto plugin). <code>pinned</code> and <code>unpinned</code> are mutually-exclusive and are applied when scrolling up and down respectively.</p>
 
 <p>If you're using plain JS, pass the options as the second argument to the constructor. Be aware that when using headroom in this way, the options aren't automatically merged with the defaults.</p>
 
-<pre><code>var headroom = new Headroom(myElement, {
+<pre class="language-javascript"><code>var headroom = new Headroom(myElement, {
     offset: 200,
     tolerance : 0,
     classes : {
@@ -135,9 +155,10 @@ $("# header").headroom();
 });
 </code></pre>
 
-<p>If you're using the jQuery/Zepto plugin, pass options as the second parameter. Options are automatically merged with the defaults using this approach (deep merged using <code>$.extend(true, {}, defaultOptions, yourOptions)</code>)</p>
+<p>If you're using the jQuery/Zepto plugin, pass options as the second parameter. Options are automatically merged with the defaults using this approach (deep merged using <code>$.extend(true, {}, defaultOptions, yourOptions)</code>).</p>
 
-<pre><code>$("#header").headroom({
+
+<pre class="language-javascript"><code>$("#header").headroom({
     offset: 200
 });
 </code></pre>
@@ -154,99 +175,60 @@ $("# header").headroom();
 
 <h3>Destroy</h3>
 
-<p>Headroom.js can cleanup after itself by calling the <code>destroy</code> method on an instance of Headroom. This detaches event handlers and removes any classes added to the target element. </p>
+<p>Headroom.js can cleanup after itself by calling the <code>destroy</code> method on an instance of Headroom. This detaches event handlers and removes any classes added to the target element.</p>
 
-<pre><code>//with plain JS
+<pre class="language-javascript"><code>//with plain JS
 headroom.destroy();
 
 //with jQuery plugin
 $("#header").headroom("destroy");
-</code></pre>
-
-<h2>Examples</h2>
-
-<ul>
-<li>Plain JS</li>
-<li>jQuery/Zepto plugin</li>
-<li>Offset</li>
-<li>Tolerance</li>
-<li>Custom CSS classes</li>
-<li>Other use cases</li>
-</ul>
+</code></pre>      
+        
             
-        </article>
-            
-                
+    <div class="sharing hide-from-print">
         <h2 class="gamma">Share this on:</h2>
         <div class="grid">
             <div class="grid__item one-third">
-                <a class="btn btn--full" href="http://facebook.com/sharer.php?u=http://wicky.nillia.ms/blog/writing-maintainable-css/">Facebook</a>
+                <a class="sharing__button btn btn--full" href="http://facebook.com/sharer.php?u=http://wicky.nillia.ms/headroom.js/">Facebook</a>
             </div>
             <div class="grid__item one-third">
-                <a class="btn btn--full" href="http://twitter.com/intent/tweet?url=http://wicky.nillia.ms/blog/writing-maintainable-css/&amp;text=Writing Maintainable CSS&amp;via=WickyNilliams">Twitter</a>
+                <a class="sharing__button btn btn--full" href="http://twitter.com/intent/tweet?url=http://wicky.nillia.ms/headroom.js/&amp;text=Headroom.js. Give your pages some headroom&amp;via=WickyNilliams">Twitter</a>
             </div>
             <div class="grid__item one-third">
-                <a class="btn btn--full" href="https://plus.google.com/share?url=http://wicky.nillia.ms/blog/writing-maintainable-css/">Google+</a>
+                <a class ="sharing__button btn btn--full" href="https://plus.google.com/share?url=http://wicky.nillia.ms/headroom.js/">Google+</a>
             </div>
         </div>
+    </div>        
 
-            <a class="btt step btn btn--plain" href="#">Top <i class="icon icon--up"></i></a>
+    </div>
+    <a class="btt btn btn--plain hide-from-print" href="#" id="btt">Top <i class="icon icon--up"></i></a>
+</article>
 
-        </div>
+<script src="assets/scripts/vendor/headroom.js"></script>
+<script>
+(function() {
+    var headroomHeader = new Headroom(document.getElementById("header"), {
+        tolerance : 5,
+        offset : 205,
+        classes : {
+            initial: "slide",
+            pinned : "slide--reset",
+            unpinned : "slide--up"
+        }
+    });
+    headroomHeader.init();
 
-    <!--script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
-    <script src="assets/scripts/zepto.min.js"></script>
-    <script src="assets/scripts/prism.js"></script>
-    <!--script src="https://rawgithub.com/WickyNilliams/headroom.js/master/dist/headroom.js"></script-->
-    <script src="assets/scripts/headroom.js"></script>
-
-    <script>
-    ;(function($) {
-
-        ////////////
-        // Plugin //
-        ////////////
-
-        $.fn.headroom = function(option) {
-            return this.each(function() {
-                var $this   = $(this),
-                    data    = $this.data('headroom'),
-                    options = typeof option === 'object' && option;
-
-                options = $.extend(true, {}, Headroom.options, options);
-
-                if (!data) {
-                    data = new Headroom(this, options);
-                    data.init();
-                    $this.data('headroom', data);
-                }
-                if (typeof option === 'string') {
-                    data[option]();
-                }
-            });
-        };
-
-        //////////////
-        // Data API //
-        //////////////
-
-        $('[data-headroom]').each(function() {
-            var $this = $(this);
-            $this.headroom($this.data());
-        });
-
-    }(window.Zepto || window.jQuery));
-    </script>
-    <script>
-        $(".btt").headroom({
-            tolerance : 5,
-            offset : 500,
-            classes : {
-                pinned : "step--in",
-                unpinned : "step--out"
-            }
-        });
-    </script>
-
+    var bttHeadroom = new Headroom(document.getElementById("btt"), {
+        tolerance : 0,
+        offset : 500,
+        classes : {
+            initial : "slide",
+            pinned : "slide--reset",
+            unpinned : "slide--down"
+        }
+    });
+    bttHeadroom.init();
+}());
+</script>
 </body>
 </html>

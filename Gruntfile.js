@@ -1,4 +1,4 @@
-/*global module:false*/
+///*global module:false*/
 module.exports = function(grunt) {
 
   'use strict';
@@ -11,6 +11,16 @@ module.exports = function(grunt) {
       main : {
         dest : 'assets/styles/main.css',
         src : 'assets/styles/main.less'
+      },
+      examples : {
+        options :{
+          yuicompress : true,
+          report : 'gzip'
+        },
+        dest : 'assets/styles/examples/examples.css',
+        src : [
+          'assets/styles/examples/examples.less'
+        ]
       },
       dist : {
         options :{
@@ -29,10 +39,11 @@ module.exports = function(grunt) {
       dist : {
         dest : 'assets/scripts/main.js',
         src : [
-          'assets/scripts/vendor/prism.js',
-          'assets/scripts/vendor/zepto.min.js',
+          //'assets/scripts/vendor/prism.js',
           'assets/scripts/vendor/headroom.js',
-          'assets/scripts/vendor/jQuery.headroom.js'
+          'assets/scripts/examples/CodeGenerator.js',
+          'assets/scripts/examples/HeadroomExample.js',
+          'assets/scripts/examples/example.js'
         ]
       }
     },
@@ -53,8 +64,7 @@ module.exports = function(grunt) {
       },
       files : [
         'Gruntfile.js',
-        'assets/scripts/*.js',
-        '!assets/scripts/main*.js'
+        'assets/scripts/examples/*.js',
       ]
     },
 
@@ -65,7 +75,7 @@ module.exports = function(grunt) {
       },
       scripts : {
         files : '<%= jshint.files %>',
-        tasks : ['jshint', 'concat']
+        tasks : 'scripts'
       }
     }
 
@@ -77,5 +87,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
-  grunt.registerTask('default', ['less', 'jshint', 'concat', 'uglify']);
+  grunt.registerTask('scripts', ['jshint', 'concat', 'uglify']);
+  grunt.registerTask('default', ['less', 'scripts']);
 };

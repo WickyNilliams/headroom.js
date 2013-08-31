@@ -1,7 +1,3 @@
-# Headroom.js
-
-**Give your pages some headroom. Hide your header until you need it.**
-
 ## What is it?
 
 Headroom.js is a lightweight, high-performance pure JS widget that allows you to hide your header until needed - when the user scrolls up. The header is a living example of this.
