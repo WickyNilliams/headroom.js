@@ -40,22 +40,30 @@
   }
 
   -webkit-transform: translateY(4em);
+  -ms-transform: translateY(4em);
+  transform: translateY(4em);
 }
 
 .slide {
-  transition: all 0.5s;
+  .transition(all, 0.5s);
   @distance : 4em;
 
   &--reset {
     -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
   }
 
   &--up {
     -webkit-transform: translateY(-@distance);
+    -ms-transform: translateY(-@distance);
+    transform: translateY(-@distance);
   }
 
   &--down {
     -webkit-transform: translateY(@distance);
+    -ms-transform: translateY(@distance);
+    transform: translateY(@distance);
   }
 }
 

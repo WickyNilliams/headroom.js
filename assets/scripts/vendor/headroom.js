@@ -1,5 +1,5 @@
 /*!
- * headroom.js v0.3.8 - Give your page some headroom. Hide your header until you need it
+ * headroom.js v0.3.9 - Give your page some headroom. Hide your header until you need it
  * Copyright (c) 2013 Nick Williams - http://wicky.nillia.ms/
  * License: MIT
  */
@@ -7,6 +7,8 @@
 ;(function(global) {
 
 'use strict';
+
+window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
 
 /**
  * Handles debouncing of events via requestAnimationFrame
@@ -58,13 +60,12 @@ Debouncer.prototype = {
 function Headroom (elem, options) {
   options = options || Headroom.options;
 
-  this.lastKnownScrollY = null;
+  this.lastKnownScrollY = 0;
   this.elem             = elem;
   this.debouncer        = new Debouncer(this.update.bind(this));
   this.tolerance        = options.tolerance;
   this.classes          = options.classes;
   this.offset           = options.offset;
-  this.initialised      = false;
 }
 Headroom.prototype = {
   constructor : Headroom,
@@ -94,7 +95,6 @@ Headroom.prototype = {
    * @private
    */
   attachEvent : function() {
-    this.lastKnownScrollY = window.scrollY;
     if(!this.eventHandler){
       this.eventHandler = this.debouncer.handleEvent.bind(this.debouncer);
       window.addEventListener('scroll', this.eventHandler, false);
@@ -113,10 +113,8 @@ Headroom.prototype = {
    * Pins the header if it's currently unpinned
    */
   pin : function() {
-    if(this.elem.classList.contains(this.classes.unpinned)) {
-      this.elem.classList.remove(this.classes.unpinned);
-      this.elem.classList.add(this.classes.pinned);
-    }
+    this.elem.classList.remove(this.classes.unpinned);
+    this.elem.classList.add(this.classes.pinned);
   },
 
   /**
