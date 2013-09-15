@@ -9,6 +9,9 @@
     constructor : HeadroomExample,
 
     init : function() {
+      if(!this.inputs) {
+        return;
+      }
       var options = this.getOptions(this.inputs);
 
       this.headroom = new Headroom(document.querySelector('header'), options);

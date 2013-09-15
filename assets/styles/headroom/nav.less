@@ -8,14 +8,16 @@
 
   &__item {
 
+    display: inline-block;
+
     @media @navBreakpoint {
       display: inline-block;
     }
 
     a {
       //give us nice big targets
-      display:block;
-      padding: 1em 1.5em;
+      display:inline-block;
+      padding: 1em;
 
       border: none;
     }
@@ -53,9 +55,9 @@
 
 .nav--main {
 
-  @media @lapBreakpoint {
+
     float: right;
-  }
+
 
   .nav__item {    
 

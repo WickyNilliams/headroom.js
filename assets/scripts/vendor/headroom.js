@@ -1,5 +1,5 @@
 /*!
- * headroom.js v0.3.7 - Give your page some headroom. Hide your header until you need it
+ * headroom.js v0.3.8 - Give your page some headroom. Hide your header until you need it
  * Copyright (c) 2013 Nick Williams - http://wicky.nillia.ms/
  * License: MIT
  */
@@ -22,6 +22,7 @@ Debouncer.prototype = {
 
   /**
    * dispatches the event to the supplied callback
+   * @private
    */
   update : function() {
     this.callback && this.callback();
@@ -30,6 +31,7 @@ Debouncer.prototype = {
 
   /**
    * ensures events don't get stacked
+   * @private
    */
   requestTick : function() {
     if(!this.ticking) {
@@ -42,7 +44,6 @@ Debouncer.prototype = {
    * Attach this as the event listeners
    */
   handleEvent : function() {
-    //this.update();
     this.requestTick();
   }
 };
@@ -57,12 +58,13 @@ Debouncer.prototype = {
 function Headroom (elem, options) {
   options = options || Headroom.options;
 
-  this.lastKnownScrollY = 0;
+  this.lastKnownScrollY = null;
   this.elem             = elem;
   this.debouncer        = new Debouncer(this.update.bind(this));
   this.tolerance        = options.tolerance;
   this.classes          = options.classes;
   this.offset           = options.offset;
+  this.initialised      = false;
 }
 Headroom.prototype = {
   constructor : Headroom,
@@ -92,6 +94,7 @@ Headroom.prototype = {
    * @private
    */
   attachEvent : function() {
+    this.lastKnownScrollY = window.scrollY;
     if(!this.eventHandler){
       this.eventHandler = this.debouncer.handleEvent.bind(this.debouncer);
       window.addEventListener('scroll', this.eventHandler, false);
@@ -110,8 +113,10 @@ Headroom.prototype = {
    * Pins the header if it's currently unpinned
    */
   pin : function() {
-    this.elem.classList.remove(this.classes.unpinned);
-    this.elem.classList.add(this.classes.pinned);
+    if(this.elem.classList.contains(this.classes.unpinned)) {
+      this.elem.classList.remove(this.classes.unpinned);
+      this.elem.classList.add(this.classes.pinned);
+    }
   },
 
   /**
@@ -129,7 +134,7 @@ Headroom.prototype = {
         if(currentScrollY > this.lastKnownScrollY && currentScrollY >= this.offset) {
           this.unpin();
         }
-        else {
+        else if(currentScrollY < this.lastKnownScrollY) {
           this.pin();
         }
       }

@@ -4,12 +4,17 @@
   &__link {
     color: @lightColor;
     text-decoration: none;
+//    transition: color 0.25s;
 
     border: none;
     
     &:focus {
       outline: none;
       background-color: fade(@primaryColor,10);
+    }
+
+    &:hover .icon {
+      color: @primaryColor;
     }
   }
 

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Headroom.js functional test</title>
+  <link rel="stylesheet" type="text/css" href="../.grunt/grunt-contrib-jasmine/jasmine.css">
+  
+  <script src="../.grunt/grunt-contrib-jasmine/phantom-polyfill.js"></script>
+  <script src="../.grunt/grunt-contrib-jasmine/jasmine.js"></script>
+  <script src="../.grunt/grunt-contrib-jasmine/jasmine-html.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+</head>
+<body style="height:4000px">
+
+  <div class="headroom-widget"></div>
+  <div class="headroom-plugin"></div>
+  <div class="headroom-data-api" data-headroom data-offset="100" data-tolerance="5" data-classes='{"pinned" : "data-api-pinned", "unpinned" : "data-api-unpinned", "initial" : "data-api-initial"}'></div>
+
+  <script src="../src/Debouncer.js"></script>
+  <script src="../src/Headroom.js"></script>
+  <script src="../src/jQuery.headroom.js"></script>
+  <script src="functional-test.js"></script>
+  <script src="../.grunt/grunt-contrib-jasmine/reporter.js"></script>
+  <script src="../.grunt/grunt-contrib-jasmine/jasmine-helper.js"></script>
+</body>
+</html>

@@ -42,20 +42,8 @@
   -webkit-transform: translateY(4em);
 }
 
-
-.fade {
-  transition: all 0.2s ease-out;
-
-  &--in {
-    opacity:1;
-  }
-  &--out {
-    opacity:0;
-  }
-}
-
 .slide {
-  transition: all 0.2s ease-out;
+  transition: all 0.5s;
   @distance : 4em;
 
   &--reset {
@@ -68,22 +56,6 @@
 
   &--down {
     -webkit-transform: translateY(@distance);
-  }
-}
-
-.exit {
-  transition: all 0.2s ease-out;
-
-  &--left {
-    -webkit-transform: translateX(-100%);
-  }
-
-  &--reset {
-    -webkit-transform: translateX(0);
-  }
-
-  &--right {
-    -webkit-transform: translateX(100%);
   }
 }
 
@@ -130,27 +102,42 @@
 .form {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
-
-  background-color: lighten(@darkColor, 60);
   padding: 1em;
+
+  border-radius: 0.3em;
+  background-color: lighten(@darkColor, 70%);
 }
 
 .question-set {
   border: none;
-  padding: 0;
+  padding: 0;   
   margin-bottom: 1.5em;
 
   &__title {
     display: block;
+    margin-bottom: 0.75em;
   }
   &__input {
     width: 100%;
+
+    padding: 0.25em;
+    border: 1px solid lighten(@darkColor, 50%);
+  
+    &:focus {
+      outline:none;
+      box-shadow: @primaryColor 0 0 3px 0;
+    }
   }
   &__label {
-    display: block;
+    display: inline-block;
+    margin-bottom: 0.25em;
 
-    &--inline {
-      display:inline-block;
+    &--block {
+      display:block;
+    }
+
+    input[type=radio] {
+      margin-right: 0.75em;
     }
   }
 }
@@ -159,4 +146,25 @@
   background-color: lighten(@darkColor, 65);
   padding: 0.3em 0.2em 0.1em;
   border-radius: 0.25em;
+}
+
+p + h2,
+p + h3 {
+  margin-top: 1.5em;
+}
+
+.complimentary {
+  display: none;
+  @media @lapBreakpoint {
+    display: inline;
+  }
+}
+
+.subdued {
+  color: fade(@lightColor, 60);
+  text-shadow: none;  
+}
+
+a.subdued:hover {
+  color: @lightColor;
 }

@@ -9,18 +9,24 @@
     constructor : CodeGenerator,
 
     widget : function(options) {
-      return 'var headroom = new Headroom(elem, ' + JSON.stringify(options, null, '  ') +');\nheadroom.init();';
+      return 'var headroom = new Headroom(elem, ' + JSON.stringify(options, null, '  ') +');\nheadroom.init();\n\n'
+      + '// to destroy\n'
+      + 'headroom.destroy();';
     },
 
     plugin : function(options) {
-      return '$("#header").headroom(' + JSON.stringify(options, null, '  ') + ');';
+      return '$("header").headroom(' + JSON.stringify(options, null, '  ') + ');\n\n'
+      + '// to destroy\n'
+      + '$("#header").headroom("destroy");';
     },
 
     dataApi : function(options) {
-      return '&lt;header id="header" data-headroom '
+      return '&lt;header data-headroom '
         + 'data-tolerance="' + options.tolerance + '" '
         + 'data-offset="' + options.offset + '" '
-        + 'data-classes=\'' + JSON.stringify(options.classes) + '\'&gt;&lt;/header&gt;';
+        + 'data-classes=\'' + JSON.stringify(options.classes) + '\'&gt;&lt;/header&gt;\n\n'
+        + '// to destroy, in your JS:\n'
+        + '$("header").data("headroom").destroy();';
     },
 
     generate : function(options) {

@@ -1,5 +1,5 @@
 /*!
- * headroom.js v0.3.3 - Give your page some headroom. Hide your header until you need it
+ * headroom.js v0.3.8 - Give your page some headroom. Hide your header until you need it
  * Copyright (c) 2013 Nick Williams - http://wicky.nillia.ms/
  * License: MIT
  */
@@ -14,37 +14,38 @@
  * @param {Function} callback The callback to handle whichever event
  */
 function Debouncer (callback) {
-	this.callback = callback;
-	this.ticking = false;
+  this.callback = callback;
+  this.ticking = false;
 }
 Debouncer.prototype = {
-	constructor : Debouncer,
+  constructor : Debouncer,
 
-	/**
-	 * dispatches the event to the supplied callback
-	 */
-	update : function() {
-		this.callback && this.callback();
-		this.ticking = false;
-	},
+  /**
+   * dispatches the event to the supplied callback
+   * @private
+   */
+  update : function() {
+    this.callback && this.callback();
+    this.ticking = false;
+  },
 
-	/**
-	 * ensures events don't get stacked
-	 */
-	requestTick : function() {
-		if(!this.ticking) {
-			requestAnimationFrame(this.update.bind(this));
-			this.ticking = true;
-		}
-	},
+  /**
+   * ensures events don't get stacked
+   * @private
+   */
+  requestTick : function() {
+    if(!this.ticking) {
+      requestAnimationFrame(this.update.bind(this));
+      this.ticking = true;
+    }
+  },
 
-	/**
-	 * Attach this as the event listeners
-	 */
-	handleEvent : function() {
-		this.update();
-		this.requestTick();
-	}
+  /**
+   * Attach this as the event listeners
+   */
+  handleEvent : function() {
+    this.requestTick();
+  }
 };
 /**
  * UI enhancement for fixed headers.
@@ -55,107 +56,104 @@ Debouncer.prototype = {
  * @param {Object} options options for the widget
  */
 function Headroom (elem, options) {
-	options = options || Headroom.options;
+  options = options || Headroom.options;
 
-	this.lastKnownScrollY = 0;
-	this.elem             = elem;
-	this.debouncer        = new Debouncer(this.update.bind(this));
-	this.tolerance        = options.tolerance;
-	this.classes          = options.classes;
-	this.offset           = options.offset;
+  this.lastKnownScrollY = null;
+  this.elem             = elem;
+  this.debouncer        = new Debouncer(this.update.bind(this));
+  this.tolerance        = options.tolerance;
+  this.classes          = options.classes;
+  this.offset           = options.offset;
+  this.initialised      = false;
 }
 Headroom.prototype = {
-	constructor : Headroom,
+  constructor : Headroom,
 
-	/**
-	 * Initialises the widget
-	 */
-	init : function() {
-		this.elem.classList.add(this.classes.initial);
+  /**
+   * Initialises the widget
+   */
+  init : function() {
+    this.elem.classList.add(this.classes.initial);
 
-		// defer event registration to handle browser 
-		// potentially restoring previous scroll position
-		setTimeout(this.attachEvent.bind(this), 100);
-	},
+    // defer event registration to handle browser 
+    // potentially restoring previous scroll position
+    setTimeout(this.attachEvent.bind(this), 100);
+  },
 
-	/**
-	 * Destroys the widget
-	 */
-	destroy : function() {
-		window.removeEventListener('scroll', this.eventHandler, false);
-		this.eventHandler = null;
-		this.elem.classList.remove(this.classes.unpinned, this.classes.pinned, this.classes.initial);
-	},
+  /**
+   * Unattaches events and removes any classes that were added
+   */
+  destroy : function() {
+    window.removeEventListener('scroll', this.eventHandler, false);
+    this.eventHandler = null;
+    this.elem.classList.remove(this.classes.unpinned, this.classes.pinned, this.classes.initial);
+  },
 
-	/**
-	 * Attaches the scroll event
-	 */
-	attachEvent : function() {
-		if(!this.eventHandler){
-			this.eventHandler = this.debouncer.handleEvent.bind(this.debouncer);
-			window.addEventListener('scroll', this.eventHandler, false);
-		}
-	},
-	
-	/**
-	 * Unpins the header if it's currently pinned
-	 */
-	unpin : function() {
-		this.elem.classList.add(this.classes.unpinned);
-		this.elem.classList.remove(this.classes.pinned);
-	},
+  /**
+   * Attaches the scroll event
+   * @private
+   */
+  attachEvent : function() {
+    this.lastKnownScrollY = window.scrollY;
+    if(!this.eventHandler){
+      this.eventHandler = this.debouncer.handleEvent.bind(this.debouncer);
+      window.addEventListener('scroll', this.eventHandler, false);
+    }
+  },
+  
+  /**
+   * Unpins the header if it's currently pinned
+   */
+  unpin : function() {
+    this.elem.classList.add(this.classes.unpinned);
+    this.elem.classList.remove(this.classes.pinned);
+  },
 
-	/**
-	 * Pins the header if it's currently unpinned
-	 */
-	pin : function() {
-		this.elem.classList.remove(this.classes.unpinned);
-		this.elem.classList.add(this.classes.pinned);
-	},
+  /**
+   * Pins the header if it's currently unpinned
+   */
+  pin : function() {
+    if(this.elem.classList.contains(this.classes.unpinned)) {
+      this.elem.classList.remove(this.classes.unpinned);
+      this.elem.classList.add(this.classes.pinned);
+    }
+  },
 
-	/**
-	 * Test whether tolerance and offset have been exceeded
-	 * @param  {Number} currentScrollY the current scroll position
-	 * @return {Boolean} true if exceeded, false otherwise
-	 */
-	toleranceAndOffsetExceeded : function(currentScrollY) {
-		var toleranceExceeded = Math.abs(currentScrollY-this.lastKnownScrollY) > this.tolerance,
-			offsetExceeded    = currentScrollY > this.offset;
+  /**
+   * Handles updating the state of the widget
+   */
+  update : function() {
+    var currentScrollY     = window.scrollY,
+      toleranceExceeded    = Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance;
 
-		return toleranceExceeded && offsetExceeded;
-	},
+      if(currentScrollY < 0) { // Ignore bouncy scrolling in OSX
+        return;
+      }
 
-	/**
-	 * Handles updating the state of the widget
-	 */
-	update : function() {
-		var currentScrollY    = window.scrollY,
-			notBouncing       = currentScrollY > 0; //OSX has bouncy scrolling
+      if(toleranceExceeded) {
+        if(currentScrollY > this.lastKnownScrollY && currentScrollY >= this.offset) {
+          this.unpin();
+        }
+        else if(currentScrollY < this.lastKnownScrollY) {
+          this.pin();
+        }
+      }
 
-		if(this.toleranceAndOffsetExceeded(currentScrollY)) {
-			if(currentScrollY > this.lastKnownScrollY && notBouncing) { // Down
-				this.unpin();
-			}
-			else if(currentScrollY < this.lastKnownScrollY) { // Up
-				this.pin();
-			}
-		}
-
-		this.lastKnownScrollY = currentScrollY;
-	}
+    this.lastKnownScrollY = currentScrollY;
+  }
 };
 /**
  * Default options
  * @type {Object}
  */
 Headroom.options = {
-	tolerance : 0,
-	offset: 0,
-	classes : {
-		pinned : 'headroom--pinned',
-		unpinned : 'headroom--unpinned',
-		initial : 'headroom'
-	}
+  tolerance : 0,
+  offset: 0,
+  classes : {
+    pinned : 'headroom--pinned',
+    unpinned : 'headroom--unpinned',
+    initial : 'headroom'
+  }
 };
 
 global.Headroom = Headroom;
@@ -172,18 +170,24 @@ global.Headroom = Headroom;
     constructor : CodeGenerator,
 
     widget : function(options) {
-      return 'var headroom = new Headroom(elem, ' + JSON.stringify(options, null, '  ') +');\nheadroom.init();';
+      return 'var headroom = new Headroom(elem, ' + JSON.stringify(options, null, '  ') +');\nheadroom.init();\n\n'
+      + '// to destroy\n'
+      + 'headroom.destroy();';
     },
 
     plugin : function(options) {
-      return '$("#header").headroom(' + JSON.stringify(options, null, '  ') + ');';
+      return '$("header").headroom(' + JSON.stringify(options, null, '  ') + ');\n\n'
+      + '// to destroy\n'
+      + '$("#header").headroom("destroy");';
     },
 
     dataApi : function(options) {
-      return '&lt;header id="header" data-headroom '
+      return '&lt;header data-headroom '
         + 'data-tolerance="' + options.tolerance + '" '
         + 'data-offset="' + options.offset + '" '
-        + 'data-classes=\'' + JSON.stringify(options.classes) + '\'&gt;&lt;/header&gt;';
+        + 'data-classes=\'' + JSON.stringify(options.classes) + '\'&gt;&lt;/header&gt;\n\n'
+        + '// to destroy, in your JS:\n'
+        + '$("header").data("headroom").destroy();';
     },
 
     generate : function(options) {
@@ -213,6 +217,9 @@ global.Headroom = Headroom;
     constructor : HeadroomExample,
 
     init : function() {
+      if(!this.inputs) {
+        return;
+      }
       var options = this.getOptions(this.inputs);
 
       this.headroom = new Headroom(document.querySelector('header'), options);
@@ -271,8 +278,8 @@ global.Headroom = Headroom;
     },
     slide : {
       initial : 'animated',
-      pinned : 'slideInDown',
-      unpinned : 'slideOutUp'
+      pinned : 'slideDown',
+      unpinned : 'slideUp'
     },
     flip : {
       initial : 'animated',

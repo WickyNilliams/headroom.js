@@ -7,8 +7,8 @@
     },
     slide : {
       initial : 'animated',
-      pinned : 'slideInDown',
-      unpinned : 'slideOutUp'
+      pinned : 'slideDown',
+      unpinned : 'slideUp'
     },
     flip : {
       initial : 'animated',
