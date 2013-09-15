@@ -1,3 +1,5 @@
+window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
+
 /**
  * Handles debouncing of events via requestAnimationFrame
  * @see http://www.html5rocks.com/en/tutorials/speed/animations/

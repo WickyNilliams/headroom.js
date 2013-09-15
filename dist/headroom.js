@@ -1,5 +1,5 @@
 /*!
- * headroom.js v0.3.8 - Give your page some headroom. Hide your header until you need it
+ * headroom.js v0.3.9 - Give your page some headroom. Hide your header until you need it
  * Copyright (c) 2013 Nick Williams - http://wicky.nillia.ms/
  * License: MIT
  */
@@ -7,6 +7,8 @@
 ;(function(global) {
 
 'use strict';
+
+window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
 
 /**
  * Handles debouncing of events via requestAnimationFrame

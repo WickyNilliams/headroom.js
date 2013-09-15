@@ -20,6 +20,8 @@
     "undef": true,
     "globals": {
         "requestAnimationFrame": false,
+        "mozRequestAnimationFrame" : false,
+        "webkitRequestAnimationFrame" : false,
         "Headroom": false,
         "Debouncer": false
     }
