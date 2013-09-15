@@ -31,13 +31,13 @@
 
     generate : function(options) {
       this.pluginCode.innerHTML = this.plugin(options);
-      Prism.highlightElement(this.pluginCode, true);
+      Prism.highlightElement(this.pluginCode, false);
       
       this.widgetCode.innerHTML = this.widget(options);
-      Prism.highlightElement(this.widgetCode, true);
+      Prism.highlightElement(this.widgetCode, false);
 
       this.dataApiCode.innerHTML = this.dataApi(options);
-      Prism.highlightElement(this.dataApiCode, true);
+      Prism.highlightElement(this.dataApiCode, false);
     }
   };
   

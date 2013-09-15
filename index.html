@@ -3,8 +3,7 @@
 <head>
     <title>Headroom.js</title>
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="assets/styles/main.min.css">
-    <link rel="stylesheet" href="assets/styles/examples/examples.css">
+    <link rel="stylesheet" href="assets/styles/main.css">
     <meta name="description" content="Headroom.js is a lightweight, pure JS widget for hiding elements until needed. Give your pages some headroom">
     <meta property="og:title" content="Headroom.js - Give your pages some headroom. Hide your header until you need it.">
     <meta property="og:type" content="website">
@@ -164,13 +163,12 @@ $("# header").headroom();
     <a class="btt btn btn--plain hide-from-print" href="#" id="btt">Top <i class="icon icon--up"></i></a>
 </article>
 
-<script src="assets/scripts/vendor/prism.js"></script>
 <script src="assets/scripts/main.js"></script>
 <script>
 (function() {
     var header = new Headroom(document.querySelector("#header"), {
-        offset : 205,
         tolerance: 5,
+        offset : 205,
         classes: {
           initial: "animated",
           pinned: "slideDown",
