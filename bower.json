@@ -8,6 +8,20 @@
     "components",
     "spec",
     "Gruntfile.js",
-    "src"
-  ]
+    "src",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "homepage": "http://wicky.nillia.ms/headroom.js/",
+  "authors": [
+    "WickyNilliams"
+  ],
+  "description": "Hide your header until you need it",
+  "keywords": [
+    "header",
+    "js",
+    "scroll"
+  ],
+  "license": "MIT"
 }
