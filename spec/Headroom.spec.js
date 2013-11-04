@@ -9,7 +9,7 @@
       classList = jasmine.createSpyObj('classList', ['add', 'remove', 'contains']);
       elem = {classList : classList};
       headroom = new Headroom(elem);
-      window.scrollY = 0;
+      global.scrollY = 0;
     });
 
     it('stores the arguments passed to the constructor', function() {
@@ -84,9 +84,11 @@
     });
 
     it('should unpin if moving down', function(){
+      var scrollY = spyOn(Headroom.prototype, 'getScrollY');
       spyOn(Headroom.prototype, 'unpin');
       spyOn(Headroom.prototype, 'pin');
-      global.scrollY = 10;
+      
+      scrollY.andReturn(10);
 
       headroom.update();
 
@@ -96,11 +98,13 @@
     });
 
     it('should pin if moving up', function(){
+      var scrollY = spyOn(Headroom.prototype, 'getScrollY');
       spyOn(Headroom.prototype, 'unpin');
       spyOn(Headroom.prototype, 'pin');
 
       headroom.lastKnownScrollY = 20;
-      global.scrollY = 10;
+      scrollY.andReturn(10);
+
       headroom.update();
 
       expect(Headroom.prototype.unpin).not.toHaveBeenCalled();
@@ -109,7 +113,9 @@
     });
 
     it('should ignore any scroll values less than zero', function() {
-      global.scrollY = -5;
+      var scrollY = spyOn(Headroom.prototype, 'getScrollY');
+
+      scrollY.andReturn(-5);
 
       headroom.update();
 
@@ -117,38 +123,40 @@
     });
 
     it('should not attempt to pin or unpin if tolerance not exceeded', function(){
+      var scrollY = spyOn(Headroom.prototype, 'getScrollY');
       spyOn(Headroom.prototype, 'unpin');
       spyOn(Headroom.prototype, 'pin');
 
       headroom.tolerance = 10;
 
       //scroll down
-      window.scrollY = headroom.tolerance - 1;
+      scrollY.andReturn(headroom.tolerance - 1);
       headroom.update();
 
       expect(Headroom.prototype.unpin).not.toHaveBeenCalled();
 
       //scroll up
-      window.scrollY = 1;
+      scrollY.andReturn(1);
       headroom.update();
 
       expect(Headroom.prototype.pin).not.toHaveBeenCalled();
     });
 
     it('should only unpin if offset exceeded', function(){
+      var scrollY = spyOn(Headroom.prototype, 'getScrollY');
       spyOn(Headroom.prototype, 'unpin');
       spyOn(Headroom.prototype, 'pin');
 
       headroom.offset = 100;
 
       //scroll down
-      window.scrollY = 50;
+      scrollY.andReturn(50);
       headroom.update();
 
       expect(Headroom.prototype.unpin).not.toHaveBeenCalled();
 
       //scroll up
-      window.scrollY = 110;
+      scrollY.andReturn(110);
       headroom.update();
 
       expect(Headroom.prototype.unpin).toHaveBeenCalled();

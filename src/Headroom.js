@@ -67,10 +67,19 @@ Headroom.prototype = {
   },
 
   /**
+   * Gets the Y scroll position
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollY
+   * @return {Number} pixels the page has scrolled along the Y-axis
+   */
+  getScrollY : function() {
+    return (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+  },
+
+  /**
    * Handles updating the state of the widget
    */
   update : function() {
-    var currentScrollY     = window.scrollY,
+    var currentScrollY     = this.getScrollY(),
       toleranceExceeded    = Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance;
 
       if(currentScrollY < 0) { // Ignore bouncy scrolling in OSX
