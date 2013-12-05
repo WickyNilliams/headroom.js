@@ -81,6 +81,9 @@ module.exports = function(grunt) {
         },
 
         watch: {
+            options : {
+              atBegin : true
+            },
             files: [
               'src/*.js',
               'spec/*.js',
