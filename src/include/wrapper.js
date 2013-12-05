@@ -1,10 +1,10 @@
-;(function(global) {
+(function(global) {
 
-'use strict';
+  'use strict';
 
-//= ../Debouncer.js
-//= ../Headroom.js
+  //= ../Debouncer.js
+  //= ../Headroom.js
 
-global.Headroom = Headroom;
+  global.Headroom = Headroom;
 
 }(this));

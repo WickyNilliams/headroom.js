@@ -4,7 +4,7 @@
  * License: MIT
  */
 
-;(function($) {
+(function($) {
 
   ////////////
   // Plugin //
@@ -13,16 +13,16 @@
   $.fn.headroom = function(option) {
     return this.each(function() {
       var $this   = $(this),
-        data    = $this.data('headroom'),
-          options = typeof option === 'object' && option;
+        data      = $this.data('headroom'),
+        options   = typeof option === 'object' && option;
 
-        options = $.extend(true, {}, Headroom.options, options);
+      options = $.extend(true, {}, Headroom.options, options);
 
       if (!data) {
         data = new Headroom(this, options);
         data.init();
         $this.data('headroom', data);
-        }
+      }
       if (typeof option === 'string') {
         data[option]();
       }

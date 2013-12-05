@@ -18,6 +18,7 @@
     "trailing": true,
     "smarttabs": true,
     "undef": true,
+    "indent" : 2,
     "globals": {
         "requestAnimationFrame": false,
         "mozRequestAnimationFrame" : false,
