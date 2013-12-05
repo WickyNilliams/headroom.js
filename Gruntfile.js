@@ -74,10 +74,12 @@ module.exports = function(grunt) {
 
          jasmine : {
             options : {
-                specs : 'spec/*.js',
-                vendor: 'http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'
+                specs : 'spec/*.js'
             },
-            src : 'src/*.js'
+            src : [
+              'src/Debouncer.js',
+              'src/Headroom.js'
+            ]
         },
 
         watch: {

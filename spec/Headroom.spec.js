@@ -5,159 +5,191 @@
     var headroom, elem, classList;
 
     beforeEach(function() {
-      spyOn(global, 'Debouncer').andCallThrough();
       classList = jasmine.createSpyObj('classList', ['add', 'remove', 'contains']);
-      elem = {classList : classList};
-      headroom = new Headroom(elem);
-      global.scrollY = 0;
+      elem      = { classList : classList };
+      headroom  = new Headroom(elem);
     });
 
-    it('stores the arguments passed to the constructor', function() {
-      expect(headroom.lastKnownScrollY).toBe(0);
-      expect(headroom.elem).toBe(elem);
-      expect(headroom.debouncer).toBeDefined();
-      expect(global.Debouncer).toHaveBeenCalled();
-      expect(headroom.debouncer instanceof global.Debouncer).toBeTruthy();
-      expect(headroom.tolerance).toBe(Headroom.options.tolerance);
-      expect(headroom.offset).toBe(Headroom.options.offset);
-      expect(headroom.classes).toBe(Headroom.options.classes);
+    describe('constructor', function() {
+
+      var debouncer;
+
+      beforeEach(function(){
+        debouncer = spyOn(global, 'Debouncer').andCallThrough();
+      });
+
+      it('stores the arguments it is passed', function() {
+        var hr = new Headroom(elem);
+
+        expect(hr.lastKnownScrollY).toBe(0);
+        expect(hr.elem).toBe(elem);
+        expect(hr.debouncer).toBeDefined();
+        expect(debouncer).toHaveBeenCalled();
+        expect(hr.debouncer instanceof debouncer).toBeTruthy();
+        expect(hr.tolerance).toBe(Headroom.options.tolerance);
+        expect(hr.offset).toBe(Headroom.options.offset);
+        expect(hr.classes).toBe(Headroom.options.classes);
+      });
+
     });
 
-    it('should add an initial class and bind the scroll event when initialised', function() {
-      spyOn(global, 'setTimeout');
-      spyOn(Headroom.prototype.attachEvent, 'bind').andReturn(function(){});
+    describe('init', function() {
 
-      headroom.init();
+      var st, bind;
 
-      expect(classList.add).toHaveBeenCalledWith(headroom.classes.initial);
-      expect(Headroom.prototype.attachEvent.bind).toHaveBeenCalled();
-      expect(global.setTimeout).toHaveBeenCalledWith(jasmine.any(Function), 100);
+      beforeEach(function() {
+        st   = spyOn(global, 'setTimeout');
+        bind = spyOn(Headroom.prototype.attachEvent, 'bind').andReturn(function(){});
+      });
+
+      it('adds initial class and binds to scroll event', function() {
+        headroom.init();
+
+        expect(classList.add).toHaveBeenCalledWith(headroom.classes.initial);
+        expect(bind).toHaveBeenCalled();
+        expect(st).toHaveBeenCalledWith(jasmine.any(Function), 100);
+      });
     });
 
-    it('should clean up after itself when destroyed', function() {
-      spyOn(global, 'removeEventListener');
-      headroom.initialised = true;
+    describe('destroy', function() {
 
-      headroom.destroy();
+      var removeEventListener;
 
-      expect(classList.remove).toHaveBeenCalled();
-      expect(global.removeEventListener).toHaveBeenCalledWith('scroll', headroom.debouncer, false);
-      expect(headroom.initialised).toBe(false);
+      beforeEach(function() {
+        removeEventListener = spyOn(global, 'removeEventListener');
+      });
+
+      it('cleans up after events and classes', function() {
+        headroom.initialised = true;
+
+        headroom.destroy();
+
+        expect(classList.remove).toHaveBeenCalled();
+        expect(removeEventListener).toHaveBeenCalledWith('scroll', headroom.debouncer, false);
+        expect(headroom.initialised).toBe(false);
+      });
+
     });
 
-    it('should set classes correctly when pinning', function(){
-      headroom.pin();
+    describe('attachEvent', function() {
+      var addEventListener;
 
-      expect(classList.remove).toHaveBeenCalledWith(headroom.classes.unpinned);
-      expect(classList.add).toHaveBeenCalledWith(headroom.classes.pinned);
+      beforeEach(function() {
+        addEventListener = spyOn(global, 'addEventListener');
+      });
+
+      it('should attach listener for scroll event', function(){
+        headroom.attachEvent();
+
+        expect(headroom.initialised).toBe(true);
+        expect(global.addEventListener).toHaveBeenCalledWith('scroll', headroom.debouncer, false);
+      });
+
+      it('will only ever add one listener', function() {
+        headroom.attachEvent();
+        headroom.attachEvent();
+
+        expect(addEventListener.calls.length).toBe(1);
+      });
+
     });
 
-    it('should set classes correctly when unpinning', function(){
-      headroom.unpin();
+    describe('pin', function() {
 
-      expect(classList.add).toHaveBeenCalledWith(headroom.classes.unpinned);
-      expect(classList.remove).toHaveBeenCalledWith(headroom.classes.pinned);
+      it('should add pinned class and remove unpinned class', function(){
+        headroom.pin();
+
+        expect(classList.remove).toHaveBeenCalledWith(headroom.classes.unpinned);
+        expect(classList.add).toHaveBeenCalledWith(headroom.classes.pinned);
+      });
+
     });
 
-    it('should correctly attach a scroll event', function(){
-      var debouncedFunction = function(){},
-        fakeDebouncer = {
-          handleEvent : {
-            bind : jasmine.createSpy('bind').andReturn(debouncedFunction)
-          }
-        };
+    describe('unpin', function() {
 
-      spyOn(global, 'addEventListener');
-      expect(this.eventHandler).toBeUndefined();
+      it('should add unpinned class and remove pinned class', function(){
+        headroom.unpin();
 
-      headroom.debouncer = fakeDebouncer;
+        expect(classList.add).toHaveBeenCalledWith(headroom.classes.unpinned);
+        expect(classList.remove).toHaveBeenCalledWith(headroom.classes.pinned);
+      });
 
-      headroom.attachEvent();
-      headroom.attachEvent();
-
-      expect(headroom.initialised).toBe(true);
-      expect(global.addEventListener).toHaveBeenCalledWith('scroll', fakeDebouncer, false);
-      expect(global.addEventListener.calls.length).toBe(1);
     });
 
-    it('should unpin if moving down', function(){
-      var scrollY = spyOn(Headroom.prototype, 'getScrollY');
-      spyOn(Headroom.prototype, 'unpin');
-      spyOn(Headroom.prototype, 'pin');
-      
-      scrollY.andReturn(10);
+    describe('update', function() {
 
-      headroom.update();
+      var pin, unpin, scrollY;
 
-      expect(Headroom.prototype.unpin).toHaveBeenCalled();
-      expect(Headroom.prototype.pin).not.toHaveBeenCalled();
-      expect(headroom.lastKnownScrollY).toBe(10);
+      beforeEach(function() {
+        scrollY = spyOn(Headroom.prototype, 'getScrollY');
+        pin     = spyOn(Headroom.prototype, 'pin');
+        unpin   = spyOn(Headroom.prototype, 'unpin');
+      });
+
+      it('should unpin if page has scrolled down', function(){
+
+        scrollY.andReturn(10);
+
+        headroom.update();
+
+        expect(unpin).toHaveBeenCalled();
+        expect(pin).not.toHaveBeenCalled();
+        expect(headroom.lastKnownScrollY).toBe(10);
+      });
+
+      it('should pin if has scrolled up', function(){
+        headroom.lastKnownScrollY = 20;
+        scrollY.andReturn(10);
+
+        headroom.update();
+
+        expect(unpin).not.toHaveBeenCalled();
+        expect(pin).toHaveBeenCalled();
+        expect(headroom.lastKnownScrollY).toBe(10);
+      });
+
+      it('should ignore any scroll values less than zero', function() {
+        scrollY.andReturn(-5);
+
+        headroom.update();
+
+        expect(headroom.lastKnownScrollY).toBe(0);
+      });
+
+      it('should not pin or unpin if tolerance not exceeded', function(){
+        headroom.tolerance = 10;
+
+        //scroll down
+        scrollY.andReturn(headroom.tolerance - 1);
+        headroom.update();
+
+        expect(unpin).not.toHaveBeenCalled();
+
+        //scroll up
+        scrollY.andReturn(1);
+        headroom.update();
+
+        expect(pin).not.toHaveBeenCalled();
+      });
+
+      it('should unpin if offset exceeded', function(){
+        headroom.offset = 100;
+
+        //scroll down
+        scrollY.andReturn(50);
+        headroom.update();
+
+        expect(unpin).not.toHaveBeenCalled();
+
+        //scroll up
+        scrollY.andReturn(110);
+        headroom.update();
+
+        expect(unpin).toHaveBeenCalled();
+      });
+
     });
 
-    it('should pin if moving up', function(){
-      var scrollY = spyOn(Headroom.prototype, 'getScrollY');
-      spyOn(Headroom.prototype, 'unpin');
-      spyOn(Headroom.prototype, 'pin');
-
-      headroom.lastKnownScrollY = 20;
-      scrollY.andReturn(10);
-
-      headroom.update();
-
-      expect(Headroom.prototype.unpin).not.toHaveBeenCalled();
-      expect(Headroom.prototype.pin).toHaveBeenCalled();
-      expect(headroom.lastKnownScrollY).toBe(10);
-    });
-
-    it('should ignore any scroll values less than zero', function() {
-      var scrollY = spyOn(Headroom.prototype, 'getScrollY');
-
-      scrollY.andReturn(-5);
-
-      headroom.update();
-
-      expect(headroom.lastKnownScrollY).toBe(0);
-    });
-
-    it('should not attempt to pin or unpin if tolerance not exceeded', function(){
-      var scrollY = spyOn(Headroom.prototype, 'getScrollY');
-      spyOn(Headroom.prototype, 'unpin');
-      spyOn(Headroom.prototype, 'pin');
-
-      headroom.tolerance = 10;
-
-      //scroll down
-      scrollY.andReturn(headroom.tolerance - 1);
-      headroom.update();
-
-      expect(Headroom.prototype.unpin).not.toHaveBeenCalled();
-
-      //scroll up
-      scrollY.andReturn(1);
-      headroom.update();
-
-      expect(Headroom.prototype.pin).not.toHaveBeenCalled();
-    });
-
-    it('should only unpin if offset exceeded', function(){
-      var scrollY = spyOn(Headroom.prototype, 'getScrollY');
-      spyOn(Headroom.prototype, 'unpin');
-      spyOn(Headroom.prototype, 'pin');
-
-      headroom.offset = 100;
-
-      //scroll down
-      scrollY.andReturn(50);
-      headroom.update();
-
-      expect(Headroom.prototype.unpin).not.toHaveBeenCalled();
-
-      //scroll up
-      scrollY.andReturn(110);
-      headroom.update();
-
-      expect(Headroom.prototype.unpin).toHaveBeenCalled();
-    });
   });
 
 }(this));

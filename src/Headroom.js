@@ -35,8 +35,8 @@ Headroom.prototype = {
    * Unattaches events and removes any classes that were added
    */
   destroy : function() {
-    window.removeEventListener('scroll', this.debouncer, false);
     this.initialised = false;
+    window.removeEventListener('scroll', this.debouncer, false);
     this.elem.classList.remove(this.classes.unpinned, this.classes.pinned, this.classes.initial);
   },
 
