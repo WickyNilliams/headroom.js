@@ -1,6 +1,6 @@
 {
   "name": "headroom.js",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "description": "Give your page some headroom. Hide your header until you need it",
   "main": "dist/headroom.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "menu"
   ],
   "author": "Nick Williams",
-  "homepage": "http://wicky.nillia.ms/",
+  "homepage": "http://wicky.nillia.ms/headroom.js",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/WickyNilliams/headroom.js/issues"

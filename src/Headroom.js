@@ -15,6 +15,7 @@ function Headroom (elem, options) {
   this.tolerance        = options.tolerance;
   this.classes          = options.classes;
   this.offset           = options.offset;
+  this.initialised      = false;
 }
 Headroom.prototype = {
   constructor : Headroom,
@@ -34,8 +35,8 @@ Headroom.prototype = {
    * Unattaches events and removes any classes that were added
    */
   destroy : function() {
-    window.removeEventListener('scroll', this.eventHandler, false);
-    this.eventHandler = null;
+    window.removeEventListener('scroll', this.debouncer, false);
+    this.initialised = false;
     this.elem.classList.remove(this.classes.unpinned, this.classes.pinned, this.classes.initial);
   },
 
@@ -44,9 +45,9 @@ Headroom.prototype = {
    * @private
    */
   attachEvent : function() {
-    if(!this.eventHandler){
-      this.eventHandler = this.debouncer.handleEvent.bind(this.debouncer);
-      window.addEventListener('scroll', this.eventHandler, false);
+    if(!this.initialised){
+      this.initialised = true;
+      window.addEventListener('scroll', this.debouncer, false);
     }
   },
   
