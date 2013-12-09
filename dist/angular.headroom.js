@@ -23,7 +23,8 @@
         angular.forEach(Headroom.options, function(value, key) {
           options[key] = scope[key] || Headroom.options[key];
         });
-        var headroom = new Headroom(element[0], options).init();
+        var headroom = new Headroom(element[0], options);
+        headroom.init();
         scope.$on('destroy', function() {
           headroom.destroy();
         });
