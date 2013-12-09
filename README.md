@@ -27,7 +27,7 @@ At it's most basic headroom.js simply adds and removes CSS classes from an eleme
 
 ## Usage
 
-Using headroom.js is really simple. It has a pure JS API, and an optional jQuery/Zepto-compatible plugin.
+Using headroom.js is really simple. It has a pure JS API, and optional jQuery/Zepto-compatible and AngularJS plugins.
 
 ### With pure JS
 
@@ -37,7 +37,7 @@ var myElement = document.querySelector("header");
 // construct an instance of Headroom, passing the element
 var headroom  = new Headroom(myElement);
 // initialise
-headroom.init(); 
+headroom.init();
 ```
 
 ### With jQuery/Zepto
@@ -56,6 +56,15 @@ The plugin also offers a data-* API if you prefer a declarative approach.
 ```
 
 Note: Zepto's additional [data module](https://github.com/madrobby/zepto#zepto-modules) is required for compatibility.
+
+### With AngularJS
+
+```html
+<header headroom></header>
+<!-- or -->
+<headroom></headroom>
+<!-- or with options -->
+<headroom tolerance='0' offset='0' classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"></headroom>
 
 ## Options
 
@@ -85,7 +94,7 @@ Head over to the [headroom.js playroom](http://wicky.nillia.ms/headroom.js/playr
 
 ## Contributions & Issues
 
-Contributions are welcome. Please clearly explain the purpose of the PR and follow the current style. 
+Contributions are welcome. Please clearly explain the purpose of the PR and follow the current style.
 
 Issues can be resolved quickest if they are descriptive and include both a reduced test case and a set of steps to reproduce.
 

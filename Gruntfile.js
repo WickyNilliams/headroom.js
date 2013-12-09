@@ -24,7 +24,8 @@ module.exports = function(grunt) {
       dist: {
         files: {
           '<%= meta.output %>' : ['src/include/wrapper.js'],
-          'dist/jQuery.headroom.js' : ['src/jQuery.headroom.js']
+          'dist/jQuery.headroom.js' : ['src/jQuery.headroom.js'],
+          'dist/angular.headroom.js' : ['src/angular.headroom.js']
         }
       }
     },
@@ -37,7 +38,8 @@ module.exports = function(grunt) {
       dist: {
         files : {
           '<%= meta.outputMin %>'  : '<%= meta.output %>',
-          'dist/jQuery.headroom.min.js': 'dist/jQuery.headroom.js'
+          'dist/jQuery.headroom.min.js': 'dist/jQuery.headroom.js',
+          'dist/angular.headroom.min.js': 'dist/angular.headroom.js'
         }
       }
     },
