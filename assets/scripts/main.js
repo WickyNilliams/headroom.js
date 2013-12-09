@@ -1,1 +1,793 @@
-!function(){var a=/\blang(?:uage)?-(?!\*)(\w+)\b/i,b=self.Prism={util:{type:function(a){return Object.prototype.toString.call(a).match(/\[object (\w+)\]/)[1]},clone:function(a){var c=b.util.type(a);switch(c){case"Object":var d={};for(var e in a)a.hasOwnProperty(e)&&(d[e]=b.util.clone(a[e]));return d;case"Array":return a.slice()}return a}},languages:{extend:function(a,c){var d=b.util.clone(b.languages[a]);for(var e in c)d[e]=c[e];return d},insertBefore:function(a,c,d,e){e=e||b.languages;var f=e[a],g={};for(var h in f)if(f.hasOwnProperty(h)){if(h==c)for(var i in d)d.hasOwnProperty(i)&&(g[i]=d[i]);g[h]=f[h]}return e[a]=g},DFS:function(a,c){for(var d in a)c.call(a,d,a[d]),"Object"===b.util.type(a)&&b.languages.DFS(a[d],c)}},highlightAll:function(a,c){for(var d,e=document.querySelectorAll('code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'),f=0;d=e[f++];)b.highlightElement(d,a===!0,c)},highlightElement:function(d,e,f){for(var g,h,i=d;i&&!a.test(i.className);)i=i.parentNode;if(i&&(g=(i.className.match(a)||[,""])[1],h=b.languages[g]),h){d.className=d.className.replace(a,"").replace(/\s+/g," ")+" language-"+g,i=d.parentNode,/pre/i.test(i.nodeName)&&(i.className=i.className.replace(a,"").replace(/\s+/g," ")+" language-"+g);var j=d.textContent;if(j){j=j.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\u00a0/g," ");var k={element:d,language:g,grammar:h,code:j};if(b.hooks.run("before-highlight",k),e&&self.Worker){var l=new Worker(b.filename);l.onmessage=function(a){k.highlightedCode=c.stringify(JSON.parse(a.data),g),b.hooks.run("before-insert",k),k.element.innerHTML=k.highlightedCode,f&&f.call(k.element),b.hooks.run("after-highlight",k)},l.postMessage(JSON.stringify({language:k.language,code:k.code}))}else k.highlightedCode=b.highlight(k.code,k.grammar,k.language),b.hooks.run("before-insert",k),k.element.innerHTML=k.highlightedCode,f&&f.call(d),b.hooks.run("after-highlight",k)}}},highlight:function(a,d,e){return c.stringify(b.tokenize(a,d),e)},tokenize:function(a,c){var d=b.Token,e=[a],f=c.rest;if(f){for(var g in f)c[g]=f[g];delete c.rest}a:for(var g in c)if(c.hasOwnProperty(g)&&c[g]){var h=c[g],i=h.inside,j=!!h.lookbehind,k=0;h=h.pattern||h;for(var l=0;l<e.length;l++){var m=e[l];if(e.length>a.length)break a;if(!(m instanceof d)){h.lastIndex=0;var n=h.exec(m);if(n){j&&(k=n[1].length);var o=n.index-1+k,n=n[0].slice(k),p=n.length,q=o+p,r=m.slice(0,o+1),s=m.slice(q+1),t=[l,1];r&&t.push(r);var u=new d(g,i?b.tokenize(n,i):n);t.push(u),s&&t.push(s),Array.prototype.splice.apply(e,t)}}}}return e},hooks:{all:{},add:function(a,c){var d=b.hooks.all;d[a]=d[a]||[],d[a].push(c)},run:function(a,c){var d=b.hooks.all[a];if(d&&d.length)for(var e,f=0;e=d[f++];)e(c)}}},c=b.Token=function(a,b){this.type=a,this.content=b};if(c.stringify=function(a,d,e){if("string"==typeof a)return a;if("[object Array]"==Object.prototype.toString.call(a))return a.map(function(b){return c.stringify(b,d,a)}).join("");var f={type:a.type,content:c.stringify(a.content,d,e),tag:"span",classes:["token",a.type],attributes:{},language:d,parent:e};"comment"==f.type&&(f.attributes.spellcheck="true"),b.hooks.run("wrap",f);var g="";for(var h in f.attributes)g+=h+'="'+(f.attributes[h]||"")+'"';return"<"+f.tag+' class="'+f.classes.join(" ")+'" '+g+">"+f.content+"</"+f.tag+">"},!self.document)return self.addEventListener("message",function(a){var c=JSON.parse(a.data),d=c.language,e=c.code;self.postMessage(JSON.stringify(b.tokenize(e,b.languages[d]))),self.close()},!1),void 0;var d=document.getElementsByTagName("script");d=d[d.length-1],d&&(b.filename=d.src,document.addEventListener&&!d.hasAttribute("data-manual")&&document.addEventListener("DOMContentLoaded",b.highlightAll))}(),Prism.languages.markup={comment:/&lt;!--[\w\W]*?-->/g,prolog:/&lt;\?.+?\?>/,doctype:/&lt;!DOCTYPE.+?>/,cdata:/&lt;!\[CDATA\[[\w\W]*?]]>/i,tag:{pattern:/&lt;\/?[\w:-]+\s*(?:\s+[\w:-]+(?:=(?:("|')(\\?[\w\W])*?\1|\w+))?\s*)*\/?>/gi,inside:{tag:{pattern:/^&lt;\/?[\w:-]+/i,inside:{punctuation:/^&lt;\/?/,namespace:/^[\w-]+?:/}},"attr-value":{pattern:/=(?:('|")[\w\W]*?(\1)|[^\s>]+)/gi,inside:{punctuation:/=|>|"/g}},punctuation:/\/?>/g,"attr-name":{pattern:/[\w:-]+/g,inside:{namespace:/^[\w-]+?:/}}}},entity:/&amp;#?[\da-z]{1,8};/gi},Prism.hooks.add("wrap",function(a){"entity"===a.type&&(a.attributes.title=a.content.replace(/&amp;/,"&"))}),Prism.languages.css={comment:/\/\*[\w\W]*?\*\//g,atrule:{pattern:/@[\w-]+?.*?(;|(?=\s*{))/gi,inside:{punctuation:/[;:]/g}},url:/url\((["']?).*?\1\)/gi,selector:/[^\{\}\s][^\{\};]*(?=\s*\{)/g,property:/(\b|\B)[\w-]+(?=\s*:)/gi,string:/("|')(\\?.)*?\1/g,important:/\B!important\b/gi,ignore:/&(lt|gt|amp);/gi,punctuation:/[\{\};:]/g},Prism.languages.markup&&Prism.languages.insertBefore("markup","tag",{style:{pattern:/(&lt;|<)style[\w\W]*?(>|&gt;)[\w\W]*?(&lt;|<)\/style(>|&gt;)/gi,inside:{tag:{pattern:/(&lt;|<)style[\w\W]*?(>|&gt;)|(&lt;|<)\/style(>|&gt;)/gi,inside:Prism.languages.markup.tag.inside},rest:Prism.languages.css}}}),Prism.languages.clike={comment:{pattern:/(^|[^\\])(\/\*[\w\W]*?\*\/|(^|[^:])\/\/.*?(\r?\n|$))/g,lookbehind:!0},string:/("|')(\\?.)*?\1/g,"class-name":{pattern:/((?:(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[a-z0-9_\.\\]+/gi,lookbehind:!0,inside:{punctuation:/(\.|\\)/}},keyword:/\b(if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/g,"boolean":/\b(true|false)\b/g,"function":{pattern:/[a-z0-9_]+\(/gi,inside:{punctuation:/\(/}},number:/\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?)\b/g,operator:/[-+]{1,2}|!|&lt;=?|>=?|={1,3}|(&amp;){1,2}|\|?\||\?|\*|\/|\~|\^|\%/g,ignore:/&(lt|gt|amp);/gi,punctuation:/[{}[\];(),.:]/g},Prism.languages.javascript=Prism.languages.extend("clike",{keyword:/\b(var|let|if|else|while|do|for|return|in|instanceof|function|new|with|typeof|try|throw|catch|finally|null|break|continue)\b/g,number:/\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?|NaN|-?Infinity)\b/g}),Prism.languages.insertBefore("javascript","keyword",{regex:{pattern:/(^|[^/])\/(?!\/)(\[.+?]|\\.|[^/\r\n])+\/[gim]{0,3}(?=\s*($|[\r\n,.;})]))/g,lookbehind:!0}}),Prism.languages.markup&&Prism.languages.insertBefore("markup","tag",{script:{pattern:/(&lt;|<)script[\w\W]*?(>|&gt;)[\w\W]*?(&lt;|<)\/script(>|&gt;)/gi,inside:{tag:{pattern:/(&lt;|<)script[\w\W]*?(>|&gt;)|(&lt;|<)\/script(>|&gt;)/gi,inside:Prism.languages.markup.tag.inside},rest:Prism.languages.javascript}}}),function(a){"use strict";function b(a){this.callback=a,this.ticking=!1}function c(a,d){d=d||c.options,this.lastKnownScrollY=0,this.elem=a,this.debouncer=new b(this.update.bind(this)),this.tolerance=d.tolerance,this.classes=d.classes,this.offset=d.offset}window.requestAnimationFrame=window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame,b.prototype={constructor:b,update:function(){this.callback&&this.callback(),this.ticking=!1},requestTick:function(){this.ticking||(requestAnimationFrame(this.update.bind(this)),this.ticking=!0)},handleEvent:function(){this.requestTick()}},c.prototype={constructor:c,init:function(){this.elem.classList.add(this.classes.initial),setTimeout(this.attachEvent.bind(this),100)},destroy:function(){window.removeEventListener("scroll",this.eventHandler,!1),this.eventHandler=null,this.elem.classList.remove(this.classes.unpinned,this.classes.pinned,this.classes.initial)},attachEvent:function(){this.eventHandler||(this.eventHandler=this.debouncer.handleEvent.bind(this.debouncer),window.addEventListener("scroll",this.eventHandler,!1))},unpin:function(){this.elem.classList.add(this.classes.unpinned),this.elem.classList.remove(this.classes.pinned)},pin:function(){this.elem.classList.remove(this.classes.unpinned),this.elem.classList.add(this.classes.pinned)},update:function(){var a=window.scrollY,b=Math.abs(a-this.lastKnownScrollY)>=this.tolerance;0>a||(b&&(a>this.lastKnownScrollY&&a>=this.offset?this.unpin():a<this.lastKnownScrollY&&this.pin()),this.lastKnownScrollY=a)}},c.options={tolerance:0,offset:0,classes:{pinned:"headroom--pinned",unpinned:"headroom--unpinned",initial:"headroom"}},a.Headroom=c}(this),function(){function a(a,b,c){this.pluginCode=b,this.widgetCode=a,this.dataApiCode=c}a.prototype={constructor:a,widget:function(a){return"var headroom = new Headroom(elem, "+JSON.stringify(a,null,"  ")+");\nheadroom.init();\n\n"+"// to destroy\n"+"headroom.destroy();"},plugin:function(a){return'$("header").headroom('+JSON.stringify(a,null,"  ")+");\n\n"+"// to destroy\n"+'$("#header").headroom("destroy");'},dataApi:function(a){return'&lt;header data-headroom data-tolerance="'+a.tolerance+'" '+'data-offset="'+a.offset+'" '+"data-classes='"+JSON.stringify(a.classes)+"'&gt;&lt;/header&gt;\n\n"+"// to destroy, in your JS:\n"+'$("header").data("headroom").destroy();'},generate:function(a){this.pluginCode.innerHTML=this.plugin(a),Prism.highlightElement(this.pluginCode,!1),this.widgetCode.innerHTML=this.widget(a),Prism.highlightElement(this.widgetCode,!1),this.dataApiCode.innerHTML=this.dataApi(a),Prism.highlightElement(this.dataApiCode,!1)}},window.CodeGenerator=a}(),function(){function a(a,b,c){this.inputs=a,this.codeGenerator=c,this.styles=b}a.prototype={constructor:a,init:function(){if(this.inputs){var a=this.getOptions(this.inputs);this.headroom=new Headroom(document.querySelector("header"),a),this.headroom.init(),this.codeGenerator.generate(a),this.listen()}},getOptions:function(){for(var a,b=this.inputs.querySelectorAll("[name=style]"),c=b.length-1;c>=0;c--)if(b[c].checked){a=this.styles[b[c].value];break}return{tolerance:parseInt(this.inputs.querySelector("#tolerance").value,10),offset:parseInt(this.inputs.querySelector("#offset").value,10),classes:a}},updateWidget:function(){var a=this.getOptions(this.inputs),b=this.headroom;b.destroy(),b.classes=a.classes,b.offset=a.offset,b.tolerance=a.tolerance,b.init(),this.codeGenerator.generate(a)},listen:function(){for(var a=this.inputs.length-1;a>=0;a--)this.inputs[a].addEventListener("change",this.updateWidget.bind(this),!1)}},window.HeadroomExample=a}(),function(){var a={swing:{initial:"animated",pinned:"swingInX",unpinned:"swingOutX"},slide:{initial:"animated",pinned:"slideDown",unpinned:"slideUp"},flip:{initial:"animated",pinned:"flipInX",unpinned:"flipOutX"},bounce:{initial:"animated",pinned:"bounceInDown",unpinned:"bounceOutUp"}},b=document.querySelector("form"),c=new CodeGenerator(document.querySelector(".widget-code"),document.querySelector(".plugin-code"),document.querySelector(".data-api-code")),d=new HeadroomExample(b,a,c);d.init()}();
+
+/**
+ * Prism: Lightweight, robust, elegant syntax highlighting
+ * MIT license http://www.opensource.org/licenses/mit-license.php/
+ * @author Lea Verou http://lea.verou.me
+ */
+
+(function(){
+
+// Private helper vars
+var lang = /\blang(?:uage)?-(?!\*)(\w+)\b/i;
+
+var _ = self.Prism = {
+  util: {
+    type: function (o) { 
+      return Object.prototype.toString.call(o).match(/\[object (\w+)\]/)[1];
+    },
+    
+    // Deep clone a language definition (e.g. to extend it)
+    clone: function (o) {
+      var type = _.util.type(o);
+
+      switch (type) {
+        case 'Object':
+          var clone = {};
+          
+          for (var key in o) {
+            if (o.hasOwnProperty(key)) {
+              clone[key] = _.util.clone(o[key]);
+            }
+          }
+          
+          return clone;
+          
+        case 'Array':
+          return o.slice();
+      }
+      
+      return o;
+    }
+  },
+  
+  languages: {
+    extend: function (id, redef) {
+      var lang = _.util.clone(_.languages[id]);
+      
+      for (var key in redef) {
+        lang[key] = redef[key];
+      }
+      
+      return lang;
+    },
+    
+    // Insert a token before another token in a language literal
+    insertBefore: function (inside, before, insert, root) {
+      root = root || _.languages;
+      var grammar = root[inside];
+      var ret = {};
+        
+      for (var token in grammar) {
+      
+        if (grammar.hasOwnProperty(token)) {
+          
+          if (token == before) {
+          
+            for (var newToken in insert) {
+            
+              if (insert.hasOwnProperty(newToken)) {
+                ret[newToken] = insert[newToken];
+              }
+            }
+          }
+          
+          ret[token] = grammar[token];
+        }
+      }
+      
+      return root[inside] = ret;
+    },
+    
+    // Traverse a language definition with Depth First Search
+    DFS: function(o, callback) {
+      for (var i in o) {
+        callback.call(o, i, o[i]);
+        
+        if (_.util.type(o) === 'Object') {
+          _.languages.DFS(o[i], callback);
+        }
+      }
+    }
+  },
+
+  highlightAll: function(async, callback) {
+    var elements = document.querySelectorAll('code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code');
+
+    for (var i=0, element; element = elements[i++];) {
+      _.highlightElement(element, async === true, callback);
+    }
+  },
+    
+  highlightElement: function(element, async, callback) {
+    // Find language
+    var language, grammar, parent = element;
+    
+    while (parent && !lang.test(parent.className)) {
+      parent = parent.parentNode;
+    }
+    
+    if (parent) {
+      language = (parent.className.match(lang) || [,''])[1];
+      grammar = _.languages[language];
+    }
+
+    if (!grammar) {
+      return;
+    }
+    
+    // Set language on the element, if not present
+    element.className = element.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
+    
+    // Set language on the parent, for styling
+    parent = element.parentNode;
+    
+    if (/pre/i.test(parent.nodeName)) {
+      parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language; 
+    }
+
+    var code = element.textContent;
+    
+    if(!code) {
+      return;
+    }
+    
+    code = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\u00a0/g, ' ');
+    
+    var env = {
+      element: element,
+      language: language,
+      grammar: grammar,
+      code: code
+    };
+    
+    _.hooks.run('before-highlight', env);
+    
+    if (async && self.Worker) {
+      var worker = new Worker(_.filename);  
+      
+      worker.onmessage = function(evt) {
+        env.highlightedCode = Token.stringify(JSON.parse(evt.data), language);
+
+        _.hooks.run('before-insert', env);
+
+        env.element.innerHTML = env.highlightedCode;
+        
+        callback && callback.call(env.element);
+        _.hooks.run('after-highlight', env);
+      };
+      
+      worker.postMessage(JSON.stringify({
+        language: env.language,
+        code: env.code
+      }));
+    }
+    else {
+      env.highlightedCode = _.highlight(env.code, env.grammar, env.language)
+
+      _.hooks.run('before-insert', env);
+
+      env.element.innerHTML = env.highlightedCode;
+      
+      callback && callback.call(element);
+      
+      _.hooks.run('after-highlight', env);
+    }
+  },
+  
+  highlight: function (text, grammar, language) {
+    return Token.stringify(_.tokenize(text, grammar), language);
+  },
+  
+  tokenize: function(text, grammar, language) {
+    var Token = _.Token;
+    
+    var strarr = [text];
+    
+    var rest = grammar.rest;
+    
+    if (rest) {
+      for (var token in rest) {
+        grammar[token] = rest[token];
+      }
+      
+      delete grammar.rest;
+    }
+                
+    tokenloop: for (var token in grammar) {
+      if(!grammar.hasOwnProperty(token) || !grammar[token]) {
+        continue;
+      }
+      
+      var pattern = grammar[token], 
+        inside = pattern.inside,
+        lookbehind = !!pattern.lookbehind,
+        lookbehindLength = 0;
+      
+      pattern = pattern.pattern || pattern;
+      
+      for (var i=0; i<strarr.length; i++) { // Don’t cache length as it changes during the loop
+        
+        var str = strarr[i];
+        
+        if (strarr.length > text.length) {
+          // Something went terribly wrong, ABORT, ABORT!
+          break tokenloop;
+        }
+        
+        if (str instanceof Token) {
+          continue;
+        }
+        
+        pattern.lastIndex = 0;
+        
+        var match = pattern.exec(str);
+        
+        if (match) {
+          if(lookbehind) {
+            lookbehindLength = match[1].length;
+          }
+
+          var from = match.index - 1 + lookbehindLength,
+              match = match[0].slice(lookbehindLength),
+              len = match.length,
+              to = from + len,
+            before = str.slice(0, from + 1),
+            after = str.slice(to + 1); 
+
+          var args = [i, 1];
+          
+          if (before) {
+            args.push(before);
+          }
+          
+          var wrapped = new Token(token, inside? _.tokenize(match, inside) : match);
+          
+          args.push(wrapped);
+          
+          if (after) {
+            args.push(after);
+          }
+          
+          Array.prototype.splice.apply(strarr, args);
+        }
+      }
+    }
+
+    return strarr;
+  },
+  
+  hooks: {
+    all: {},
+    
+    add: function (name, callback) {
+      var hooks = _.hooks.all;
+      
+      hooks[name] = hooks[name] || [];
+      
+      hooks[name].push(callback);
+    },
+    
+    run: function (name, env) {
+      var callbacks = _.hooks.all[name];
+      
+      if (!callbacks || !callbacks.length) {
+        return;
+      }
+      
+      for (var i=0, callback; callback = callbacks[i++];) {
+        callback(env);
+      }
+    }
+  }
+};
+
+var Token = _.Token = function(type, content) {
+  this.type = type;
+  this.content = content;
+};
+
+Token.stringify = function(o, language, parent) {
+  if (typeof o == 'string') {
+    return o;
+  }
+
+  if (Object.prototype.toString.call(o) == '[object Array]') {
+    return o.map(function(element) {
+      return Token.stringify(element, language, o);
+    }).join('');
+  }
+  
+  var env = {
+    type: o.type,
+    content: Token.stringify(o.content, language, parent),
+    tag: 'span',
+    classes: ['token', o.type],
+    attributes: {},
+    language: language,
+    parent: parent
+  };
+  
+  if (env.type == 'comment') {
+    env.attributes['spellcheck'] = 'true';
+  }
+  
+  _.hooks.run('wrap', env);
+  
+  var attributes = '';
+  
+  for (var name in env.attributes) {
+    attributes += name + '="' + (env.attributes[name] || '') + '"';
+  }
+  
+  return '<' + env.tag + ' class="' + env.classes.join(' ') + '" ' + attributes + '>' + env.content + '</' + env.tag + '>';
+  
+};
+
+if (!self.document) {
+  // In worker
+  self.addEventListener('message', function(evt) {
+    var message = JSON.parse(evt.data),
+        lang = message.language,
+        code = message.code;
+    
+    self.postMessage(JSON.stringify(_.tokenize(code, _.languages[lang])));
+    self.close();
+  }, false);
+  
+  return;
+}
+
+// Get current script and highlight
+var script = document.getElementsByTagName('script');
+
+script = script[script.length - 1];
+
+if (script) {
+  _.filename = script.src;
+  
+  if (document.addEventListener && !script.hasAttribute('data-manual')) {
+    document.addEventListener('DOMContentLoaded', _.highlightAll);
+  }
+}
+
+})();;
+Prism.languages.markup = {
+  'comment': /&lt;!--[\w\W]*?-->/g,
+  'prolog': /&lt;\?.+?\?>/,
+  'doctype': /&lt;!DOCTYPE.+?>/,
+  'cdata': /&lt;!\[CDATA\[[\w\W]*?]]>/i,
+  'tag': {
+    pattern: /&lt;\/?[\w:-]+\s*(?:\s+[\w:-]+(?:=(?:("|')(\\?[\w\W])*?\1|\w+))?\s*)*\/?>/gi,
+    inside: {
+      'tag': {
+        pattern: /^&lt;\/?[\w:-]+/i,
+        inside: {
+          'punctuation': /^&lt;\/?/,
+          'namespace': /^[\w-]+?:/
+        }
+      },
+      'attr-value': {
+        pattern: /=(?:('|")[\w\W]*?(\1)|[^\s>]+)/gi,
+        inside: {
+          'punctuation': /=|>|"/g
+        }
+      },
+      'punctuation': /\/?>/g,
+      'attr-name': {
+        pattern: /[\w:-]+/g,
+        inside: {
+          'namespace': /^[\w-]+?:/
+        }
+      }
+      
+    }
+  },
+  'entity': /&amp;#?[\da-z]{1,8};/gi
+};
+
+// Plugin to make entity title show the real entity, idea by Roman Komarov
+Prism.hooks.add('wrap', function(env) {
+
+  if (env.type === 'entity') {
+    env.attributes['title'] = env.content.replace(/&amp;/, '&');
+  }
+});;
+Prism.languages.css = {
+  'comment': /\/\*[\w\W]*?\*\//g,
+  'atrule': {
+    pattern: /@[\w-]+?.*?(;|(?=\s*{))/gi,
+    inside: {
+      'punctuation': /[;:]/g
+    }
+  },
+  'url': /url\((["']?).*?\1\)/gi,
+  'selector': /[^\{\}\s][^\{\};]*(?=\s*\{)/g,
+  'property': /(\b|\B)[\w-]+(?=\s*:)/ig,
+  'string': /("|')(\\?.)*?\1/g,
+  'important': /\B!important\b/gi,
+  'ignore': /&(lt|gt|amp);/gi,
+  'punctuation': /[\{\};:]/g
+};
+
+if (Prism.languages.markup) {
+  Prism.languages.insertBefore('markup', 'tag', {
+    'style': {
+      pattern: /(&lt;|<)style[\w\W]*?(>|&gt;)[\w\W]*?(&lt;|<)\/style(>|&gt;)/ig,
+      inside: {
+        'tag': {
+          pattern: /(&lt;|<)style[\w\W]*?(>|&gt;)|(&lt;|<)\/style(>|&gt;)/ig,
+          inside: Prism.languages.markup.tag.inside
+        },
+        rest: Prism.languages.css
+      }
+    }
+  });
+};
+Prism.languages.clike = {
+  'comment': {
+    pattern: /(^|[^\\])(\/\*[\w\W]*?\*\/|(^|[^:])\/\/.*?(\r?\n|$))/g,
+    lookbehind: true
+  },
+  'string': /("|')(\\?.)*?\1/g,
+  'class-name': {
+    pattern: /((?:(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[a-z0-9_\.\\]+/ig,
+    lookbehind: true,
+    inside: {
+      punctuation: /(\.|\\)/
+    }
+  },
+  'keyword': /\b(if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/g,
+  'boolean': /\b(true|false)\b/g,
+  'function': {
+    pattern: /[a-z0-9_]+\(/ig,
+    inside: {
+      punctuation: /\(/
+    }
+  },
+  'number': /\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?)\b/g,
+  'operator': /[-+]{1,2}|!|&lt;=?|>=?|={1,3}|(&amp;){1,2}|\|?\||\?|\*|\/|\~|\^|\%/g,
+  'ignore': /&(lt|gt|amp);/gi,
+  'punctuation': /[{}[\];(),.:]/g
+};
+;
+Prism.languages.javascript = Prism.languages.extend('clike', {
+  'keyword': /\b(var|let|if|else|while|do|for|return|in|instanceof|function|new|with|typeof|try|throw|catch|finally|null|break|continue)\b/g,
+  'number': /\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?|NaN|-?Infinity)\b/g
+});
+
+Prism.languages.insertBefore('javascript', 'keyword', {
+  'regex': {
+    pattern: /(^|[^/])\/(?!\/)(\[.+?]|\\.|[^/\r\n])+\/[gim]{0,3}(?=\s*($|[\r\n,.;})]))/g,
+    lookbehind: true
+  }
+});
+
+if (Prism.languages.markup) {
+  Prism.languages.insertBefore('markup', 'tag', {
+    'script': {
+      pattern: /(&lt;|<)script[\w\W]*?(>|&gt;)[\w\W]*?(&lt;|<)\/script(>|&gt;)/ig,
+      inside: {
+        'tag': {
+          pattern: /(&lt;|<)script[\w\W]*?(>|&gt;)|(&lt;|<)\/script(>|&gt;)/ig,
+          inside: Prism.languages.markup.tag.inside
+        },
+        rest: Prism.languages.javascript
+      }
+    }
+  });
+}
+;
+
+/*!
+ * headroom.js v0.3.11 - Give your page some headroom. Hide your header until you need it
+ * Copyright (c) 2013 Nick Williams - http://wicky.nillia.ms/headroom.js
+ * License: MIT
+ */
+
+(function(global) {
+
+  'use strict';
+
+  window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
+  
+  /**
+   * Handles debouncing of events via requestAnimationFrame
+   * @see http://www.html5rocks.com/en/tutorials/speed/animations/
+   * @param {Function} callback The callback to handle whichever event
+   */
+  function Debouncer (callback) {
+    this.callback = callback;
+    this.ticking = false;
+  }
+  Debouncer.prototype = {
+    constructor : Debouncer,
+  
+    /**
+     * dispatches the event to the supplied callback
+     * @private
+     */
+    update : function() {
+      this.callback && this.callback();
+      this.ticking = false;
+    },
+  
+    /**
+     * ensures events don't get stacked
+     * @private
+     */
+    requestTick : function() {
+      if(!this.ticking) {
+        requestAnimationFrame(this.update.bind(this));
+        this.ticking = true;
+      }
+    },
+  
+    /**
+     * Attach this as the event listeners
+     */
+    handleEvent : function() {
+      this.requestTick();
+    }
+  };
+  /**
+   * UI enhancement for fixed headers.
+   * Hides header when scrolling down
+   * Shows header when scrolling up
+   * @constructor
+   * @param {DOMElement} elem the header element
+   * @param {Object} options options for the widget
+   */
+  function Headroom (elem, options) {
+    options = options || Headroom.options;
+  
+    this.lastKnownScrollY = 0;
+    this.elem             = elem;
+    this.debouncer        = new Debouncer(this.update.bind(this));
+    this.tolerance        = options.tolerance;
+    this.classes          = options.classes;
+    this.offset           = options.offset;
+    this.initialised      = false;
+  }
+  Headroom.prototype = {
+    constructor : Headroom,
+  
+    /**
+     * Initialises the widget
+     */
+    init : function() {
+      this.elem.classList.add(this.classes.initial);
+  
+      // defer event registration to handle browser 
+      // potentially restoring previous scroll position
+      setTimeout(this.attachEvent.bind(this), 100);
+    },
+  
+    /**
+     * Unattaches events and removes any classes that were added
+     */
+    destroy : function() {
+      this.initialised = false;
+      window.removeEventListener('scroll', this.debouncer, false);
+      this.elem.classList.remove(this.classes.unpinned, this.classes.pinned, this.classes.initial);
+    },
+  
+    /**
+     * Attaches the scroll event
+     * @private
+     */
+    attachEvent : function() {
+      if(!this.initialised){
+        this.initialised = true;
+        window.addEventListener('scroll', this.debouncer, false);
+      }
+    },
+    
+    /**
+     * Unpins the header if it's currently pinned
+     */
+    unpin : function() {
+      this.elem.classList.add(this.classes.unpinned);
+      this.elem.classList.remove(this.classes.pinned);
+    },
+  
+    /**
+     * Pins the header if it's currently unpinned
+     */
+    pin : function() {
+      this.elem.classList.remove(this.classes.unpinned);
+      this.elem.classList.add(this.classes.pinned);
+    },
+  
+    /**
+     * Gets the Y scroll position
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollY
+     * @return {Number} pixels the page has scrolled along the Y-axis
+     */
+    getScrollY : function() {
+      return (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+    },
+  
+    /**
+     * Handles updating the state of the widget
+     */
+    update : function() {
+      var currentScrollY     = this.getScrollY(),
+        toleranceExceeded    = Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance;
+  
+      if(currentScrollY < 0) { // Ignore bouncy scrolling in OSX
+        return;
+      }
+  
+      if(toleranceExceeded) {
+        if(currentScrollY > this.lastKnownScrollY && currentScrollY >= this.offset) {
+          this.unpin();
+        }
+        else if(currentScrollY < this.lastKnownScrollY) {
+          this.pin();
+        }
+      }
+  
+      this.lastKnownScrollY = currentScrollY;
+    }
+  };
+  /**
+   * Default options
+   * @type {Object}
+   */
+  Headroom.options = {
+    tolerance : 0,
+    offset: 0,
+    classes : {
+      pinned : 'headroom--pinned',
+      unpinned : 'headroom--unpinned',
+      initial : 'headroom'
+    }
+  };
+
+  global.Headroom = Headroom;
+
+}(this));
+;(function() {
+
+  function CodeGenerator (widgetCode, pluginCode, dataApiCode) {
+    this.pluginCode  = pluginCode;
+    this.widgetCode  = widgetCode;
+    this.dataApiCode = dataApiCode;
+  }
+  CodeGenerator.prototype = {
+    constructor : CodeGenerator,
+
+    widget : function(options) {
+      return 'var headroom = new Headroom(elem, ' + JSON.stringify(options, null, '  ') +');\nheadroom.init();\n\n'
+      + '// to destroy\n'
+      + 'headroom.destroy();';
+    },
+
+    plugin : function(options) {
+      return '$("header").headroom(' + JSON.stringify(options, null, '  ') + ');\n\n'
+      + '// to destroy\n'
+      + '$("#header").headroom("destroy");';
+    },
+
+    dataApi : function(options) {
+      return '&lt;header data-headroom '
+        + 'data-tolerance="' + options.tolerance + '" '
+        + 'data-offset="' + options.offset + '" '
+        + 'data-classes=\'' + JSON.stringify(options.classes) + '\'&gt;&lt;/header&gt;\n\n'
+        + '// to destroy, in your JS:\n'
+        + '$("header").data("headroom").destroy();';
+    },
+
+    generate : function(options) {
+      this.pluginCode.innerHTML = this.plugin(options);
+      Prism.highlightElement(this.pluginCode, false);
+      
+      this.widgetCode.innerHTML = this.widget(options);
+      Prism.highlightElement(this.widgetCode, false);
+
+      this.dataApiCode.innerHTML = this.dataApi(options);
+      Prism.highlightElement(this.dataApiCode, false);
+    }
+  };
+  
+
+  window.CodeGenerator = CodeGenerator;
+  
+}());
+;(function() {
+
+  function HeadroomExample (inputs, styles, codeGenerator) {
+    this.inputs = inputs;
+    this.codeGenerator = codeGenerator;
+    this.styles  = styles;
+  }
+  HeadroomExample.prototype = {
+    constructor : HeadroomExample,
+
+    init : function() {
+      if(!this.inputs) {
+        return;
+      }
+      var options = this.getOptions(this.inputs);
+
+      this.headroom = new Headroom(document.querySelector('header'), options);
+      this.headroom.init();
+      this.codeGenerator.generate(options);
+      this.listen();
+    },
+
+    getOptions : function () {
+      var styleOptions = this.inputs.querySelectorAll('[name=style]');
+      var style;
+
+      for (var i = styleOptions.length - 1; i >= 0; i--) {
+        if(styleOptions[i].checked) {
+          style = this.styles[styleOptions[i].value];
+          break;
+        }
+      }
+
+      return {
+        tolerance : parseInt(this.inputs.querySelector('#tolerance').value,10),
+        offset : parseInt(this.inputs.querySelector('#offset').value,10),
+        classes : style,
+      };
+    },
+
+    updateWidget : function () {
+      var options = this.getOptions(this.inputs);
+      var headroom = this.headroom;
+
+      headroom.destroy();
+      headroom.classes = options.classes;
+      headroom.offset = options.offset;
+      headroom.tolerance = options.tolerance;
+      headroom.init();
+
+      this.codeGenerator.generate(options);
+    },
+
+    listen : function() {
+      for (var i = this.inputs.length - 1; i >= 0; i--) {
+        this.inputs[i].addEventListener('change', this.updateWidget.bind(this), false);
+      }
+    }
+  };
+
+  window.HeadroomExample = HeadroomExample;
+  
+}());
+;(function() {
+  var styles = {
+    swing : {
+      initial : 'animated',
+      pinned : 'swingInX',
+      unpinned : 'swingOutX'
+    },
+    slide : {
+      initial : 'animated',
+      pinned : 'slideDown',
+      unpinned : 'slideUp'
+    },
+    flip : {
+      initial : 'animated',
+      pinned : 'flipInX',
+      unpinned : 'flipOutX'
+    },
+    bounce : {
+      initial : 'animated',
+      pinned : 'bounceInDown',
+      unpinned : 'bounceOutUp'
+    }
+  };
+
+  var inputs = document.querySelector('form');
+  var codeGenerator = new CodeGenerator(
+    document.querySelector('.widget-code'),
+    document.querySelector('.plugin-code'),
+    document.querySelector('.data-api-code'));
+
+  var example = new HeadroomExample(inputs, styles, codeGenerator);
+  example.init();
+
+}());
