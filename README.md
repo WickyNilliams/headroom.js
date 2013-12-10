@@ -65,6 +65,7 @@ Note: Zepto's additional [data module](https://github.com/madrobby/zepto#zepto-m
 <headroom></headroom>
 <!-- or with options -->
 <headroom tolerance='0' offset='0' classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"></headroom>
+```
 
 ## Options
 
