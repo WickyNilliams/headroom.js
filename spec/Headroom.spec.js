@@ -31,6 +31,22 @@
         expect(hr.classes).toBe(Headroom.options.classes);
       });
 
+      it('merges the options arguments properly', function() {
+        var userOpts = {
+          tolerance : 30,
+          classes : {
+            initial : 'hr'
+          }
+        };
+
+        var hr = new Headroom(elem, userOpts);
+
+        expect(hr.tolerance).toBe(userOpts.tolerance);
+        expect(hr.offset).toBe(Headroom.options.offset);
+        expect(hr.classes.initial).toBe(userOpts.classes.initial);
+        expect(hr.classes.pinned).toBe(Headroom.options.classes.pinned);
+      });
+
     });
 
     describe('init', function() {
