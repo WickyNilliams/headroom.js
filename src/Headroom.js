@@ -59,6 +59,7 @@ Headroom.prototype = {
   unpin : function() {
     this.elem.classList.add(this.classes.unpinned);
     this.elem.classList.remove(this.classes.pinned);
+    this.elem.classList.dispatchEvent(new window.Event('unpin'));
   },
 
   /**
@@ -67,6 +68,7 @@ Headroom.prototype = {
   pin : function() {
     this.elem.classList.remove(this.classes.unpinned);
     this.elem.classList.add(this.classes.pinned);
+    this.elem.classList.dispatchEvent(new window.Event('pin'));
   },
 
   /**
