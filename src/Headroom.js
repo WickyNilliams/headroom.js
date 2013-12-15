@@ -1,3 +1,5 @@
+var extend;
+
 /**
  * UI enhancement for fixed headers.
  * Hides header when scrolling down
@@ -7,7 +9,7 @@
  * @param {Object} options options for the widget
  */
 function Headroom (elem, options) {
-  options = options || Headroom.options;
+  options = extend(options, Headroom.options);
 
   this.lastKnownScrollY = 0;
   this.elem             = elem;
@@ -111,4 +113,30 @@ Headroom.options = {
     unpinned : 'headroom--unpinned',
     initial : 'headroom'
   }
+};
+/**
+ * Helper function for extending objects
+ */
+extend = function (object /*, objectN ... */) {
+  if(arguments.length <= 0) {
+    throw new Error('Missing arguments in extend function');
+  }
+
+  var result = object || { },
+      key,
+      i;
+
+  for (i = 1; i < arguments.length; i++) {
+    var replacement = arguments[i] || { };
+
+    for (key in replacement) {
+      if(typeof result[key] === 'object') {
+        result[key] = extend(result[key], replacement[key]);
+      } else {
+        result[key] = result[key] || replacement[key];
+      }
+    }
+  }
+
+  return result;
 };
