@@ -57,16 +57,24 @@ Headroom.prototype = {
    * Unpins the header if it's currently pinned
    */
   unpin : function() {
-    this.elem.classList.add(this.classes.unpinned);
-    this.elem.classList.remove(this.classes.pinned);
+    if(this.elem.classList.contains(this.classes.pinned)) {
+      this.elem.classList.add(this.classes.unpinned);
+      this.elem.classList.remove(this.classes.pinned);
+    } else {
+      return;
+    }
   },
-
+  
   /**
    * Pins the header if it's currently unpinned
    */
   pin : function() {
-    this.elem.classList.remove(this.classes.unpinned);
-    this.elem.classList.add(this.classes.pinned);
+    if(this.elem.classList.contains(this.classes.unpinned)) {
+      this.elem.classList.remove(this.classes.unpinned);
+      this.elem.classList.add(this.classes.pinned);
+    } else {
+      return;
+    }
   },
 
   /**
