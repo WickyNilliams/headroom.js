@@ -6,7 +6,10 @@
 
     beforeEach(function() {
       classList = jasmine.createSpyObj('classList', ['add', 'remove', 'contains']);
-      elem      = { classList : classList };
+      elem      = {
+        classList : classList ,
+        dispatchEvent: spyOn(window, 'dispatchEvent')
+      };
       headroom  = new Headroom(elem);
     });
 
@@ -111,23 +114,35 @@
     });
 
     describe('pin', function() {
+      var Event;
+
+      beforeEach(function() {
+        Event = spyOn(window, 'Event');
+      });
 
       it('should add pinned class and remove unpinned class', function(){
         headroom.pin();
 
         expect(classList.remove).toHaveBeenCalledWith(headroom.classes.unpinned);
         expect(classList.add).toHaveBeenCalledWith(headroom.classes.pinned);
+        expect(Event).toHaveBeenCalled();
       });
 
     });
 
     describe('unpin', function() {
+      var Event;
+
+      beforeEach(function() {
+        Event = spyOn(window, 'Event');
+      });
 
       it('should add unpinned class and remove pinned class', function(){
         headroom.unpin();
 
         expect(classList.add).toHaveBeenCalledWith(headroom.classes.unpinned);
         expect(classList.remove).toHaveBeenCalledWith(headroom.classes.pinned);
+        expect(Event).toHaveBeenCalled();
       });
 
     });
