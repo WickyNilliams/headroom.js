@@ -5,8 +5,11 @@
     var headroom, elem, classList;
 
     beforeEach(function() {
-      classList = jasmine.createSpyObj('classList', ['add', 'remove', 'contains', 'dispatchEvent']);
-      elem      = { classList : classList };
+      classList = jasmine.createSpyObj('classList', ['add', 'remove', 'contains']);
+      elem      = {
+        classList : classList ,
+        dispatchEvent: spyOn(window, 'dispatchEvent')
+      };
       headroom  = new Headroom(elem);
     });
 
