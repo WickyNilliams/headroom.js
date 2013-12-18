@@ -8,6 +8,7 @@
       classList = jasmine.createSpyObj('classList', ['add', 'remove', 'contains']);
       elem      = { classList : classList };
       headroom  = new Headroom(elem);
+      Headroom.cutsTheMustard = true;
     });
 
     describe('constructor', function() {
@@ -72,6 +73,16 @@
         expect(classList.add).toHaveBeenCalledWith(headroom.classes.initial);
         expect(bind).toHaveBeenCalled();
         expect(st).toHaveBeenCalledWith(jasmine.any(Function), 100);
+      });
+
+      it('does nothing if user agent doesn\'t cut the mustatd', function() {
+        Headroom.cutsTheMustard = false;
+
+        headroom.init();
+
+        expect(classList.add).not.toHaveBeenCalled();
+        expect(bind).not.toHaveBeenCalled();
+        expect(st).not.toHaveBeenCalled();
       });
     });
 

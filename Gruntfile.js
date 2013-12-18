@@ -79,6 +79,7 @@ module.exports = function(grunt) {
         specs : 'spec/*.js'
       },
       src : [
+        'src/features.js',
         'src/Debouncer.js',
         'src/Headroom.js'
       ]

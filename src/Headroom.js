@@ -28,6 +28,10 @@ Headroom.prototype = {
    * Initialises the widget
    */
   init : function() {
+    if(!Headroom.cutsTheMustard) {
+      return;
+    }
+
     this.elem.classList.add(this.classes.initial);
 
     // defer event registration to handle browser 
@@ -141,3 +145,4 @@ extend = function (object /*, objectN ... */) {
 
   return result;
 };
+Headroom.cutsTheMustard = features.rAF && features.bind && features.classList;

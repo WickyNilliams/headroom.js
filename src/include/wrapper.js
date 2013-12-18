@@ -2,6 +2,7 @@
 
   'use strict';
 
+  //= ../features.js
   //= ../Debouncer.js
   //= ../Headroom.js
 

@@ -23,6 +23,7 @@
         "requestAnimationFrame": false,
         "mozRequestAnimationFrame" : false,
         "webkitRequestAnimationFrame" : false,
+        "features": true,
         "Headroom": false,
         "Debouncer": false
     }
