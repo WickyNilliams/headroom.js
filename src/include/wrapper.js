@@ -1,4 +1,4 @@
-(function(global) {
+(function(window, document) {
 
   'use strict';
 
@@ -8,4 +8,4 @@
 
   global.Headroom = Headroom;
 
-}(this));
+}(window, document));
