@@ -14,12 +14,18 @@
 
       var debouncer;
 
+      function onPin(){}
+      function onUnpin(){}
+
       beforeEach(function(){
         debouncer = spyOn(global, 'Debouncer').andCallThrough();
       });
 
       it('stores the arguments it is passed', function() {
-        var hr = new Headroom(elem);
+        var hr = new Headroom(elem, {
+          onPin : onPin,
+          onUnpin : onUnpin
+        });
 
         expect(hr.lastKnownScrollY).toBe(0);
         expect(hr.elem).toBe(elem);
@@ -29,6 +35,8 @@
         expect(hr.tolerance).toBe(Headroom.options.tolerance);
         expect(hr.offset).toBe(Headroom.options.offset);
         expect(hr.classes).toBe(Headroom.options.classes);
+        expect(hr.onPin).toBe(onPin);
+        expect(hr.onUnpin).toBe(onUnpin);
       });
 
       it('merges the options arguments properly', function() {
@@ -119,6 +127,14 @@
         expect(classList.add).toHaveBeenCalledWith(headroom.classes.pinned);
       });
 
+      it('should invoke callback if supplied', function() {
+        headroom.onPin = jasmine.createSpy();
+
+        headroom.pin();
+
+        expect(headroom.onPin).toHaveBeenCalled();
+      });
+
     });
 
     describe('unpin', function() {
@@ -128,6 +144,14 @@
 
         expect(classList.add).toHaveBeenCalledWith(headroom.classes.unpinned);
         expect(classList.remove).toHaveBeenCalledWith(headroom.classes.pinned);
+      });
+
+      it('should invoke callback if supplied', function() {
+        headroom.onUnpin = jasmine.createSpy();
+
+        headroom.unpin();
+
+        expect(headroom.onUnpin).toHaveBeenCalled();
       });
 
     });

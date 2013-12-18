@@ -18,6 +18,8 @@ function Headroom (elem, options) {
   this.classes          = options.classes;
   this.offset           = options.offset;
   this.initialised      = false;
+  this.onPin            = options.onPin;
+  this.onUnpin          = options.onUnpin;
 }
 Headroom.prototype = {
   constructor : Headroom,
@@ -59,6 +61,7 @@ Headroom.prototype = {
   unpin : function() {
     this.elem.classList.add(this.classes.unpinned);
     this.elem.classList.remove(this.classes.pinned);
+    this.onUnpin && this.onUnpin.call(this);
   },
 
   /**
@@ -67,6 +70,7 @@ Headroom.prototype = {
   pin : function() {
     this.elem.classList.remove(this.classes.unpinned);
     this.elem.classList.add(this.classes.pinned);
+    this.onPin && this.onPin.call(this);
   },
 
   /**
