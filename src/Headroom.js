@@ -1,4 +1,29 @@
-var extend;
+/**
+ * Helper function for extending objects
+ */
+function extend (object /*, objectN ... */) {
+  if(arguments.length <= 0) {
+    throw new Error('Missing arguments in extend function');
+  }
+
+  var result = object || { },
+      key,
+      i;
+
+  for (i = 1; i < arguments.length; i++) {
+    var replacement = arguments[i] || { };
+
+    for (key in replacement) {
+      if(typeof result[key] === 'object') {
+        result[key] = extend(result[key], replacement[key]);
+      } else {
+        result[key] = result[key] || replacement[key];
+      }
+    }
+  }
+
+  return result;
+}
 
 /**
  * UI enhancement for fixed headers.
@@ -43,9 +68,11 @@ Headroom.prototype = {
    * Unattaches events and removes any classes that were added
    */
   destroy : function() {
+    var classes = this.classes;
+
     this.initialised = false;
     window.removeEventListener('scroll', this.debouncer, false);
-    this.elem.classList.remove(this.classes.unpinned, this.classes.pinned, this.classes.initial);
+    this.elem.classList.remove(classes.unpinned, classes.pinned, classes.initial);
   },
 
   /**
@@ -63,8 +90,12 @@ Headroom.prototype = {
    * Unpins the header if it's currently pinned
    */
   unpin : function() {
-    this.elem.classList.add(this.classes.unpinned);
-    this.elem.classList.remove(this.classes.pinned);
+    var classList = this.elem.classList,
+      classes = this.classes;
+
+    classList.add(classes.unpinned);
+    classList.remove(classes.pinned);
+
     this.onUnpin && this.onUnpin.call(this);
   },
 
@@ -72,8 +103,11 @@ Headroom.prototype = {
    * Pins the header if it's currently unpinned
    */
   pin : function() {
-    this.elem.classList.remove(this.classes.unpinned);
-    this.elem.classList.add(this.classes.pinned);
+    var classList = this.elem.classList,
+      classes = this.classes;
+
+    classList.remove(classes.unpinned);
+    classList.add(classes.pinned);
     this.onPin && this.onPin.call(this);
   },
 
@@ -91,16 +125,17 @@ Headroom.prototype = {
    */
   update : function() {
     var currentScrollY     = this.getScrollY(),
-      toleranceExceeded    = Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance;
+      toleranceExceeded    = Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance,
+      lastKnownScrollY = this.lastKnownScrollY;
 
     if(currentScrollY < 0 || currentScrollY + window.innerHeight > document.body.scrollHeight) { // Ignore bouncy scrolling in OSX
       return;
     }
 
-    if(currentScrollY > this.lastKnownScrollY && currentScrollY >= this.offset && toleranceExceeded) {
+    if(currentScrollY > lastKnownScrollY && currentScrollY >= this.offset && toleranceExceeded) {
       this.unpin();
     }
-    else if((currentScrollY < this.lastKnownScrollY && toleranceExceeded) || currentScrollY <= this.offset) {
+    else if((currentScrollY < lastKnownScrollY && toleranceExceeded) || currentScrollY <= this.offset) {
       this.pin();
     }
     this.lastKnownScrollY = currentScrollY;
@@ -118,31 +153,5 @@ Headroom.options = {
     unpinned : 'headroom--unpinned',
     initial : 'headroom'
   }
-};
-/**
- * Helper function for extending objects
- */
-extend = function (object /*, objectN ... */) {
-  if(arguments.length <= 0) {
-    throw new Error('Missing arguments in extend function');
-  }
-
-  var result = object || { },
-      key,
-      i;
-
-  for (i = 1; i < arguments.length; i++) {
-    var replacement = arguments[i] || { };
-
-    for (key in replacement) {
-      if(typeof result[key] === 'object') {
-        result[key] = extend(result[key], replacement[key]);
-      } else {
-        result[key] = result[key] || replacement[key];
-      }
-    }
-  }
-
-  return result;
 };
 Headroom.cutsTheMustard = features.rAF && features.bind && features.classList;
