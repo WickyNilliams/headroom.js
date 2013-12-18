@@ -95,7 +95,7 @@ module.exports = function(grunt) {
         'Gruntfile.js',
         'package.json'
       ],
-      tasks: 'default'
+      tasks: 'test'
     }
   });
 
@@ -106,5 +106,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('test', ['jshint:prebuild', 'jshint:tests', 'jasmine']);
-  grunt.registerTask('default', ['test', 'rig', 'jshint:postbuild', 'uglify']);
+  grunt.registerTask('dist', ['test', 'rig', 'jshint:postbuild', 'uglify']);
+  grunt.registerTask('default', ['watch']);
 };
