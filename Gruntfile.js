@@ -74,15 +74,29 @@ module.exports = function(grunt) {
       }
     },
 
-    jasmine : {
+    karma : {
       options : {
-        specs : 'spec/*.js'
+        frameworks : ['jasmine'],
+        browsers : ['PhantomJS', 'Chrome', 'Opera', 'Safari', 'Firefox'],
+        files : [
+          'spec/helpers/polyfill.js', // PhantomJS needs Function.prototype.bind polyfill
+          'src/features.js',
+          'src/Debouncer.js',
+          'src/Headroom.js',
+          'spec/*.js'
+        ]
       },
-      src : [
-        'src/features.js',
-        'src/Debouncer.js',
-        'src/Headroom.js'
-      ]
+      unit : {
+        options : {
+          background: true
+        },
+      },
+      continuous : {
+        options : {
+          singleRun : true,
+          browsers : ['PhantomJS']
+        }
+      }
     },
 
     watch: {
@@ -91,21 +105,20 @@ module.exports = function(grunt) {
       },
       files: [
         'src/*.js',
-        'spec/*.js',
-        'Gruntfile.js',
-        'package.json'
+        'spec/*.js'
       ],
-      tasks: 'test'
+      tasks: ['prehint', 'karma:unit:run']
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-rigger');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-jasmine');
+  grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('test', ['jshint:prebuild', 'jshint:tests', 'jasmine']);
-  grunt.registerTask('dist', ['test', 'rig', 'jshint:postbuild', 'uglify']);
-  grunt.registerTask('default', ['watch']);
+  grunt.registerTask('prehint', ['jshint:prebuild', 'jshint:tests']);
+  grunt.registerTask('ci', ['prehint', 'karma:continuous']);
+  grunt.registerTask('dist', ['ci', 'rig', 'jshint:postbuild', 'uglify']);
+  grunt.registerTask('default', ['karma:unit:start', 'watch']);
 };
