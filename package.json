@@ -10,7 +10,8 @@
     "grunt-contrib-jshint": "~0.6.2",
     "grunt-contrib-less": "~0.6.5",
     "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-watch": "~0.5.3"
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-connect": "~0.5.0"
   },
   "scripts": {
     "test": "grunt"

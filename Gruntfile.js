@@ -53,13 +53,23 @@ module.exports = function(grunt) {
       ]
     },
 
+    connect: {
+      server: {
+        options : {
+          port : 8001,
+          open : true,
+          debug : true
+        }
+      }
+    },
+
     watch : {
       styles : {
         files : 'assets/styles/**/*.less',
         tasks : 'less:dev'
       },
       scripts : {
-        files : '<%= jshint.files %>',
+        files : ['assets/scripts/**/*.js', '!<%= concat.dist.dest %>'],
         tasks : ['jshint', 'concat']
       }
     }
@@ -71,6 +81,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-connect');
 
+  grunt.registerTask('dev', ['connect', 'watch']);
   grunt.registerTask('default', ['less:dist', 'jshint', 'concat', 'uglify']);
 };
