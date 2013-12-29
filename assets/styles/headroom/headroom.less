@@ -36,7 +36,7 @@
   }
 
   @media @wideDeskBreakpoint {
-    left: 0.5em;
+    left: @atom;
   }
 
   -webkit-transform: translateY(4em);
@@ -172,8 +172,8 @@ p + h3 {
 }
 
 .subdued {
-  color: fade(@lightColor, 60);
-  text-shadow: none;  
+  opacity: 0.6;
+  text-shadow: none;
 }
 
 a.subdued:hover {
