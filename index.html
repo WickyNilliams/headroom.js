@@ -99,9 +99,9 @@
 
 <h2>Usage</h2>
 
-<p>Using headroom.js is really simple. It has a pure JS API, and an optional jQuery/Zepto-compatible plugin.</p>
+<p>Using headroom.js is really simple. It has a pure JS API, plus an optional jQuery/Zepto plugin and AngularJS directive.</p>
 
-<h3>With pure JS</h3>
+<h3>With plain JS</h3>
 
 <pre class="language-javascript"><code>// grab an element
 var myElement = document.querySelector("header");
@@ -126,6 +126,15 @@ $("#header").headroom();
 
 <p>Note: Zepto's additional <a href="https://github.com/madrobby/zepto#zepto-modules" title="https://github.com/madrobby/zepto#zepto-modules">data module</a> is required for compatibility.</p>
 
+<h3>With AngularJS</h3>
+
+<pre class="language-markup"><code>&lt;header headroom&gt;&lt;/header&gt;
+&lt;!-- or --&gt;
+&lt;headroom&gt;&lt;/headroom&gt;
+&lt;!-- or with options --&gt;
+&lt;headroom tolerance='0' offset='0' classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"&gt;&lt;/headroom&gt;
+</code></pre>
+
 <h3>Options</h3>
 
 <p>Headroom.js can also accept an options object to alter the way it behaves. You can see the default options by inspecting <code>Headroom.options</code>. The structure of an options object is as follows:</p>
@@ -143,7 +152,11 @@ $("#header").headroom();
         pinned : "headroom--pinned",
         // when scrolling down
         unpinned : "headroom--unpinned"
-    }
+    },
+    // callback when pinned, `this` is headroom object
+    onPin : function() {},
+    // callback when unpinned, `this` is headroom object
+    onUnpin : function() {}
 }
 </code></pre>
 

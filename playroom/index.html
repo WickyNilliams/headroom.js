@@ -111,23 +111,29 @@
 
   </form>
 
-  <h3>Widget code</h3>
+  <h3>Plain JS</h3>
   <p>
-      Using plain JS, pass the options as the second argument to the constructor. Be aware that when using headroom in this way, the options aren't automatically merged with the defaults (so you must define every property).
+      Using plain JS, pass the options as the second argument to the constructor. Options are automatically merged with the defaults.
   </p>
   <pre class="language-javascript" data-code-generator="widget"><code></code></pre>
 
-  <h3>Plugin code</h3>
+  <h3>jQuery/Zepto plugin</h3>
   <p>
-      Using the plugin, options are automatically merged with the defaults (deep-merged using $.extend(true, {}, defaultOptions, yourOptions)).
+      Using the plugin, pass the options object as the only parameter. Options are deep merged with the defaults.
   </p>
   <pre class="language-javascript" data-code-generator="plugin"><code></code></pre>
   
-  <h3>Data API code</h3>
+  <h4>Data API code</h4>
   <p>
       If you're using the data-* API, define any property as a data attribute. Options supplied via the data-* API are also deep-merged with defaults. Supply a JSON object to alter the classes used by headroom.js
   </p>
   <pre class="language-javascript" data-code-generator="dataApi"><code></code></pre>
+  
+  <h3>AngularJS directive</h3>
+  <p>
+      Headroom can be used as an element or an attribute directive. When using an element directive, pass options to headroom via attributes.
+  </p>
+  <pre class="language-markup" data-code-generator="angular"><code></code></pre>
 
   <div class="sharing">
     <h2>Share this on:</h2>
