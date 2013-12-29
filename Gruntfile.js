@@ -26,8 +26,7 @@ module.exports = function(grunt) {
           'assets/scripts/vendor/prism.js',
           'assets/scripts/vendor/headroom.js',
           'assets/scripts/examples/CodeGenerator.js',
-          'assets/scripts/examples/HeadroomExample.js',
-          'assets/scripts/examples/example.js'
+          'assets/scripts/examples/Playground.js'
         ],
         dest : 'assets/scripts/main.js'
       }

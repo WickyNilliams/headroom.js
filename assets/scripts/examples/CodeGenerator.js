@@ -1,46 +1,36 @@
 ;(function() {
 
-  function CodeGenerator (widgetCode, pluginCode, dataApiCode) {
-    this.pluginCode  = pluginCode;
-    this.widgetCode  = widgetCode;
-    this.dataApiCode = dataApiCode;
+  function CodeGenerator (strategies) {
+    this.strategies = strategies;
   }
   CodeGenerator.prototype = {
     constructor : CodeGenerator,
 
-    widget : function(options) {
-      return 'var headroom = new Headroom(elem, ' + JSON.stringify(options, null, '  ') +');\nheadroom.init();\n\n'
-      + '// to destroy\n'
-      + 'headroom.destroy();';
-    },
-
-    plugin : function(options) {
-      return '$("header").headroom(' + JSON.stringify(options, null, '  ') + ');\n\n'
-      + '// to destroy\n'
-      + '$("#header").headroom("destroy");';
-    },
-
-    dataApi : function(options) {
-      return '&lt;header data-headroom '
-        + 'data-tolerance="' + options.tolerance + '" '
-        + 'data-offset="' + options.offset + '" '
-        + 'data-classes=\'' + JSON.stringify(options.classes) + '\'&gt;&lt;/header&gt;\n\n'
-        + '// to destroy, in your JS:\n'
-        + '$("header").data("headroom").destroy();';
+    init : function () {
+      this.elements = document.querySelectorAll('[data-code-generator]');
     },
 
     generate : function(options) {
-      this.pluginCode.innerHTML = this.plugin(options);
-      Prism.highlightElement(this.pluginCode, false);
-      
-      this.widgetCode.innerHTML = this.widget(options);
-      Prism.highlightElement(this.widgetCode, false);
+      var self = this;
+      [].forEach.call(this.elements, function(element) {
+        self.highlightElement(element, options);
+      });
+    },
 
-      this.dataApiCode.innerHTML = this.dataApi(options);
-      Prism.highlightElement(this.dataApiCode, false);
+    getStrategy : function (element) {
+      return this.strategies[element.getAttribute('data-code-generator')];
+    },
+
+    highlightElement : function(element, options) {
+      var generator = this.getStrategy(element),
+        target = element.querySelector('code');
+        
+      if(generator) {
+        target.innerHTML = generator(options);
+        Prism.highlightElement(target, false);
+      }
     }
   };
-  
 
   window.CodeGenerator = CodeGenerator;
   

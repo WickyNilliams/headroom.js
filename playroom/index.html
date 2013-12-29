@@ -92,19 +92,19 @@
       <div class="grid">
         <div class="grid__item one-half lap--one-quarter">
           <label class="question-set__label" for="slide">
-            <input type="radio" id="slide" value="slide" name="style" checked="checked"> Slide</label>
+            <input type="radio" id="slide" value='{"initial":"animated","pinned":"slideDown","unpinned":"slideUp"}' name="classes" checked="checked"> Slide</label>
         </div>
         <div class="grid__item one-half lap--one-quarter">
           <label class="question-set__label" for="swing">
-            <input type="radio" id="swing" value="swing" name="style"> Swing</label>
+            <input type="radio" id="swing" value='{"initial":"animated","pinned":"swingInX","unpinned":"swingOutX"}' name="classes"> Swing</label>
         </div>
         <div class="grid__item one-half lap--one-quarter">
           <label class="question-set__label" for="flip">
-            <input type="radio" id="flip" value="flip" name="style"> Flip</label>
+            <input type="radio" id="flip" value='{"initial":"animated","pinned":"flipInX","unpinned":"flipOutX"}' name="classes"> Flip</label>
         </div>
         <div class="grid__item one-half lap--one-quarter">
           <label class="question-set__label" for="bounce">
-            <input type="radio" id="bounce" value="bounce" name="style"> Bounce</label>
+            <input type="radio" id="bounce" value='{"initial":"animated","pinned":"bounceInDown","unpinned":"bounceOutUp"}' name="classes"> Bounce</label>
         </div>
       </div>
     </fieldset>
@@ -115,19 +115,19 @@
   <p>
       Using plain JS, pass the options as the second argument to the constructor. Be aware that when using headroom in this way, the options aren't automatically merged with the defaults (so you must define every property).
   </p>
-  <pre class="language-javascript widget-code"><code></code></pre>
+  <pre class="language-javascript" data-code-generator="widget"><code></code></pre>
 
   <h3>Plugin code</h3>
   <p>
       Using the plugin, options are automatically merged with the defaults (deep-merged using $.extend(true, {}, defaultOptions, yourOptions)).
   </p>
-  <pre class="language-javascript plugin-code"><code></code></pre>
+  <pre class="language-javascript" data-code-generator="plugin"><code></code></pre>
   
   <h3>Data API code</h3>
   <p>
       If you're using the data-* API, define any property as a data attribute. Options supplied via the data-* API are also deep-merged with defaults. Supply a JSON object to alter the classes used by headroom.js
   </p>
-  <pre class="language-javascript data-api-code"><code></code></pre>
+  <pre class="language-javascript" data-code-generator="dataApi"><code></code></pre>
 
   <div class="sharing">
     <h2>Share this on:</h2>
