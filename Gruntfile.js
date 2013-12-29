@@ -66,7 +66,7 @@ module.exports = function(grunt) {
     watch : {
       styles : {
         files : 'assets/styles/**/*.less',
-        tasks : 'less:dev'
+        tasks : ['less:dev']
       },
       scripts : {
         files : ['assets/scripts/**/*.js', '!<%= concat.dist.dest %>'],
