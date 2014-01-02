@@ -6,17 +6,18 @@ function extend (object /*, objectN ... */) {
     throw new Error('Missing arguments in extend function');
   }
 
-  var result = object || { },
+  var result = object || {},
       key,
       i;
 
   for (i = 1; i < arguments.length; i++) {
-    var replacement = arguments[i] || { };
+    var replacement = arguments[i] || {};
 
     for (key in replacement) {
       if(typeof result[key] === 'object') {
         result[key] = extend(result[key], replacement[key]);
-      } else {
+      }
+      else {
         result[key] = result[key] || replacement[key];
       }
     }
