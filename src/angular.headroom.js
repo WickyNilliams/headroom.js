@@ -1,5 +1,9 @@
 (function(angular) {
 
+  if(!angular) {
+    return;
+  }
+
   ///////////////
   // Directive //
   ///////////////
