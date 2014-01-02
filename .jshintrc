@@ -9,6 +9,7 @@
     "eqeqeq": true,
     "immed": true,
     "latedef": true,
+    "laxbreak": true,
     "newcap": true,
     "noarg": true,
     "quotmark": "single",
