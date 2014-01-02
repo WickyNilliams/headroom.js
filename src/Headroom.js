@@ -85,19 +85,16 @@ Headroom.prototype = {
     var currentScrollY     = this.getScrollY(),
       toleranceExceeded    = Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance;
 
-    if(currentScrollY < 0) { // Ignore bouncy scrolling in OSX
+    if(currentScrollY < 0 || currentScrollY + window.innerHeight > document.body.scrollHeight) { // Ignore bouncy scrolling in OSX
       return;
     }
 
-    if(toleranceExceeded) {
-      if(currentScrollY > this.lastKnownScrollY && currentScrollY >= this.offset) {
-        this.unpin();
-      }
-      else if(currentScrollY < this.lastKnownScrollY) {
-        this.pin();
-      }
+    if(currentScrollY > this.lastKnownScrollY && currentScrollY >= this.offset && toleranceExceeded) {
+      this.unpin();
     }
-
+    else if((currentScrollY < this.lastKnownScrollY && toleranceExceeded) || currentScrollY <= this.offset) {
+      this.pin();
+    }
     this.lastKnownScrollY = currentScrollY;
   }
 };
