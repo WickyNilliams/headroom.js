@@ -155,4 +155,4 @@ Headroom.options = {
     initial : 'headroom'
   }
 };
-Headroom.cutsTheMustard = features.rAF && features.bind && features.classList;
+Headroom.cutsTheMustard = typeof features !== 'undefined' && features.rAF && features.bind && features.classList;
