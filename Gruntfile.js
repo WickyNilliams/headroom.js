@@ -88,7 +88,8 @@ module.exports = function(grunt) {
       },
       unit : {
         options : {
-          background: true
+          background: true,
+          reporters : 'dots'
         },
       },
       continuous : {
