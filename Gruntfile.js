@@ -80,9 +80,7 @@ module.exports = function(grunt) {
         browsers : ['PhantomJS', 'Chrome', 'Opera', 'Safari', 'Firefox'],
         files : [
           'spec/helpers/polyfill.js', // PhantomJS needs Function.prototype.bind polyfill
-          'src/features.js',
-          'src/Debouncer.js',
-          'src/Headroom.js',
+          'src/*.js',
           'spec/*.js'
         ]
       },
