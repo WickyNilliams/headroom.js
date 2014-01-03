@@ -81,6 +81,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-connect');
 
-  grunt.registerTask('dev', ['connect', 'watch']);
-  grunt.registerTask('default', ['less:dist', 'jshint', 'concat', 'uglify']);
+  grunt.registerTask('default', ['connect', 'watch']);
+  grunt.registerTask('dist', ['less:dist', 'jshint', 'concat', 'uglify']);
 };
