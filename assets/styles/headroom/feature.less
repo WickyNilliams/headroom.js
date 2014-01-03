@@ -1,0 +1,55 @@
+.feature {
+  background-color: @primaryColor;
+  padding: 5em 0 2em 0;
+
+  @media @deskBreakpoint {
+    padding-top: 5.5em;
+    padding-bottom: 2.5em;
+  }
+
+  a {
+    text-decoration: underline;
+    color: @darkColor;
+  }
+
+  strong {
+    color: @lightColor;
+    font-weight: normal;
+    text-shadow: 1px 1px 1px @darkColor;
+  }
+
+  text-align: center;
+
+
+  &__title {
+
+    .mega;
+
+    @media (min-width:30em) {
+      .tera;
+    }
+    @media @wideDeskBreakpoint {
+      .peta;
+    }
+    color: @lightColor;
+    text-shadow: 1px 1px 1px fade(#000, 50);
+    line-height: 1;
+    display: block;
+  }
+
+  &__subtitle {
+
+    font-size: 1em;
+
+    @media (min-width:30em) {
+      .delta;
+    }
+    @media @deskBreakpoint {
+      .gamma;
+    }
+
+    font-weight: normal;
+    color: @darkColor;
+    margin: 0;
+  }
+}
