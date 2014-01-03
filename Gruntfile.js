@@ -23,8 +23,7 @@ module.exports = function(grunt) {
     concat : {
       dist : {
         src : [
-          'assets/scripts/vendor/prism.js',
-          'assets/scripts/vendor/headroom.js',
+          'assets/scripts/vendor/*.js',
           'assets/scripts/examples/CodeGenerator.js',
           'assets/scripts/examples/Playground.js'
         ],
