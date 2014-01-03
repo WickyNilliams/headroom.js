@@ -122,23 +122,88 @@ Headroom.prototype = {
   },
 
   /**
+   * Gets the height of the viewport
+   * @see http://andylangton.co.uk/blog/development/get-viewport-size-width-and-height-javascript
+   * @return {int} the height of the viewport in pixels
+   */
+  getViewportHeight : function () {
+    return window.innerHeight
+      || document.documentElement.clientHeight
+      || document.body.clientHeight;
+  },
+
+  /**
+   * Gets the height of the document
+   * @see http://james.padolsey.com/javascript/get-document-height-cross-browser/
+   * @return {int} the height of the document in pixels
+   */
+  getDocumentHeight : function () {
+    var body = document.body,
+      documentElement = document.documentElement;
+
+    return Math.max(
+        body.scrollHeight, documentElement.scrollHeight,
+        body.offsetHeight, documentElement.offsetHeight,
+        body.clientHeight, documentElement.clientHeight
+    );
+  },
+
+  /**
+   * determines if the scroll position is outside of document boundaries
+   * @param  {int}  currentScrollY the current y scroll position
+   * @return {bool} true if out of bounds, false otherwise
+   */
+  isOutOfBounds : function (currentScrollY) {
+    var pastTop  = currentScrollY < 0,
+      pastBottom = currentScrollY + this.getViewportHeight() > this.getDocumentHeight();
+    
+    return pastTop || pastBottom;
+  },
+
+  /**
+   * determine if it is appropriate to unpin
+   * @param  {int} currentScrollY the current y scroll position
+   * @param  {bool} toleranceExceeded has the tolerance been exceeded?
+   * @return {bool} true if should unpin, false otherwise
+   */
+  shouldUnpin : function (currentScrollY, toleranceExceeded) {
+    var scrollingDown = currentScrollY > this.lastKnownScrollY,
+      pastOffset = currentScrollY >= this.offset;
+
+    return scrollingDown && pastOffset && toleranceExceeded;
+  },
+
+  /**
+   * determine if it is appropriate to pin
+   * @param  {int} currentScrollY the current y scroll position
+   * @param  {bool} toleranceExceeded has the tolerance been exceeded?
+   * @return {bool} true if should pin, false otherwise
+   */
+  shouldPin : function (currentScrollY, toleranceExceeded) {
+    var scrollingUp  = currentScrollY < this.lastKnownScrollY,
+      pastOffset = currentScrollY <= this.offset;
+
+    return (scrollingUp && toleranceExceeded) || pastOffset;
+  },
+
+  /**
    * Handles updating the state of the widget
    */
   update : function() {
     var currentScrollY     = this.getScrollY(),
-      toleranceExceeded    = Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance,
-      lastKnownScrollY = this.lastKnownScrollY;
+      toleranceExceeded    = Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance;
 
-    if(currentScrollY < 0 || currentScrollY + window.innerHeight > document.body.scrollHeight) { // Ignore bouncy scrolling in OSX
+    if(this.isOutOfBounds(currentScrollY)) { // Ignore bouncy scrolling in OSX
       return;
     }
 
-    if(currentScrollY > lastKnownScrollY && currentScrollY >= this.offset && toleranceExceeded) {
+    if(this.shouldUnpin(currentScrollY, toleranceExceeded)) {
       this.unpin();
     }
-    else if((currentScrollY < lastKnownScrollY && toleranceExceeded) || currentScrollY <= this.offset) {
+    else if(this.shouldPin(currentScrollY, toleranceExceeded)) {
       this.pin();
     }
+
     this.lastKnownScrollY = currentScrollY;
   }
 };

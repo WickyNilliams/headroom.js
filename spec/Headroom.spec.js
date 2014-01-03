@@ -167,76 +167,91 @@
 
     });
 
-    describe('update', function() {
+    describe('shouldUnpin', function() {
+      it('returns true if scrolling down and tolerance exceeded and past offset', function() {
+        var result = headroom.shouldUnpin(1, true);
+        expect(result).toBe(true);
+      });
+    });
 
-      var pin, unpin, scrollY;
+    describe('shouldPin', function() {
+
+      it('returns true if scrolling up and tolerance exceeded', function() {
+        var result = headroom.shouldPin(-1, true);
+        expect(result).toBe(true);
+      });
+
+      it('returns true if pastOffset', function() {
+        var result = headroom.shouldPin(-1, false);
+        expect(result).toBe(true);
+      });
+    });
+
+    describe('isOutOfBounds', function() {
+
+      var getDocumentHeight, getViewportHeight;
 
       beforeEach(function() {
-        scrollY = spyOn(Headroom.prototype, 'getScrollY');
+        getViewportHeight = spyOn(headroom, 'getViewportHeight');
+        getDocumentHeight = spyOn(headroom, 'getDocumentHeight');
+      });
+
+      it('return true if past bottom', function() {
+        var result = headroom.isOutOfBounds(-1);
+        expect(result).toBe(true);
+      });
+
+      it('return true if past top', function() {
+        getViewportHeight.andReturn(2);
+        getDocumentHeight.andReturn(2);
+
+        var result = headroom.isOutOfBounds(1);
+
+        expect(result).toBe(true);
+      });
+    });
+
+    describe('getDocumentHeight', function() {
+      
+    });
+
+    describe('getViewportHeight', function() {
+      
+    });
+
+    describe('update', function() {
+
+      var pin, unpin, shouldPin, shouldUnpin, isOutOfBounds;
+
+      beforeEach(function() {
         pin     = spyOn(Headroom.prototype, 'pin');
         unpin   = spyOn(Headroom.prototype, 'unpin');
+        shouldPin = spyOn(Headroom.prototype, 'shouldPin');
+        shouldUnpin = spyOn(Headroom.prototype, 'shouldUnpin');
+        isOutOfBounds = spyOn(Headroom.prototype, 'isOutOfBounds');
       });
 
-      it('should unpin if page has scrolled down', function(){
-
-        scrollY.andReturn(10);
-
+      it('should pin if conditions are met', function() {
+        shouldPin.andReturn(true);
         headroom.update();
-
-        expect(unpin).toHaveBeenCalled();
-        expect(pin).not.toHaveBeenCalled();
-        expect(headroom.lastKnownScrollY).toBe(10);
-      });
-
-      it('should pin if has scrolled up', function(){
-        headroom.lastKnownScrollY = 20;
-        scrollY.andReturn(10);
-
-        headroom.update();
-
-        expect(unpin).not.toHaveBeenCalled();
         expect(pin).toHaveBeenCalled();
-        expect(headroom.lastKnownScrollY).toBe(10);
       });
 
-      it('should ignore any scroll values less than zero', function() {
-        scrollY.andReturn(-5);
-
+      it('should unpin if conditions are met', function(){
+        shouldUnpin.andReturn(true);
         headroom.update();
-
-        expect(headroom.lastKnownScrollY).toBe(0);
+        expect(unpin).toHaveBeenCalled();
       });
 
-      it('should not pin or unpin if tolerance not exceeded', function(){
-        headroom.tolerance = 10;
+      it('should ignore scroll values out of bounds', function() {
+        shouldUnpin.andReturn(true);
+        shouldPin.andReturn(true);
+        isOutOfBounds.andReturn(true);
 
-        //scroll down
-        scrollY.andReturn(headroom.tolerance - 1);
-        headroom.update();
-
-        expect(unpin).not.toHaveBeenCalled();
-
-        //scroll up
-        scrollY.andReturn(1);
         headroom.update();
 
         expect(pin).not.toHaveBeenCalled();
-      });
-
-      it('should unpin if offset exceeded', function(){
-        headroom.offset = 100;
-
-        //scroll down
-        scrollY.andReturn(50);
-        headroom.update();
-
         expect(unpin).not.toHaveBeenCalled();
-
-        //scroll up
-        scrollY.andReturn(110);
-        headroom.update();
-
-        expect(unpin).toHaveBeenCalled();
       });
 
     });
