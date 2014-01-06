@@ -96,11 +96,12 @@ Headroom.prototype = {
   unpin : function() {
     var classList = this.elem.classList,
       classes = this.classes;
-
-    classList.add(classes.unpinned);
-    classList.remove(classes.pinned);
-
-    this.onUnpin && this.onUnpin.call(this);
+    
+    if(classList.contains(classes.pinned) || !classList.contains(classes.unpinned)) {
+      classList.add(classes.unpinned);
+      classList.remove(classes.pinned);
+      this.onUnpin && this.onUnpin.call(this);
+    }
   },
 
   /**
@@ -109,10 +110,12 @@ Headroom.prototype = {
   pin : function() {
     var classList = this.elem.classList,
       classes = this.classes;
-
-    classList.remove(classes.unpinned);
-    classList.add(classes.pinned);
-    this.onPin && this.onPin.call(this);
+    
+    if(classList.contains(classes.unpinned)) {
+      classList.remove(classes.unpinned);
+      classList.add(classes.pinned);
+      this.onPin && this.onPin.call(this);
+    }
   },
 
   /**
