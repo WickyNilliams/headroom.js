@@ -84,6 +84,7 @@ Headroom.prototype = {
    */
   attachEvent : function() {
     if(!this.initialised){
+      this.lastKnownScrollY = this.getScrollY();
       this.initialised = true;
       window.addEventListener('scroll', this.debouncer, false);
     }
