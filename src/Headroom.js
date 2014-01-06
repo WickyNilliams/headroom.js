@@ -63,6 +63,8 @@ Headroom.prototype = {
     // defer event registration to handle browser 
     // potentially restoring previous scroll position
     setTimeout(this.attachEvent.bind(this), 100);
+
+    return this;
   },
 
   /**
