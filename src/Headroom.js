@@ -124,7 +124,9 @@ Headroom.prototype = {
    * @return {Number} pixels the page has scrolled along the Y-axis
    */
   getScrollY : function() {
-    return (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+    return (window.pageYOffset !== undefined)
+      ? window.pageYOffset
+      : (document.documentElement || document.body.parentNode || document.body).scrollTop;
   },
 
   /**
@@ -167,6 +169,15 @@ Headroom.prototype = {
   },
 
   /**
+   * determines if the tolerance has been exceeded
+   * @param  {int} currentScrollY the current scroll y position
+   * @return {bool} true if tolerance exceeded, false otherwise
+   */
+  toleranceExceeded : function (currentScrollY) {
+    return Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance;
+  },
+
+  /**
    * determine if it is appropriate to unpin
    * @param  {int} currentScrollY the current y scroll position
    * @param  {bool} toleranceExceeded has the tolerance been exceeded?
@@ -196,8 +207,8 @@ Headroom.prototype = {
    * Handles updating the state of the widget
    */
   update : function() {
-    var currentScrollY     = this.getScrollY(),
-      toleranceExceeded    = Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance;
+    var currentScrollY  = this.getScrollY(),
+      toleranceExceeded = this.toleranceExceeded(currentScrollY);
 
     if(this.isOutOfBounds(currentScrollY)) { // Ignore bouncy scrolling in OSX
       return;

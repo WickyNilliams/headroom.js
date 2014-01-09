@@ -117,7 +117,7 @@
         headroom.attachEvent();
 
         expect(headroom.initialised).toBe(true);
-        expect(global.addEventListener).toHaveBeenCalledWith('scroll', headroom.debouncer, false);
+        expect(addEventListener).toHaveBeenCalledWith('scroll', headroom.debouncer, false);
       });
 
       it('will only ever add one listener', function() {
@@ -131,38 +131,95 @@
 
     describe('pin', function() {
 
-      it('should add pinned class and remove unpinned class', function(){
-        headroom.pin();
-
-        expect(classList.remove).toHaveBeenCalledWith(headroom.classes.unpinned);
-        expect(classList.add).toHaveBeenCalledWith(headroom.classes.pinned);
+      beforeEach(function() {
+        headroom.onPin = jasmine.createSpy();
       });
 
-      it('should invoke callback if supplied', function() {
-        headroom.onPin = jasmine.createSpy();
+      describe('when unpinned class is present', function() {
 
-        headroom.pin();
+        beforeEach(function() {
+          classList.contains.andReturn(true);
+          headroom.pin();
+        });
 
-        expect(headroom.onPin).toHaveBeenCalled();
+        it('should add pinned class and remove unpinned class', function(){
+          expect(classList.remove).toHaveBeenCalledWith(headroom.classes.unpinned);
+          expect(classList.add).toHaveBeenCalledWith(headroom.classes.pinned);
+        });
+
+        it('should invoke callback if supplied', function() {
+          expect(headroom.onPin).toHaveBeenCalled();
+        });
+
+      });
+
+      describe('when unpinned class not present', function() {
+
+        beforeEach(function() {
+          headroom.pin();
+        });
+
+        it('should do nothing', function() {
+          expect(headroom.onPin).not.toHaveBeenCalled();
+        });
+
       });
 
     });
 
     describe('unpin', function() {
 
-      it('should add unpinned class and remove pinned class', function(){
-        headroom.unpin();
+      var classes;
 
-        expect(classList.add).toHaveBeenCalledWith(headroom.classes.unpinned);
-        expect(classList.remove).toHaveBeenCalledWith(headroom.classes.pinned);
+
+      beforeEach(function() {
+        headroom.onUnpin = jasmine.createSpy();
+        classes = {};
+
+        classList.contains.andCallFake(function(className) {
+          return classes[className];
+        });
       });
 
-      it('should invoke callback if supplied', function() {
-        headroom.onUnpin = jasmine.createSpy();
+      function setupFixture (pinned, unpinned) {
+        classes[Headroom.options.classes.unpinned] = unpinned;
+        classes[Headroom.options.classes.pinned] = pinned;
+      }
 
-        headroom.unpin();
+      describe('when currently pinned', function() {
 
-        expect(headroom.onUnpin).toHaveBeenCalled();
+        beforeEach(function() {
+          setupFixture(true, false);
+          headroom.unpin();
+        });
+
+        it('will add unpinned class', function() {
+          expect(classList.add).toHaveBeenCalledWith(headroom.classes.unpinned);
+        });
+
+        it('will remove pinned class', function() {
+          expect(classList.remove).toHaveBeenCalledWith(headroom.classes.pinned);
+        });
+
+        it('will invoke callback if supplied', function() {
+          expect(headroom.onUnpin).toHaveBeenCalled();
+        });
+      });
+
+      describe('when currently unpinned', function() {
+        it('will do nothing', function() {
+          setupFixture(false, true);
+          headroom.unpin();
+          expect(headroom.onUnpin).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('when never been unpinned', function() {
+        it('will unpin', function() {
+          setupFixture(false, false);
+          headroom.unpin();
+          expect(headroom.onUnpin).toHaveBeenCalled();
+        });
       });
 
     });
@@ -196,18 +253,31 @@
         getDocumentHeight = spyOn(headroom, 'getDocumentHeight');
       });
 
-      it('return true if past bottom', function() {
+      it('return true if past top', function() {
         var result = headroom.isOutOfBounds(-1);
         expect(result).toBe(true);
       });
 
-      it('return true if past top', function() {
-        getViewportHeight.andReturn(2);
-        getDocumentHeight.andReturn(2);
+      it('return true if past bottom', function() {
+        var documentHeight = 20;
+        var viewportHeight = 20;
 
-        var result = headroom.isOutOfBounds(1);
+        getDocumentHeight.andReturn(documentHeight);
+        getViewportHeight.andReturn(viewportHeight);
+        var result = headroom.isOutOfBounds(viewportHeight + 1);
 
         expect(result).toBe(true);
+      });
+
+      it('return false if in bounds', function() {
+        var documentHeight = 200;
+        var viewportHeight = 20;
+
+        getDocumentHeight.andReturn(documentHeight);
+        getViewportHeight.andReturn(viewportHeight);
+        var result = headroom.isOutOfBounds(10);
+
+        expect(result).toBe(false);
       });
     });
 
