@@ -179,7 +179,7 @@ $("#header").headroom();
     </p>
 
     <h2>Changelog</h2>
-    <h3 id="v1.0.0">v1.0.0 <span class="subdued">(2013-01-05)</span></h3>
+    <h3 id="v0.4.0">v0.4.0 <span class="subdued">(2013-01-05)</span></h3>
     <ul>
         <li>Options merged with defaults, even with plain JS</li>
         <li>Callbacks for pinning and unpinning</li>
@@ -220,27 +220,24 @@ $("#header").headroom();
 <script src="assets/scripts/main.js?v=2"></script>
 <script>
 (function() {
-    var header = new Headroom(document.querySelector("#header"), {
-        tolerance: 5,
+    new Headroom(document.querySelector("#header"), {
+        tolerance: 10,
         offset : 205,
         classes: {
           initial: "animated",
           pinned: "slideDown",
           unpinned: "slideUp"
         }
-    });
-    header.init();
+    }).init();
 
-    var bttHeadroom = new Headroom(document.getElementById("btt"), {
-        tolerance : 0,
+    new Headroom(document.querySelector("#btt"), {
         offset : 500,
         classes : {
             initial : "slide",
             pinned : "slide--reset",
             unpinned : "slide--down"
         }
-    });
-    bttHeadroom.init();
+    }).init();
 }());
 </script>
 
