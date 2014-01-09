@@ -71,13 +71,22 @@
         expect(debouncer.ticking).toBe(true);
       });
 
-      it('queues rAF only if not currently ticking', function() {
+      it('queues rAF if not currently ticking', function() {
         debouncer.ticking = false;
         debouncer.requestTick();
 
         expect(rAF).toHaveBeenCalled();
         expect(bind).toHaveBeenCalled();
         expect(debouncer.ticking).toBe(true);
+      });
+
+      it('caches the rAF callback', function() {
+        debouncer.ticking = false;
+        
+        debouncer.requestTick();
+        debouncer.requestTick();
+
+        expect(bind.calls.length).toBe(1);
       });
 
     });
