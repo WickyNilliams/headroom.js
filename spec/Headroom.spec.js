@@ -244,6 +244,82 @@
       });
     });
 
+    describe('top', function() {
+
+      beforeEach(function() {
+        headroom.onTop = jasmine.createSpy();
+      });
+
+      describe('when top class is not present', function() {
+
+        beforeEach(function() {
+          classList.contains.andReturn(false);
+          headroom.top();
+        });
+
+        it('should add top class', function(){
+          expect(classList.add).toHaveBeenCalledWith(headroom.classes.top);
+        });
+
+        it('should invoke callback if supplied', function() {
+          expect(headroom.onTop).toHaveBeenCalled();
+        });
+
+      });
+
+      describe('when top class is present', function() {
+
+        beforeEach(function() {
+          classList.contains.andReturn(true);
+          headroom.top();
+        });
+
+        it('should do nothing', function() {
+          expect(headroom.onTop).not.toHaveBeenCalled();
+        });
+
+      });
+
+    });
+
+    describe('untop', function() {
+
+      beforeEach(function() {
+        headroom.onUntop = jasmine.createSpy();
+      });
+
+      describe('when top class is present', function() {
+
+        beforeEach(function() {
+          classList.contains.andReturn(true);
+          headroom.untop();
+        });
+
+        it('should remove top class', function(){
+          expect(classList.remove).toHaveBeenCalledWith(headroom.classes.top);
+        });
+
+        it('should invoke callback if supplied', function() {
+          expect(headroom.onUntop).toHaveBeenCalled();
+        });
+
+      });
+
+      describe('when top class is not present', function() {
+
+        beforeEach(function() {
+          classList.contains.andReturn(false);
+          headroom.untop();
+        });
+
+        it('should do nothing', function() {
+          expect(headroom.onUntop).not.toHaveBeenCalled();
+        });
+
+      });
+
+    });
+
     describe('isOutOfBounds', function() {
 
       var getDocumentHeight, getViewportHeight;

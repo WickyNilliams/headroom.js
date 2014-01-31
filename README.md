@@ -97,11 +97,17 @@ Headroom.js can also accept an options object to alter the way it behaves. You c
         pinned : "headroom--pinned",
         // when scrolling down
         unpinned : "headroom--unpinned"
+        // when scroll position is at the very top
+        top : "headroom--top"
     },
     // callback when pinned, `this` is headroom object
     onPin : function() {},
     // callback when unpinned, `this` is headroom object
-    onUnpin : function() {}
+    onUnpin : function() {},
+    // callback when scroll position is at the very top, `this` is headroom object
+    onTop : function() {},
+    // callback when we've scrolled away from the top, `this` is headroom object
+    onUntop : function() {}
 }
 ```
 

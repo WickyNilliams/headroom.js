@@ -46,6 +46,8 @@ function Headroom (elem, options) {
   this.initialised      = false;
   this.onPin            = options.onPin;
   this.onUnpin          = options.onUnpin;
+  this.onTop            = options.onTop;
+  this.onUntop          = options.onUntop;
 }
 Headroom.prototype = {
   constructor : Headroom,
@@ -75,7 +77,7 @@ Headroom.prototype = {
 
     this.initialised = false;
     window.removeEventListener('scroll', this.debouncer, false);
-    this.elem.classList.remove(classes.unpinned, classes.pinned, classes.initial);
+    this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
   },
 
   /**
@@ -115,6 +117,32 @@ Headroom.prototype = {
       classList.remove(classes.unpinned);
       classList.add(classes.pinned);
       this.onPin && this.onPin.call(this);
+    }
+  },
+
+  /**
+   * Tops the header if it's currently untopped
+   */
+  top : function() {
+    var classList = this.elem.classList,
+      classes = this.classes;
+    
+    if(!classList.contains(classes.top)) {
+      classList.add(classes.top);
+      this.onTop && this.onTop.call(this);
+    }
+  },
+
+  /**
+   * Untops the header if it's currently topped
+   */
+  untop : function() {
+    var classList = this.elem.classList,
+      classes = this.classes;
+    
+    if(classList.contains(classes.top)) {
+      classList.remove(classes.top);
+      this.onUntop && this.onUntop.call(this);
     }
   },
 
@@ -214,6 +242,12 @@ Headroom.prototype = {
       return;
     }
 
+    if (currentScrollY <= this.offset ) {
+      this.top();
+    } else {
+      this.untop();
+    }
+
     if(this.shouldUnpin(currentScrollY, toleranceExceeded)) {
       this.unpin();
     }
@@ -234,6 +268,7 @@ Headroom.options = {
   classes : {
     pinned : 'headroom--pinned',
     unpinned : 'headroom--unpinned',
+    top: 'headroom--top',
     initial : 'headroom'
   }
 };
