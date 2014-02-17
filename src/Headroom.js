@@ -187,7 +187,7 @@ Headroom.prototype = {
     var scrollingDown = currentScrollY > this.lastKnownScrollY,
       pastOffset = currentScrollY >= this.offset;
 
-    return scrollingDown && pastOffset && toleranceExceeded;
+    return (scrollingDown && toleranceExceeded) || pastOffset;
   },
 
   /**
