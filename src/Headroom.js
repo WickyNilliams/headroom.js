@@ -129,6 +129,7 @@ Headroom.prototype = {
     
     if(!classList.contains(classes.top)) {
       classList.add(classes.top);
+      classList.remove(classes.notTop);
       this.onTop && this.onTop.call(this);
     }
   },
@@ -140,7 +141,8 @@ Headroom.prototype = {
     var classList = this.elem.classList,
       classes = this.classes;
     
-    if(classList.contains(classes.top)) {
+    if(!classList.contains(classes.notTop)) {
+      classList.add(classes.notTop);
       classList.remove(classes.top);
       this.onUntop && this.onUntop.call(this);
     }
@@ -269,6 +271,7 @@ Headroom.options = {
     pinned : 'headroom--pinned',
     unpinned : 'headroom--unpinned',
     top: 'headroom--top',
+    notTop: 'headroom--not-top',
     initial : 'headroom'
   }
 };

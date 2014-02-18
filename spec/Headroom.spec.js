@@ -261,6 +261,10 @@
           expect(classList.add).toHaveBeenCalledWith(headroom.classes.top);
         });
 
+        it('should remove notTop class', function(){
+          expect(classList.remove).toHaveBeenCalledWith(headroom.classes.notTop);
+        });
+
         it('should invoke callback if supplied', function() {
           expect(headroom.onTop).toHaveBeenCalled();
         });
@@ -291,12 +295,16 @@
       describe('when top class is present', function() {
 
         beforeEach(function() {
-          classList.contains.andReturn(true);
+          classList.contains.andReturn(false);
           headroom.untop();
         });
 
         it('should remove top class', function(){
           expect(classList.remove).toHaveBeenCalledWith(headroom.classes.top);
+        });
+
+        it('should add notTop class', function(){
+          expect(classList.add).toHaveBeenCalledWith(headroom.classes.notTop);
         });
 
         it('should invoke callback if supplied', function() {
@@ -308,7 +316,7 @@
       describe('when top class is not present', function() {
 
         beforeEach(function() {
-          classList.contains.andReturn(false);
+          classList.contains.andReturn(true);
           headroom.untop();
         });
 
