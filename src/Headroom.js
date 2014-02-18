@@ -89,6 +89,8 @@ Headroom.prototype = {
       this.lastKnownScrollY = this.getScrollY();
       this.initialised = true;
       window.addEventListener('scroll', this.debouncer, false);
+
+      this.debouncer.handleEvent();
     }
   },
   

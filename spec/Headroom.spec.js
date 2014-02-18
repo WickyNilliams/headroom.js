@@ -108,9 +108,13 @@
 
     describe('attachEvent', function() {
       var addEventListener;
+      var requestAnimationFrame;
+
+      global.requestAnimationFrame = function() {};
 
       beforeEach(function() {
         addEventListener = spyOn(global, 'addEventListener');
+        requestAnimationFrame = spyOn(global, 'requestAnimationFrame');
       });
 
       it('should attach listener for scroll event', function(){
@@ -118,6 +122,7 @@
 
         expect(headroom.initialised).toBe(true);
         expect(addEventListener).toHaveBeenCalledWith('scroll', headroom.debouncer, false);
+        expect(requestAnimationFrame.calls.length).toBe(1);
       });
 
       it('will only ever add one listener', function() {
@@ -125,6 +130,7 @@
         headroom.attachEvent();
 
         expect(addEventListener.calls.length).toBe(1);
+        expect(requestAnimationFrame.calls.length).toBe(1);
       });
 
     });
