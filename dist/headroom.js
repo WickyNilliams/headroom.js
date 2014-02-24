@@ -104,6 +104,8 @@
     this.initialised      = false;
     this.onPin            = options.onPin;
     this.onUnpin          = options.onUnpin;
+    this.onTop            = options.onTop;
+    this.onUntop          = options.onUntop;
   }
   Headroom.prototype = {
     constructor : Headroom,
@@ -133,7 +135,7 @@
   
       this.initialised = false;
       window.removeEventListener('scroll', this.debouncer, false);
-      this.elem.classList.remove(classes.unpinned, classes.pinned, classes.initial);
+      this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
     },
   
     /**
@@ -145,6 +147,8 @@
         this.lastKnownScrollY = this.getScrollY();
         this.initialised = true;
         window.addEventListener('scroll', this.debouncer, false);
+  
+        this.debouncer.handleEvent();
       }
     },
     
@@ -173,6 +177,34 @@
         classList.remove(classes.unpinned);
         classList.add(classes.pinned);
         this.onPin && this.onPin.call(this);
+      }
+    },
+  
+    /**
+     * Tops the header if it's currently untopped
+     */
+    top : function() {
+      var classList = this.elem.classList,
+        classes = this.classes;
+      
+      if(!classList.contains(classes.top)) {
+        classList.add(classes.top);
+        classList.remove(classes.notTop);
+        this.onTop && this.onTop.call(this);
+      }
+    },
+  
+    /**
+     * Untops the header if it's currently topped
+     */
+    untop : function() {
+      var classList = this.elem.classList,
+        classes = this.classes;
+      
+      if(!classList.contains(classes.notTop)) {
+        classList.add(classes.notTop);
+        classList.remove(classes.top);
+        this.onUntop && this.onUntop.call(this);
       }
     },
   
@@ -272,6 +304,12 @@
         return;
       }
   
+      if (currentScrollY <= this.offset ) {
+        this.top();
+      } else {
+        this.untop();
+      }
+  
       if(this.shouldUnpin(currentScrollY, toleranceExceeded)) {
         this.unpin();
       }
@@ -292,6 +330,8 @@
     classes : {
       pinned : 'headroom--pinned',
       unpinned : 'headroom--unpinned',
+      top: 'headroom--top',
+      notTop: 'headroom--not-top',
       initial : 'headroom'
     }
   };

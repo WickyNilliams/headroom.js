@@ -108,9 +108,13 @@
 
     describe('attachEvent', function() {
       var addEventListener;
+      var requestAnimationFrame;
+
+      global.requestAnimationFrame = function() {};
 
       beforeEach(function() {
         addEventListener = spyOn(global, 'addEventListener');
+        requestAnimationFrame = spyOn(global, 'requestAnimationFrame');
       });
 
       it('should attach listener for scroll event', function(){
@@ -118,6 +122,7 @@
 
         expect(headroom.initialised).toBe(true);
         expect(addEventListener).toHaveBeenCalledWith('scroll', headroom.debouncer, false);
+        expect(requestAnimationFrame.calls.length).toBe(1);
       });
 
       it('will only ever add one listener', function() {
@@ -125,6 +130,7 @@
         headroom.attachEvent();
 
         expect(addEventListener.calls.length).toBe(1);
+        expect(requestAnimationFrame.calls.length).toBe(1);
       });
 
     });
@@ -242,6 +248,90 @@
         var result = headroom.shouldPin(-1, false);
         expect(result).toBe(true);
       });
+    });
+
+    describe('top', function() {
+
+      beforeEach(function() {
+        headroom.onTop = jasmine.createSpy();
+      });
+
+      describe('when top class is not present', function() {
+
+        beforeEach(function() {
+          classList.contains.andReturn(false);
+          headroom.top();
+        });
+
+        it('should add top class', function(){
+          expect(classList.add).toHaveBeenCalledWith(headroom.classes.top);
+        });
+
+        it('should remove notTop class', function(){
+          expect(classList.remove).toHaveBeenCalledWith(headroom.classes.notTop);
+        });
+
+        it('should invoke callback if supplied', function() {
+          expect(headroom.onTop).toHaveBeenCalled();
+        });
+
+      });
+
+      describe('when top class is present', function() {
+
+        beforeEach(function() {
+          classList.contains.andReturn(true);
+          headroom.top();
+        });
+
+        it('should do nothing', function() {
+          expect(headroom.onTop).not.toHaveBeenCalled();
+        });
+
+      });
+
+    });
+
+    describe('untop', function() {
+
+      beforeEach(function() {
+        headroom.onUntop = jasmine.createSpy();
+      });
+
+      describe('when top class is present', function() {
+
+        beforeEach(function() {
+          classList.contains.andReturn(false);
+          headroom.untop();
+        });
+
+        it('should remove top class', function(){
+          expect(classList.remove).toHaveBeenCalledWith(headroom.classes.top);
+        });
+
+        it('should add notTop class', function(){
+          expect(classList.add).toHaveBeenCalledWith(headroom.classes.notTop);
+        });
+
+        it('should invoke callback if supplied', function() {
+          expect(headroom.onUntop).toHaveBeenCalled();
+        });
+
+      });
+
+      describe('when top class is not present', function() {
+
+        beforeEach(function() {
+          classList.contains.andReturn(true);
+          headroom.untop();
+        });
+
+        it('should do nothing', function() {
+          expect(headroom.onUntop).not.toHaveBeenCalled();
+        });
+
+      });
+
     });
 
     describe('isOutOfBounds', function() {
