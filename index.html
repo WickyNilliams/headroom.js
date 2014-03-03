@@ -223,11 +223,8 @@ $("#header").headroom();
     </div>
   </div>
 
-
 </div>
 </article>
-
-<a class="btt btn btn--plain hide-from-print" href="#" id="btt">Top <i class="icon icon--up"></i></a>
 
 <script src="assets/scripts/main.js?v=2"></script>
 <script>
@@ -236,20 +233,12 @@ $("#header").headroom();
         tolerance: 10,
         offset : 205,
         classes: {
-          initial: "animated",
-          pinned: "slideDown",
-          unpinned: "slideUp"
+          initial: "slide",
+          pinned: "slide--reset",
+          unpinned: "slide--up"
         }
     }).init();
 
-    new Headroom(document.querySelector("#btt"), {
-        offset : 500,
-        classes : {
-            initial : "slide",
-            pinned : "slide--reset",
-            unpinned : "slide--down"
-        }
-    }).init();
 }());
 </script>
 
