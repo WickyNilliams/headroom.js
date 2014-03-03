@@ -292,17 +292,17 @@
 
     });
 
-    describe('untop', function() {
+    describe('notTop', function() {
 
       beforeEach(function() {
-        headroom.onUntop = jasmine.createSpy();
+        headroom.onNotTop = jasmine.createSpy();
       });
 
       describe('when top class is present', function() {
 
         beforeEach(function() {
           classList.contains.andReturn(false);
-          headroom.untop();
+          headroom.notTop();
         });
 
         it('should remove top class', function(){
@@ -314,7 +314,7 @@
         });
 
         it('should invoke callback if supplied', function() {
-          expect(headroom.onUntop).toHaveBeenCalled();
+          expect(headroom.onNotTop).toHaveBeenCalled();
         });
 
       });
@@ -323,11 +323,11 @@
 
         beforeEach(function() {
           classList.contains.andReturn(true);
-          headroom.untop();
+          headroom.notTop();
         });
 
         it('should do nothing', function() {
-          expect(headroom.onUntop).not.toHaveBeenCalled();
+          expect(headroom.onNotTop).not.toHaveBeenCalled();
         });
 
       });
