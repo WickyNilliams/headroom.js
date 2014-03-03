@@ -1,5 +1,5 @@
 /*!
- * headroom.js v0.4.0 - Give your page some headroom. Hide your header until you need it
+ * headroom.js v0.5.0 - Give your page some headroom. Hide your header until you need it
  * Copyright (c) 2014 Nick Williams - http://wicky.nillia.ms/headroom.js
  * License: MIT
  */
@@ -104,6 +104,8 @@
     this.initialised      = false;
     this.onPin            = options.onPin;
     this.onUnpin          = options.onUnpin;
+    this.onTop            = options.onTop;
+    this.onNotTop         = options.onNotTop;
   }
   Headroom.prototype = {
     constructor : Headroom,
@@ -133,7 +135,7 @@
   
       this.initialised = false;
       window.removeEventListener('scroll', this.debouncer, false);
-      this.elem.classList.remove(classes.unpinned, classes.pinned, classes.initial);
+      this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
     },
   
     /**
@@ -145,6 +147,8 @@
         this.lastKnownScrollY = this.getScrollY();
         this.initialised = true;
         window.addEventListener('scroll', this.debouncer, false);
+  
+        this.debouncer.handleEvent();
       }
     },
     
@@ -173,6 +177,34 @@
         classList.remove(classes.unpinned);
         classList.add(classes.pinned);
         this.onPin && this.onPin.call(this);
+      }
+    },
+  
+    /**
+     * Handles the top states
+     */
+    top : function() {
+      var classList = this.elem.classList,
+        classes = this.classes;
+      
+      if(!classList.contains(classes.top)) {
+        classList.add(classes.top);
+        classList.remove(classes.notTop);
+        this.onTop && this.onTop.call(this);
+      }
+    },
+  
+    /**
+     * Handles the not top state
+     */
+    notTop : function() {
+      var classList = this.elem.classList,
+        classes = this.classes;
+      
+      if(!classList.contains(classes.notTop)) {
+        classList.add(classes.notTop);
+        classList.remove(classes.top);
+        this.onNotTop && this.onNotTop.call(this);
       }
     },
   
@@ -272,6 +304,12 @@
         return;
       }
   
+      if (currentScrollY <= this.offset ) {
+        this.top();
+      } else {
+        this.notTop();
+      }
+  
       if(this.shouldUnpin(currentScrollY, toleranceExceeded)) {
         this.unpin();
       }
@@ -292,6 +330,8 @@
     classes : {
       pinned : 'headroom--pinned',
       unpinned : 'headroom--unpinned',
+      top: 'headroom--top',
+      notTop: 'headroom--not-top',
       initial : 'headroom'
     }
   };
