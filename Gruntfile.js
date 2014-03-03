@@ -62,6 +62,9 @@ module.exports = function(grunt) {
     },
 
     watch : {
+      options : {
+        atBegin : true
+      },
       styles : {
         files : 'assets/styles/**/*.less',
         tasks : ['less:dev']
