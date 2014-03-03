@@ -151,12 +151,20 @@ $("#header").headroom();
         // when scrolling up
         pinned : "headroom--pinned",
         // when scrolling down
-        unpinned : "headroom--unpinned"
+        unpinned : "headroom--unpinned",
+        // when above offset
+        top : "headroom--top",
+        // when below offset
+        notTop : "headroom--not-top"
     },
     // callback when pinned, `this` is headroom object
     onPin : function() {},
     // callback when unpinned, `this` is headroom object
-    onUnpin : function() {}
+    onUnpin : function() {},
+    // callback when above offset, `this` is headroom object
+    onTop : function() {},
+    // callback when below offset, `this` is headroom object
+    onNotTop : function() {},
 }
 </code></pre>
 
@@ -179,6 +187,10 @@ $("#header").headroom();
     </p>
 
     <h2>Changelog</h2>
+    <h3 id="v0.5.0">v0.5.0 <time class="subdued">(2014-03-03)</time></h3>
+    <ul>
+        <li>Classes added above and below offset, with corresponding callbacks (thanks to <a href="https://twitter.com/andyhot">Andreas Andreou</a>)</li>
+    </ul>
     <h3 id="v0.4.0">v0.4.0 <time class="subdued">(2014-01-10)</time></h3>
     <ul>
         <li>Options merged with defaults, even with plain JS</li>
