@@ -48,6 +48,7 @@ function Headroom (elem, options) {
   this.onUnpin          = options.onUnpin;
   this.onTop            = options.onTop;
   this.onNotTop         = options.onNotTop;
+  this.target = options.target!=window?document.querySelector(options.target):window;
 }
 Headroom.prototype = {
   constructor : Headroom,
@@ -76,7 +77,7 @@ Headroom.prototype = {
     var classes = this.classes;
 
     this.initialised = false;
-    window.removeEventListener('scroll', this.debouncer, false);
+    this.target.removeEventListener('scroll', this.debouncer, false);
     this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
   },
 
@@ -88,7 +89,7 @@ Headroom.prototype = {
     if(!this.initialised){
       this.lastKnownScrollY = this.getScrollY();
       this.initialised = true;
-      window.addEventListener('scroll', this.debouncer, false);
+      this.target.addEventListener('scroll', this.debouncer, false);
 
       this.debouncer.handleEvent();
     }
@@ -156,9 +157,10 @@ Headroom.prototype = {
    * @return {Number} pixels the page has scrolled along the Y-axis
    */
   getScrollY : function() {
-    return (window.pageYOffset !== undefined)
-      ? window.pageYOffset
-      : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+    if (this.target == window)
+				return  (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+		else
+				return this.target.scrollTop;
   },
 
   /**
@@ -167,9 +169,10 @@ Headroom.prototype = {
    * @return {int} the height of the viewport in pixels
    */
   getViewportHeight : function () {
-    return window.innerHeight
-      || document.documentElement.clientHeight
-      || document.body.clientHeight;
+    if (this.target == window)
+				return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+		else
+				return this.target.clientHeight;
   },
 
   /**
@@ -178,14 +181,12 @@ Headroom.prototype = {
    * @return {int} the height of the document in pixels
    */
   getDocumentHeight : function () {
-    var body = document.body,
-      documentElement = document.documentElement;
-
-    return Math.max(
-        body.scrollHeight, documentElement.scrollHeight,
-        body.offsetHeight, documentElement.offsetHeight,
-        body.clientHeight, documentElement.clientHeight
-    );
+    if (this.target == window) {
+				var body = document.body,
+					documentElement = document.documentElement;
+				return Math.max(
+				body.scrollHeight, documentElement.scrollHeight, body.offsetHeight, documentElement.offsetHeight, body.clientHeight, documentElement.clientHeight);
+		} else return this.target.scrollHeight;
   },
 
   /**
@@ -275,6 +276,7 @@ Headroom.options = {
     top: 'headroom--top',
     notTop: 'headroom--not-top',
     initial : 'headroom'
-  }
+  },
+  target: window
 };
 Headroom.cutsTheMustard = typeof features !== 'undefined' && features.rAF && features.bind && features.classList;
