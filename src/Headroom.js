@@ -277,6 +277,8 @@ Headroom.options = {
     notTop: 'headroom--not-top',
     initial : 'headroom'
   },
-  target: window
+  target: window,
+  onUnpin: function() {},
+  onPin: function() {}
 };
 Headroom.cutsTheMustard = typeof features !== 'undefined' && features.rAF && features.bind && features.classList;
