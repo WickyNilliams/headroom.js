@@ -76,7 +76,7 @@ Include the `headroom.js` and `angular.headroom.js` scripts in your page, and th
 <!-- or -->
 <headroom></headroom>
 <!-- or with options -->
-<headroom tolerance='0' offset='0' classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"></headroom>
+<headroom tolerance='0' offset='0' scroller="'.app-view'" classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"></headroom>
 ```
 
 ## Options
@@ -89,6 +89,8 @@ Headroom.js can also accept an options object to alter the way it behaves. You c
     offset : 0,
     // scroll tolerance in px before state changes
     tolerance : 0,
+    // selector, on which element to bind the scroll event 
+    scroller: 'window',
     // css classes to apply
     classes : {
         // when element is initialised

@@ -20,7 +20,8 @@
       scope: {
         tolerance: '=',
         offset: '=',
-        classes: '='
+        classes: '=',
+        scroller: '='
       },
       link: function(scope, element) {
         var options = {};

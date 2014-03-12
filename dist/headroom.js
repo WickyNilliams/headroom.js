@@ -101,6 +101,11 @@
     this.tolerance        = options.tolerance;
     this.classes          = options.classes;
     this.offset           = options.offset;
+    if (options.scroller) {
+      this.scroller       = document.querySelectorAll(options.scroller)[0];
+    } else {
+      this.scroller       = window;
+    }
     this.initialised      = false;
     this.onPin            = options.onPin;
     this.onUnpin          = options.onUnpin;
@@ -134,7 +139,7 @@
       var classes = this.classes;
   
       this.initialised = false;
-      window.removeEventListener('scroll', this.debouncer, false);
+      this.scroller.removeEventListener('scroll', this.debouncer, false);
       this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
     },
   
@@ -146,7 +151,7 @@
       if(!this.initialised){
         this.lastKnownScrollY = this.getScrollY();
         this.initialised = true;
-        window.addEventListener('scroll', this.debouncer, false);
+        this.scroller.addEventListener('scroll', this.debouncer, false);
   
         this.debouncer.handleEvent();
       }
@@ -214,9 +219,11 @@
      * @return {Number} pixels the page has scrolled along the Y-axis
      */
     getScrollY : function() {
-      return (window.pageYOffset !== undefined)
-        ? window.pageYOffset
-        : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+      return (this.scroller.pageYOffset !== undefined)
+        ? this.scroller.pageYOffset
+        : (this.scroller.scrollTop !== undefined)
+          ? this.scroller.scrollTop
+          : (document.documentElement || document.body.parentNode || document.body).scrollTop;
     },
   
     /**
@@ -237,12 +244,20 @@
      */
     getDocumentHeight : function () {
       var body = document.body,
-        documentElement = document.documentElement;
-  
-      return Math.max(
+          documentElement = document.documentElement;
+    
+      if (this.scroller === window || this.scroller === body) {
+        return Math.max(
           body.scrollHeight, documentElement.scrollHeight,
           body.offsetHeight, documentElement.offsetHeight,
           body.clientHeight, documentElement.clientHeight
+        );
+      }
+  
+      return Math.max(
+        this.scroller.scrollHeight,
+        this.scroller.offsetHeight,
+        this.scroller.clientHeight
       );
     },
   
