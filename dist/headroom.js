@@ -57,6 +57,15 @@
     }
   };
   /**
+   * Check if object is part of the DOM
+   * @constructor
+   * @param {Object} obj element to check
+   */
+  function isDOMElement(obj) {
+    return obj && typeof window !== 'undefined' && (obj === window || obj.nodeType);
+  }
+  
+  /**
    * Helper function for extending objects
    */
   function extend (object /*, objectN ... */) {
@@ -72,7 +81,8 @@
       var replacement = arguments[i] || {};
   
       for (key in replacement) {
-        if(typeof result[key] === 'object') {
+        // Recurse into object except if the object is a DOM element
+        if(typeof result[key] === 'object' && ! isDOMElement(result[key])) {
           result[key] = extend(result[key], replacement[key]);
         }
         else {
@@ -101,11 +111,7 @@
     this.tolerance        = options.tolerance;
     this.classes          = options.classes;
     this.offset           = options.offset;
-    if (options.scroller) {
-      this.scroller       = document.querySelectorAll(options.scroller)[0];
-    } else {
-      this.scroller       = window;
-    }
+    this.scroller         = options.scroller;
     this.initialised      = false;
     this.onPin            = options.onPin;
     this.onUnpin          = options.onUnpin;
@@ -244,21 +250,36 @@
      */
     getDocumentHeight : function () {
       var body = document.body,
-          documentElement = document.documentElement;
+        documentElement = document.documentElement;
     
-      if (this.scroller === window || this.scroller === body) {
-        return Math.max(
-          body.scrollHeight, documentElement.scrollHeight,
-          body.offsetHeight, documentElement.offsetHeight,
-          body.clientHeight, documentElement.clientHeight
-        );
-      }
-  
       return Math.max(
-        this.scroller.scrollHeight,
-        this.scroller.offsetHeight,
-        this.scroller.clientHeight
+        body.scrollHeight, documentElement.scrollHeight,
+        body.offsetHeight, documentElement.offsetHeight,
+        body.clientHeight, documentElement.clientHeight
       );
+    },
+  
+    /**
+     * Gets the height of the DOM element
+     * @param  {Object}  elm the element to calculate the height of which
+     * @return {int}     the height of the element in pixels
+     */
+    getElementHeight : function (elm) {
+      return Math.max(
+        elm.scrollHeight,
+        elm.offsetHeight,
+        elm.clientHeight
+      );
+    },
+  
+    /**
+     * Gets the height of the scroller element
+     * @return {int} the height of the scroller element in pixels
+     */
+    getScrollerHeight : function () {
+      return (this.scroller === window || this.scroller === document.body)
+        ? this.getDocumentHeight()
+        : this.getElementHeight(this.scroller);
     },
   
     /**
@@ -268,7 +289,7 @@
      */
     isOutOfBounds : function (currentScrollY) {
       var pastTop  = currentScrollY < 0,
-        pastBottom = currentScrollY + this.getViewportHeight() > this.getDocumentHeight();
+        pastBottom = currentScrollY + this.getViewportHeight() > this.getScrollerHeight();
       
       return pastTop || pastBottom;
     },
@@ -342,6 +363,7 @@
   Headroom.options = {
     tolerance : 0,
     offset: 0,
+    scroller: window,
     classes : {
       pinned : 'headroom--pinned',
       unpinned : 'headroom--unpinned',
