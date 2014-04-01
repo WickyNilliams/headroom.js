@@ -35,6 +35,15 @@ Relying on CSS classes affords headroom.js incredible flexibility. The choice of
 
 Using headroom.js is really simple. It has a pure JS API, plus an optional jQuery/Zepto plugin and AngularJS directive.
 
+### Using Headroom.js with a CDN
+
+CDN provided by [jsDelivr CDN](http://www.jsdelivr.com/#!headroomjs)
+```
+<script src="//cdn.jsdelivr.net/headroomjs/0.5.0/headroom.min.js"></script>
+<script src="//cdn.jsdelivr.net/headroomjs/0.5.0/angular.headroom.min.js"></script>
+<script src="//cdn.jsdelivr.net/headroomjs/0.5.0/jQuery.headroom.min.js"></script>
+```
+
 ### With pure JS
 
 Include the `headroom.js` script in your page, and then:
