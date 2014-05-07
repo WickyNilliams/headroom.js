@@ -36,6 +36,7 @@
         expect(hr.tolerance).toBe(Headroom.options.tolerance);
         expect(hr.offset).toBe(Headroom.options.offset);
         expect(hr.classes).toBe(Headroom.options.classes);
+        expect(hr.scroller).toBe(Headroom.options.scroller);
         expect(hr.onPin).toBe(onPin);
         expect(hr.onUnpin).toBe(onUnpin);
       });
@@ -43,6 +44,7 @@
       it('merges the options arguments properly', function() {
         var userOpts = {
           tolerance : 30,
+          scroller: document.body,
           classes : {
             initial : 'hr'
           }
@@ -52,6 +54,7 @@
 
         expect(hr.tolerance).toBe(userOpts.tolerance);
         expect(hr.offset).toBe(Headroom.options.offset);
+        expect(hr.scroller).toBe(userOpts.scroller);
         expect(hr.classes.initial).toBe(userOpts.classes.initial);
         expect(hr.classes.pinned).toBe(Headroom.options.classes.pinned);
       });
@@ -336,11 +339,11 @@
 
     describe('isOutOfBounds', function() {
 
-      var getDocumentHeight, getViewportHeight;
+      var getScrollerHeight, getViewportHeight;
 
       beforeEach(function() {
         getViewportHeight = spyOn(headroom, 'getViewportHeight');
-        getDocumentHeight = spyOn(headroom, 'getDocumentHeight');
+        getScrollerHeight = spyOn(headroom, 'getScrollerHeight');
       });
 
       it('return true if past top', function() {
@@ -352,7 +355,7 @@
         var documentHeight = 20;
         var viewportHeight = 20;
 
-        getDocumentHeight.andReturn(documentHeight);
+        getScrollerHeight.andReturn(documentHeight);
         getViewportHeight.andReturn(viewportHeight);
         var result = headroom.isOutOfBounds(viewportHeight + 1);
 
@@ -363,7 +366,7 @@
         var documentHeight = 200;
         var viewportHeight = 20;
 
-        getDocumentHeight.andReturn(documentHeight);
+        getScrollerHeight.andReturn(documentHeight);
         getViewportHeight.andReturn(viewportHeight);
         var result = headroom.isOutOfBounds(10);
 
@@ -372,11 +375,19 @@
     });
 
     describe('getDocumentHeight', function() {
-      
+
+    });
+
+    describe('getElementHeight', function() {
+
+    });
+
+    describe('getScrollerHeight', function() {
+
     });
 
     describe('getViewportHeight', function() {
-      
+
     });
 
     describe('update', function() {
