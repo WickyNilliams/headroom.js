@@ -27,6 +27,13 @@ function extend (object /*, objectN ... */) {
 }
 
 /**
+ * Helper function for normalizing tolerance option to object format
+ */
+function normalizeTolerance (t) {
+  return t === Object(t) ? t : { down : t, up : t };
+}
+
+/**
  * UI enhancement for fixed headers.
  * Hides header when scrolling down
  * Shows header when scrolling up
@@ -40,7 +47,7 @@ function Headroom (elem, options) {
   this.lastKnownScrollY = 0;
   this.elem             = elem;
   this.debouncer        = new Debouncer(this.update.bind(this));
-  this.tolerance        = options.tolerance;
+  this.tolerance        = normalizeTolerance(options.tolerance);
   this.classes          = options.classes;
   this.offset           = options.offset;
   this.initialised      = false;
@@ -205,8 +212,8 @@ Headroom.prototype = {
    * @param  {int} currentScrollY the current scroll y position
    * @return {bool} true if tolerance exceeded, false otherwise
    */
-  toleranceExceeded : function (currentScrollY) {
-    return Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance;
+  toleranceExceeded : function (currentScrollY, direction) {
+    return Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance[direction];
   },
 
   /**
@@ -240,7 +247,8 @@ Headroom.prototype = {
    */
   update : function() {
     var currentScrollY  = this.getScrollY(),
-      toleranceExceeded = this.toleranceExceeded(currentScrollY);
+      scrollDirection = currentScrollY > this.lastKnownScrollY ? 'down' : 'up',
+      toleranceExceeded = this.toleranceExceeded(currentScrollY, scrollDirection);
 
     if(this.isOutOfBounds(currentScrollY)) { // Ignore bouncy scrolling in OSX
       return;
@@ -267,13 +275,16 @@ Headroom.prototype = {
  * @type {Object}
  */
 Headroom.options = {
-  tolerance : 0,
-  offset: 0,
+  tolerance : {
+    up : 0,
+    down : 0
+  },
+  offset : 0,
   classes : {
     pinned : 'headroom--pinned',
     unpinned : 'headroom--unpinned',
-    top: 'headroom--top',
-    notTop: 'headroom--not-top',
+    top : 'headroom--top',
+    notTop : 'headroom--not-top',
     initial : 'headroom'
   }
 };

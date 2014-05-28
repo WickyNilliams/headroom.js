@@ -98,6 +98,11 @@ Headroom.js can also accept an options object to alter the way it behaves. You c
     offset : 0,
     // scroll tolerance in px before state changes
     tolerance : 0,
+    // or scroll tolerance per direction
+    tolerance : {
+        down : 0,
+        up : 0
+    },
     // css classes to apply
     classes : {
         // when element is initialised
