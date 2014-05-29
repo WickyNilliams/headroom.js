@@ -173,11 +173,51 @@ $("#header").headroom();
 }
 </code></pre>
 
+<h3>CSS</h3>
 
+<p>
+    Recall that headroom.js works by adding and removing CSS classes in reaction to the user's scroll. This means you will need some CSS to achieve the effect you want. For example, you could hide the header on scroll down, and reveal it again on scroll up. The most basic CSS for this would be:
+</p>
+
+<pre class="language-css"><code>.headroom--pinned {
+    display: block;
+}
+
+.headroom--unpinned {
+    display: none;
+}</code></pre>
+
+<p>
+    Whilst this is functional, it's a bit of a jarring effect. We could do better with some CSS transitions to smoothly move the header in and out of view:
+</p>
+
+<pre class="language-css"><code>/**
+ * Note: I have omitted any vendor-prefixes for clarity.
+ * Adding them is left as an exercise for the reader.
+ */
+.headroom {
+    transition: transform 200ms linear;
+}
+.headroom--pinned {
+    transform: translateY(0%);
+}
+
+.headroom--unpinned {
+    transform: translateY(-100%);
+}</code></pre>
+
+
+<p>
+    Notice that we're transitioning the <code>transform</code> property. The reason to transition this is because <a href="http://www.html5rocks.com/en/tutorials/speed/high-performance-animations/">transforms are much cheap to animate</a> compared to <code>top</code>, <code>bottom</code> etc. Another benefit is that translation percentage values are relative to the dimensions of the element, whereas <code>top</code> etc. percentage values are relative to the dimensions of the viewport. This means you don't need to know the height of the element in advance, <code>-100%</code> will always slide the element entirely out of view.
+</p>
+
+<p>
+    The CSS above is enough to get you started, but feel free to try something entirely different. Let you imagination run wild. But not <em>too wild</em>, your users won't appreciate that.
+</p>
 
 <h2>Examples</h2>
 <p>
-    Head over to the <a href="playroom/">headroom.js playroom</a> if you want see some example usages. There you can tweak all of headroom's options and apply different CSS effects in an interactive demo.
+    Head over to the <a href="playroom/">headroom.js playroom</a> if you want see some example uses. There you can tweak all of headroom's options and try out various CSS effects in an interactive demo.
 </p>
 
 <h2>Browser support</h2>
