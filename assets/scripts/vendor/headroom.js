@@ -1,5 +1,5 @@
 /*!
- * headroom.js v0.5.0 - Give your page some headroom. Hide your header until you need it
+ * headroom.js v0.6.0 - Give your page some headroom. Hide your header until you need it
  * Copyright (c) 2014 Nick Williams - http://wicky.nillia.ms/headroom.js
  * License: MIT
  */
@@ -85,6 +85,13 @@
   }
   
   /**
+   * Helper function for normalizing tolerance option to object format
+   */
+  function normalizeTolerance (t) {
+    return t === Object(t) ? t : { down : t, up : t };
+  }
+  
+  /**
    * UI enhancement for fixed headers.
    * Hides header when scrolling down
    * Shows header when scrolling up
@@ -98,7 +105,7 @@
     this.lastKnownScrollY = 0;
     this.elem             = elem;
     this.debouncer        = new Debouncer(this.update.bind(this));
-    this.tolerance        = options.tolerance;
+    this.tolerance        = normalizeTolerance(options.tolerance);
     this.classes          = options.classes;
     this.offset           = options.offset;
     this.initialised      = false;
@@ -263,8 +270,8 @@
      * @param  {int} currentScrollY the current scroll y position
      * @return {bool} true if tolerance exceeded, false otherwise
      */
-    toleranceExceeded : function (currentScrollY) {
-      return Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance;
+    toleranceExceeded : function (currentScrollY, direction) {
+      return Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance[direction];
     },
   
     /**
@@ -298,7 +305,8 @@
      */
     update : function() {
       var currentScrollY  = this.getScrollY(),
-        toleranceExceeded = this.toleranceExceeded(currentScrollY);
+        scrollDirection = currentScrollY > this.lastKnownScrollY ? 'down' : 'up',
+        toleranceExceeded = this.toleranceExceeded(currentScrollY, scrollDirection);
   
       if(this.isOutOfBounds(currentScrollY)) { // Ignore bouncy scrolling in OSX
         return;
@@ -325,13 +333,16 @@
    * @type {Object}
    */
   Headroom.options = {
-    tolerance : 0,
-    offset: 0,
+    tolerance : {
+      up : 0,
+      down : 0
+    },
+    offset : 0,
     classes : {
       pinned : 'headroom--pinned',
       unpinned : 'headroom--unpinned',
-      top: 'headroom--top',
-      notTop: 'headroom--not-top',
+      top : 'headroom--top',
+      notTop : 'headroom--not-top',
       initial : 'headroom'
     }
   };
