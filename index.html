@@ -282,7 +282,10 @@ $("#header").headroom();
 <script>
 (function() {
     new Headroom(document.querySelector("#header"), {
-        tolerance: 10,
+        tolerance: {
+          down : 10,
+          up : 20
+        },
         offset : 205,
         classes: {
           initial: "slide",
