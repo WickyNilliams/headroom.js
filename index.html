@@ -281,7 +281,12 @@ $("#header").headroom();
 <script src="assets/scripts/main.js?v=2"></script>
 <script>
 (function() {
-    new Headroom(document.querySelector("#header"), {
+    var header = document.querySelector("#header");
+    if(window.location.hash) {
+      header.classList.add("slide--up");
+    }
+
+    new Headroom(header, {
         tolerance: {
           down : 10,
           up : 20
