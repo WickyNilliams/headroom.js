@@ -16,7 +16,7 @@ Headroom.js allows you to bring elements into view when appropriate, and give fo
 
 ### How does it work?
 
-At it's most basic headroom.js simply adds and removes CSS classes from an element in response to a scroll event:
+At it's most basic headroom.js simply adds and removes CSS classes from an element in response to a scroll event. This means **you must supply your own CSS styles separately**. The classes that are used in headroom.js that are added and removed are:
 
 ```html
 <!-- initially -->
