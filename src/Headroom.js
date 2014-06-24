@@ -82,8 +82,7 @@ Headroom.prototype = {
   destroy : function() {
     var classes = this.classes;
 
-    this.initialised = false;
-    window.removeEventListener('scroll', this.debouncer, false);
+    this.detachEvent();
     this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
   },
 
@@ -100,7 +99,16 @@ Headroom.prototype = {
       this.debouncer.handleEvent();
     }
   },
-  
+
+  /**
+   * Detaches the scroll event
+   * @private
+   */
+  detachEvent : function() {
+    window.removeEventListener('scroll', this.debouncer, false);
+    this.initialised = false;
+  },
+
   /**
    * Unpins the header if it's currently pinned
    */
