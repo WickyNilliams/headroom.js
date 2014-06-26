@@ -43,7 +43,10 @@
 
       it('merges the options arguments properly', function() {
         var userOpts = {
-          tolerance : 30,
+          tolerance : {
+            down : 5,
+            up : 30
+          },
           scroller: document.body,
           classes : {
             initial : 'hr'

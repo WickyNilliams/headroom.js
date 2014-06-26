@@ -35,6 +35,15 @@ Relying on CSS classes affords headroom.js incredible flexibility. The choice of
 
 Using headroom.js is really simple. It has a pure JS API, plus an optional jQuery/Zepto plugin and AngularJS directive.
 
+### Using Headroom.js with a CDN
+
+CDN provided by [jsDelivr CDN](http://www.jsdelivr.com/#!headroomjs)
+```
+<script src="//cdn.jsdelivr.net/headroomjs/0.5.0/headroom.min.js"></script>
+<script src="//cdn.jsdelivr.net/headroomjs/0.5.0/angular.headroom.min.js"></script>
+<script src="//cdn.jsdelivr.net/headroomjs/0.5.0/jQuery.headroom.min.js"></script>
+```
+
 ### With pure JS
 
 Include the `headroom.js` script in your page, and then:
@@ -91,6 +100,11 @@ Headroom.js can also accept an options object to alter the way it behaves. You c
     offset : 0,
     // scroll tolerance in px before state changes
     tolerance : 0,
+    // or scroll tolerance per direction
+    tolerance : {
+        down : 0,
+        up : 0
+    },
     // DOM element, on which element to bind the scroll event 
     scroller: window,
     // css classes to apply
