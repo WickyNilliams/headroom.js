@@ -71,7 +71,7 @@ Headroom.prototype = {
       return;
     }
 
-    this.elem.classList.add(this.classes.initial);
+    this.addClass(this.classes.initial);
 
     // defer event registration to handle browser 
     // potentially restoring previous scroll position
@@ -88,7 +88,7 @@ Headroom.prototype = {
 
     this.initialised = false;
     this.scroller.removeEventListener('scroll', this.debouncer, false);
-    this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
+    this.removeClass(classes.unpinned, classes.pinned, classes.top, classes.initial);
   },
 
   /**
@@ -106,15 +106,45 @@ Headroom.prototype = {
   },
   
   /**
+   * Add class to element(s)
+   */
+  addClass : function() {
+    var classes = arguments;
+    
+    if (Array.isArray(this.elem)) {
+      this.elem.forEach(function(elem){
+        elem.classList.add.apply(elem.classList, classes);
+      });
+    } else {
+      this.elem.classList.add.apply(this.elem.classList, classes);
+    }
+  },
+
+  /**
+   * Remove class from element(s)
+   */
+  removeClass : function() {
+    var classes = arguments;
+    
+    if (Array.isArray(this.elem)) {
+      this.elem.forEach(function(elem){
+        elem.classList.remove.apply(elem.classList, classes);
+      });
+    } else {
+      this.elem.classList.remove.apply(this.elem.classList, classes);
+    }
+  },
+
+  /**
    * Unpins the header if it's currently pinned
    */
   unpin : function() {
-    var classList = this.elem.classList,
+    var classList = this.elem.classList || this.elem[0].classList,
       classes = this.classes;
     
     if(classList.contains(classes.pinned) || !classList.contains(classes.unpinned)) {
-      classList.add(classes.unpinned);
-      classList.remove(classes.pinned);
+      this.addClass(classes.unpinned);
+      this.removeClass(classes.pinned);
       this.onUnpin && this.onUnpin.call(this);
     }
   },
@@ -123,12 +153,12 @@ Headroom.prototype = {
    * Pins the header if it's currently unpinned
    */
   pin : function() {
-    var classList = this.elem.classList,
+    var classList = this.elem.classList || this.elem[0].classList,
       classes = this.classes;
     
     if(classList.contains(classes.unpinned)) {
-      classList.remove(classes.unpinned);
-      classList.add(classes.pinned);
+      this.addClass(classes.pinned);
+      this.removeClass(classes.unpinned);
       this.onPin && this.onPin.call(this);
     }
   },
@@ -137,12 +167,12 @@ Headroom.prototype = {
    * Handles the top states
    */
   top : function() {
-    var classList = this.elem.classList,
+    var classList = this.elem.classList || this.elem[0].classList,
       classes = this.classes;
     
     if(!classList.contains(classes.top)) {
-      classList.add(classes.top);
-      classList.remove(classes.notTop);
+      this.addClass(classes.top);
+      this.removeClass(classes.notTop);
       this.onTop && this.onTop.call(this);
     }
   },
@@ -151,12 +181,12 @@ Headroom.prototype = {
    * Handles the not top state
    */
   notTop : function() {
-    var classList = this.elem.classList,
+    var classList = this.elem.classList || this.elem[0].classList,
       classes = this.classes;
     
     if(!classList.contains(classes.notTop)) {
-      classList.add(classes.notTop);
-      classList.remove(classes.top);
+      this.addClass(classes.notTop);
+      this.removeClass(classes.top);
       this.onNotTop && this.onNotTop.call(this);
     }
   },
