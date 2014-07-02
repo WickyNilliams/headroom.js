@@ -57,6 +57,15 @@
     }
   };
   /**
+   * Check if object is part of the DOM
+   * @constructor
+   * @param {Object} obj element to check
+   */
+  function isDOMElement(obj) {
+    return obj && typeof window !== 'undefined' && (obj === window || obj.nodeType);
+  }
+  
+  /**
    * Helper function for extending objects
    */
   function extend (object /*, objectN ... */) {
@@ -72,7 +81,8 @@
       var replacement = arguments[i] || {};
   
       for (key in replacement) {
-        if(typeof result[key] === 'object') {
+        // Recurse into object except if the object is a DOM element
+        if(typeof result[key] === 'object' && ! isDOMElement(result[key])) {
           result[key] = extend(result[key], replacement[key]);
         }
         else {
@@ -108,6 +118,7 @@
     this.tolerance        = normalizeTolerance(options.tolerance);
     this.classes          = options.classes;
     this.offset           = options.offset;
+    this.scroller         = options.scroller;
     this.initialised      = false;
     this.onPin            = options.onPin;
     this.onUnpin          = options.onUnpin;
@@ -125,7 +136,7 @@
         return;
       }
   
-      this.elem.classList.add(this.classes.initial);
+      this.addClass(this.classes.initial);
   
       // defer event registration to handle browser 
       // potentially restoring previous scroll position
@@ -141,8 +152,8 @@
       var classes = this.classes;
   
       this.initialised = false;
-      window.removeEventListener('scroll', this.debouncer, false);
-      this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
+      this.scroller.removeEventListener('scroll', this.debouncer, false);
+      this.removeClass(classes.unpinned, classes.pinned, classes.top, classes.initial);
     },
   
     /**
@@ -153,22 +164,52 @@
       if(!this.initialised){
         this.lastKnownScrollY = this.getScrollY();
         this.initialised = true;
-        window.addEventListener('scroll', this.debouncer, false);
+        this.scroller.addEventListener('scroll', this.debouncer, false);
   
         this.debouncer.handleEvent();
       }
     },
     
     /**
+     * Add class to element(s)
+     */
+    addClass : function() {
+      var classes = arguments;
+      
+      if (Array.isArray(this.elem)) {
+        this.elem.forEach(function(elem){
+          elem.classList.add.apply(elem.classList, classes);
+        });
+      } else {
+        this.elem.classList.add.apply(this.elem.classList, classes);
+      }
+    },
+  
+    /**
+     * Remove class from element(s)
+     */
+    removeClass : function() {
+      var classes = arguments;
+      
+      if (Array.isArray(this.elem)) {
+        this.elem.forEach(function(elem){
+          elem.classList.remove.apply(elem.classList, classes);
+        });
+      } else {
+        this.elem.classList.remove.apply(this.elem.classList, classes);
+      }
+    },
+  
+    /**
      * Unpins the header if it's currently pinned
      */
     unpin : function() {
-      var classList = this.elem.classList,
+      var classList = this.elem.classList || this.elem[0].classList,
         classes = this.classes;
       
       if(classList.contains(classes.pinned) || !classList.contains(classes.unpinned)) {
-        classList.add(classes.unpinned);
-        classList.remove(classes.pinned);
+        this.addClass(classes.unpinned);
+        this.removeClass(classes.pinned);
         this.onUnpin && this.onUnpin.call(this);
       }
     },
@@ -177,12 +218,12 @@
      * Pins the header if it's currently unpinned
      */
     pin : function() {
-      var classList = this.elem.classList,
+      var classList = this.elem.classList || this.elem[0].classList,
         classes = this.classes;
       
       if(classList.contains(classes.unpinned)) {
-        classList.remove(classes.unpinned);
-        classList.add(classes.pinned);
+        this.addClass(classes.pinned);
+        this.removeClass(classes.unpinned);
         this.onPin && this.onPin.call(this);
       }
     },
@@ -191,12 +232,12 @@
      * Handles the top states
      */
     top : function() {
-      var classList = this.elem.classList,
+      var classList = this.elem.classList || this.elem[0].classList,
         classes = this.classes;
       
       if(!classList.contains(classes.top)) {
-        classList.add(classes.top);
-        classList.remove(classes.notTop);
+        this.addClass(classes.top);
+        this.removeClass(classes.notTop);
         this.onTop && this.onTop.call(this);
       }
     },
@@ -205,12 +246,12 @@
      * Handles the not top state
      */
     notTop : function() {
-      var classList = this.elem.classList,
+      var classList = this.elem.classList || this.elem[0].classList,
         classes = this.classes;
       
       if(!classList.contains(classes.notTop)) {
-        classList.add(classes.notTop);
-        classList.remove(classes.top);
+        this.addClass(classes.notTop);
+        this.removeClass(classes.top);
         this.onNotTop && this.onNotTop.call(this);
       }
     },
@@ -221,9 +262,11 @@
      * @return {Number} pixels the page has scrolled along the Y-axis
      */
     getScrollY : function() {
-      return (window.pageYOffset !== undefined)
-        ? window.pageYOffset
-        : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+      return (this.scroller.pageYOffset !== undefined)
+        ? this.scroller.pageYOffset
+        : (this.scroller.scrollTop !== undefined)
+          ? this.scroller.scrollTop
+          : (document.documentElement || document.body.parentNode || document.body).scrollTop;
     },
   
     /**
@@ -245,12 +288,35 @@
     getDocumentHeight : function () {
       var body = document.body,
         documentElement = document.documentElement;
-  
+    
       return Math.max(
-          body.scrollHeight, documentElement.scrollHeight,
-          body.offsetHeight, documentElement.offsetHeight,
-          body.clientHeight, documentElement.clientHeight
+        body.scrollHeight, documentElement.scrollHeight,
+        body.offsetHeight, documentElement.offsetHeight,
+        body.clientHeight, documentElement.clientHeight
       );
+    },
+  
+    /**
+     * Gets the height of the DOM element
+     * @param  {Object}  elm the element to calculate the height of which
+     * @return {int}     the height of the element in pixels
+     */
+    getElementHeight : function (elm) {
+      return Math.max(
+        elm.scrollHeight,
+        elm.offsetHeight,
+        elm.clientHeight
+      );
+    },
+  
+    /**
+     * Gets the height of the scroller element
+     * @return {int} the height of the scroller element in pixels
+     */
+    getScrollerHeight : function () {
+      return (this.scroller === window || this.scroller === document.body)
+        ? this.getDocumentHeight()
+        : this.getElementHeight(this.scroller);
     },
   
     /**
@@ -260,7 +326,7 @@
      */
     isOutOfBounds : function (currentScrollY) {
       var pastTop  = currentScrollY < 0,
-        pastBottom = currentScrollY + this.getViewportHeight() > this.getDocumentHeight();
+        pastBottom = currentScrollY + this.getViewportHeight() > this.getScrollerHeight();
       
       return pastTop || pastBottom;
     },
@@ -338,6 +404,7 @@
       down : 0
     },
     offset : 0,
+    scroller: window,
     classes : {
       pinned : 'headroom--pinned',
       unpinned : 'headroom--unpinned',
