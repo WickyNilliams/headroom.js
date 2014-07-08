@@ -1,11 +1,25 @@
 /*!
  * headroom.js v0.7.0 - Give your page some headroom. Hide your header until you need it
- * Copyright (c) 2014 Nick Williams - http://wicky.nillia.ms/headroom.js
+ * Copyright (c) 2015 Nick Williams - http://wicky.nillia.ms/headroom.js
  * License: MIT
  */
 
-(function(window, document) {
+(function(root, factory) {
+  'use strict';
 
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define([], factory);
+  }
+  else if (typeof exports === 'object') {
+    // COMMONJS
+    module.exports = factory();
+  }
+  else {
+    // BROWSER
+    root.Headroom = factory();
+  }
+}(this, function() {
   'use strict';
 
   /* exported features */
@@ -114,7 +128,6 @@
   
     this.lastKnownScrollY = 0;
     this.elem             = elem;
-    this.debouncer        = new Debouncer(this.update.bind(this));
     this.tolerance        = normalizeTolerance(options.tolerance);
     this.classes          = options.classes;
     this.offset           = options.offset;
@@ -135,7 +148,7 @@
       if(!Headroom.cutsTheMustard) {
         return;
       }
-  
+      this.debouncer = new Debouncer(this.update.bind(this));
       this.elem.classList.add(this.classes.initial);
   
       // defer event registration to handle browser 
@@ -150,8 +163,8 @@
      */
     destroy : function() {
       var classes = this.classes;
-  
       this.initialised = false;
+      window.removeEventListener('scroll', this.debouncer, false);
       this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
       this.scroller.removeEventListener('scroll', this.debouncer, false);
     },
@@ -385,6 +398,5 @@
   };
   Headroom.cutsTheMustard = typeof features !== 'undefined' && features.rAF && features.bind && features.classList;
 
-  window.Headroom = Headroom;
-
-}(window, document));
+  return Headroom;
+}));

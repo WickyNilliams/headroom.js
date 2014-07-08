@@ -13,14 +13,8 @@
 
     describe('constructor', function() {
 
-      var debouncer;
-
       function onPin(){}
       function onUnpin(){}
-
-      beforeEach(function(){
-        debouncer = spyOn(global, 'Debouncer').andCallThrough();
-      });
 
       it('stores the arguments it is passed', function() {
         var hr = new Headroom(elem, {
@@ -30,9 +24,7 @@
 
         expect(hr.lastKnownScrollY).toBe(0);
         expect(hr.elem).toBe(elem);
-        expect(hr.debouncer).toBeDefined();
-        expect(debouncer).toHaveBeenCalled();
-        expect(hr.debouncer instanceof debouncer).toBeTruthy();
+        expect(hr.debouncer).not.toBeDefined();
         expect(hr.tolerance).toBe(Headroom.options.tolerance);
         expect(hr.offset).toBe(Headroom.options.offset);
         expect(hr.classes).toBe(Headroom.options.classes);
@@ -67,10 +59,20 @@
     describe('init', function() {
 
       var st, bind;
+      var debouncer;
 
       beforeEach(function() {
+        debouncer = spyOn(global, 'Debouncer').andCallThrough();
         st   = spyOn(global, 'setTimeout');
         bind = spyOn(Headroom.prototype.attachEvent, 'bind').andReturn(function(){});
+      });
+
+      it('initialises debouncer', function() {
+        headroom.init();
+
+        expect(headroom.debouncer).toBeDefined();
+        expect(debouncer).toHaveBeenCalled();
+        expect(headroom.debouncer instanceof debouncer).toBeTruthy();
       });
 
       it('adds initial class and binds to scroll event', function() {
@@ -85,6 +87,10 @@
         Headroom.cutsTheMustard = false;
 
         headroom.init();
+
+        expect(headroom.debouncer).not.toBeDefined();
+        expect(debouncer).not.toHaveBeenCalled();
+        expect(headroom.debouncer instanceof debouncer).not.toBeTruthy();
 
         expect(classList.add).not.toHaveBeenCalled();
         expect(bind).not.toHaveBeenCalled();
@@ -124,6 +130,7 @@
       });
 
       it('should attach listener for scroll event', function(){
+        headroom.debouncer = new Debouncer(headroom.update.bind(headroom));
         headroom.attachEvent();
 
         expect(headroom.initialised).toBe(true);
@@ -132,6 +139,7 @@
       });
 
       it('will only ever add one listener', function() {
+        headroom.debouncer = new Debouncer(headroom.update.bind(headroom));
         headroom.attachEvent();
         headroom.attachEvent();
 
