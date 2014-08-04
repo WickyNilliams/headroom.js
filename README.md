@@ -85,8 +85,10 @@ Include the `headroom.js` and `angular.headroom.js` scripts in your page, and th
 <!-- or -->
 <headroom></headroom>
 <!-- or with options -->
-<headroom tolerance='0' offset='0' classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"></headroom>
+<headroom tolerance='0' offset='0' scroller=".app-view" classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"></headroom>
 ```
+
+Note: in AngularJS, you connot pass a DOM element as a directive attribute. Instead, you have to provide a selector that can be passed to [angular.element](http://docs.angularjs.org/api/ng/function/angular.element). If you use default AngularJS jQLite selector engine, [here are the compliant selectors](https://code.google.com/p/jqlite/wiki/UsingJQLite). 
 
 ## Options
 
