@@ -162,6 +162,8 @@ $("#header").headroom();
         // when below offset
         notTop : "headroom--not-top"
     },
+    // element to listen to scroll events on, defaults to `window`
+    scroller : someElement,
     // callback when pinned, `this` is headroom object
     onPin : function() {},
     // callback when unpinned, `this` is headroom object
@@ -232,6 +234,10 @@ $("#header").headroom();
 </p>
 
 <h2>Changelog</h2>
+<h3 id="v0.7.0">v0.7.0 <time class="subdued">(2014-08-04)</time></h3>
+<ul>
+    <li>Can receive scroll events from elements other than window (thanks to <a href="https://github.com/pandaiolo">Pandaiolo</a> and <a href="https://github.com/homerjam">homerjam</a>)</li>
+</ul>
 <h3 id="v0.6.0">v0.6.0 <time class="subdued">(2014-05-29)</time></h3>
 <ul>
     <li>Up/down tolerance can be specified separately (thanks to <a href="https://twitter.com/chiplay">Chip Lay</a>)</li>
