@@ -1,6 +1,6 @@
 {
   "name": "headroom.js",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Give your page some headroom. Hide your header until you need it",
   "main": "dist/headroom.js",
   "scripts": {
