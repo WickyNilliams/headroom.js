@@ -118,7 +118,7 @@ Headroom.js can also accept an options object to alter the way it behaves. You c
         // when below offset
         notTop : "headroom--not-top"
     },
-    // callback when when element is initialised, `this` is headroom object
+    // callback when element is initialised, `this` is headroom object
     onInit : function() {},
     // callback when pinned, `this` is headroom object
     onPin : function() {},
