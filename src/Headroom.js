@@ -60,7 +60,7 @@ function Headroom (elem, options) {
   this.tolerance        = normalizeTolerance(options.tolerance);
   this.classes          = options.classes;
   this.offset           = options.offset;
-  this.scroller         = options.scroller;
+  this.scroller         = typeof(options.scroller) === 'string' ? document.querySelector(options.scroller) : options.scroller;
   this.initialised      = false;
   this.onPin            = options.onPin;
   this.onUnpin          = options.onUnpin;
