@@ -19,7 +19,6 @@
       restrict: 'EA',
       scope: false,
       link: function(scope, element, attrs) {
-        console.log(attrs);
         var options = {};
         angular.forEach(Headroom.options, function(value, key) {
           options[key] = attrs[key] || Headroom.options[key];
@@ -47,7 +46,6 @@
             scope.$apply(attrs.onUnpin);
           };
         }
-        console.log(options);
         var headroom = new Headroom(element[0], options);
         headroom.init();
         scope.$on('destroy', function() {
