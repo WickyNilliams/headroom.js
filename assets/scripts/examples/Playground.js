@@ -1,5 +1,17 @@
 ;(function(document) {
 
+  function stringifyOptions(options) {
+    return JSON.stringify({
+      offset : options.offset,
+      tolerance : options.tolerance,
+      classes : {
+        initial : options.classes.initial,
+        pinned : options.classes.pinned,
+        unpinned : options.classes.unpinned
+      }
+    }, null, '  ');
+  }
+
   function Playground (form, codeGenerator, getOptions) {
     this.form = form;
     this.codeGenerator = codeGenerator;
@@ -40,13 +52,13 @@
 
   var strategies = {
     widget : function(options) {
-      return 'var headroom = new Headroom(elem, ' + JSON.stringify(options, null, '  ') +');\nheadroom.init();\n\n'
+      return 'var headroom = new Headroom(elem, ' + stringifyOptions(options) +');\nheadroom.init();\n\n'
       + '// to destroy\n'
       + 'headroom.destroy();';
     },
 
     plugin : function(options) {
-      return '$("header").headroom(' + JSON.stringify(options, null, '  ') + ');\n\n'
+      return '$("header").headroom(' + stringifyOptions(options) + ');\n\n'
       + '// to destroy\n'
       + '$("#header").headroom("destroy");';
     },
