@@ -66,6 +66,7 @@ function Headroom (elem, options) {
   this.onUnpin          = options.onUnpin;
   this.onTop            = options.onTop;
   this.onNotTop         = options.onNotTop;
+  this.onScroll         = options.onScroll;
 }
 Headroom.prototype = {
   constructor : Headroom,
