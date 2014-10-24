@@ -302,7 +302,7 @@ Headroom.prototype = {
     else if(this.shouldPin(currentScrollY, toleranceExceeded)) {
       this.pin();
     }
-
+    this.onScroll && this.onScroll.call(this, currentScrollY);
     this.lastKnownScrollY = currentScrollY;
   }
 };
