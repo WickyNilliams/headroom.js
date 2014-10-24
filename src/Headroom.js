@@ -302,6 +302,8 @@ Headroom.prototype = {
     else if(this.shouldPin(currentScrollY, toleranceExceeded)) {
       this.pin();
     }
+    
+    this.onScroll && this.onScroll.call(this, this.lastKnownScrollY, currentScrolly);
 
     this.lastKnownScrollY = currentScrollY;
   }
