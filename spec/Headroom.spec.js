@@ -147,6 +147,19 @@
         headroom.onPin = jasmine.createSpy();
       });
 
+      describe('when unpinned and beforePin returns false', function() {
+
+        beforeEach(function() {
+          headroom.beforePin = function() { return false; };
+          headroom.pin();
+        });
+
+        it('will do nothing', function() {
+          expect(headroom.onPin).not.toHaveBeenCalled();
+        });
+
+      });
+
       describe('when unpinned class is present', function() {
 
         beforeEach(function() {
@@ -197,6 +210,20 @@
         classes[Headroom.options.classes.unpinned] = unpinned;
         classes[Headroom.options.classes.pinned] = pinned;
       }
+
+      describe('when pinned and beforeUnpin returns false', function() {
+
+        beforeEach(function() {
+          setupFixture(true, false);
+          headroom.beforeUnpin = function() { return false; };
+          headroom.unpin();
+        });
+
+        it('will do nothing', function() {
+          expect(headroom.onUnpin).not.toHaveBeenCalled();
+        });
+
+      });
 
       describe('when currently pinned', function() {
 
