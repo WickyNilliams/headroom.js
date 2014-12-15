@@ -1,11 +1,5 @@
-(function(window, document) {
+//= ../features.js
+//= ../Debouncer.js
+//= ../Headroom.js
 
-  'use strict';
-
-  //= ../features.js
-  //= ../Debouncer.js
-  //= ../Headroom.js
-
-  window.Headroom = Headroom;
-
-}(window, document));
+module.exports = Headroom;
