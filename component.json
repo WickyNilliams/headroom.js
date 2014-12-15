@@ -1,0 +1,16 @@
+{
+  "name": "headroom",
+  "repo": "WickyNilliams/headroom.js",
+  "description": "Give your pages some headroom. Hide your header until you need.",
+  "keywords": [
+    "headroom",
+    "header",
+    "ui"
+  ],
+  "version": "0.7.0",
+  "scripts": [
+    "dist/headroom.js"
+  ],
+  "main": "dist/headroom.js",
+  "license": "MIT"
+}
