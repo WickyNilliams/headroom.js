@@ -124,6 +124,7 @@
     this.onUnpin          = options.onUnpin;
     this.onTop            = options.onTop;
     this.onNotTop         = options.onNotTop;
+    this.useTouchmove     = options.useTouchmove;
   }
   Headroom.prototype = {
     constructor : Headroom,
@@ -153,10 +154,10 @@
   
       this.initialised = false;
       this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
-      this.scroller.removeEventListener('scroll', this.debouncer, false);
-      if('ontouchstart' in document){
+      if(this.usetouchmove && 'ontouchstart' in this.scroller){
         this.scroller.removeEventListener('touchmove', this.debouncer, false);
       }
+      this.scroller.removeEventListener('scroll', this.debouncer, false); 
     },
   
     /**
@@ -168,7 +169,7 @@
         this.lastKnownScrollY = this.getScrollY();
         this.initialised = true;
         this.scroller.addEventListener('scroll', this.debouncer, false);
-        if('ontouchstart' in document){
+        if(this.useTouchmove && 'ontouchstart' in this.scroller){
           this.scroller.addEventListener('touchmove', this.debouncer, false);
         }
   
@@ -387,7 +388,8 @@
       top : 'headroom--top',
       notTop : 'headroom--not-top',
       initial : 'headroom'
-    }
+    },
+    useTouchmove: false
   };
   Headroom.cutsTheMustard = typeof features !== 'undefined' && features.rAF && features.bind && features.classList;
 
