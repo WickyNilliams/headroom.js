@@ -157,7 +157,7 @@
       if(this.usetouchmove && 'ontouchstart' in this.scroller){
         this.scroller.removeEventListener('touchmove', this.debouncer, false);
       }
-      this.scroller.removeEventListener('scroll', this.debouncer, false); 
+      this.scroller.removeEventListener('scroll', this.debouncer, false);
     },
   
     /**
@@ -168,10 +168,10 @@
       if(!this.initialised){
         this.lastKnownScrollY = this.getScrollY();
         this.initialised = true;
-        this.scroller.addEventListener('scroll', this.debouncer, false);
         if(this.useTouchmove && 'ontouchstart' in this.scroller){
           this.scroller.addEventListener('touchmove', this.debouncer, false);
         }
+        this.scroller.addEventListener('scroll', this.debouncer, false);
   
         this.debouncer.handleEvent();
       }
