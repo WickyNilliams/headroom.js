@@ -96,6 +96,9 @@ Headroom.prototype = {
     this.initialised = false;
     this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
     this.scroller.removeEventListener('scroll', this.debouncer, false);
+    if('ontouchstart' in document.documentElement){
+      this.scroller.removeEventListener('touchmove', this.debouncer, false);
+    }
   },
 
   /**
@@ -107,6 +110,9 @@ Headroom.prototype = {
       this.lastKnownScrollY = this.getScrollY();
       this.initialised = true;
       this.scroller.addEventListener('scroll', this.debouncer, false);
+      if('ontouchstart' in document.documentElement){
+        this.scroller.addEventListener('touchmove', this.debouncer, false);
+      }
 
       this.debouncer.handleEvent();
     }

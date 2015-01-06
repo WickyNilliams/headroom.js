@@ -1,6 +1,6 @@
 /*!
  * headroom.js v0.7.0 - Give your page some headroom. Hide your header until you need it
- * Copyright (c) 2014 Nick Williams - http://wicky.nillia.ms/headroom.js
+ * Copyright (c) 2015 Nick Williams - http://wicky.nillia.ms/headroom.js
  * License: MIT
  */
 
@@ -154,6 +154,9 @@
       this.initialised = false;
       this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
       this.scroller.removeEventListener('scroll', this.debouncer, false);
+      if('ontouchstart' in document){
+        this.scroller.removeEventListener('touchmove', this.debouncer, false);
+      }
     },
   
     /**
@@ -165,6 +168,9 @@
         this.lastKnownScrollY = this.getScrollY();
         this.initialised = true;
         this.scroller.addEventListener('scroll', this.debouncer, false);
+        if('ontouchstart' in document){
+          this.scroller.addEventListener('touchmove', this.debouncer, false);
+        }
   
         this.debouncer.handleEvent();
       }

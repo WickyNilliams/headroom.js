@@ -135,7 +135,7 @@
         headroom.attachEvent();
         headroom.attachEvent();
 
-        expect(addEventListener.calls.length).toBe(1);
+        expect(addEventListener.calls.length).toBe(2);
         expect(requestAnimationFrame.calls.length).toBe(1);
       });
 
