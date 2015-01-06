@@ -118,6 +118,8 @@ Headroom.js can also accept an options object to alter the way it behaves. You c
         // when below offset
         notTop : "headroom--not-top"
     },
+    // use touchmove event for older mobile browser support
+    useTouchmove: false,
     // callback when pinned, `this` is headroom object
     onPin : function() {},
     // callback when unpinned, `this` is headroom object
@@ -127,6 +129,19 @@ Headroom.js can also accept an options object to alter the way it behaves. You c
     // callback when below offset, `this` is headroom object
     onNotTop : function() {}
 }
+```
+
+## iOS 8 < and Android 4.0 < support
+
+Older iOS and Android browsers do not trigger the scroll event the way you would expect, as described in [this Stackoverflow thread](http://stackoverflow.com/questions/2863547/javascript-scroll-event-for-iphone-ipad). There is a way to make the behaviour slightly smoother using the `touchmove` event, which is triggered at the start of the scroll. If you want to  headroom to use `touchmove` events, initialize with the `useTouchmove` option:
+
+```js
+// grab an element
+var myElement = document.querySelector("header");
+// construct an instance of Headroom, passing the element
+var headroom  = new Headroom(myElement, {useTouchmove: true});
+// initialise
+headroom.init();
 ```
 
 ## Examples
