@@ -22,19 +22,16 @@
   "bugs": {
     "url": "https://github.com/WickyNilliams/headroom.js/issues"
   },
-  "scripts": {
-    "test": "grunt dist --verbose"
-  },
   "devDependencies": {
     "grunt": "~0.4.1",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-rigger": "~0.5.0",
     "grunt-contrib-jshint": "~0.6.2",
+    "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-watch": "~0.5.1",
-    "karma": "~0.10.8",
     "grunt-karma": "~0.6.2",
+    "grunt-rigger": "~0.5.0",
+    "karma": "~0.10.8",
     "karma-firefox-launcher": "~0.1.2",
-    "karma-safari-launcher": "~0.1.1",
-    "karma-opera-launcher": "~0.1.0"
+    "karma-opera-launcher": "~0.1.0",
+    "karma-safari-launcher": "~0.1.1"
   }
 }
