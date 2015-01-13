@@ -66,6 +66,7 @@ function Headroom (elem, options) {
   this.onUnpin          = options.onUnpin;
   this.onTop            = options.onTop;
   this.onNotTop         = options.onNotTop;
+  this.onScroll         = options.onScroll;
 }
 Headroom.prototype = {
   constructor : Headroom,
@@ -302,7 +303,7 @@ Headroom.prototype = {
     else if(this.shouldPin(currentScrollY, toleranceExceeded)) {
       this.pin();
     }
-
+    this.onScroll && this.onScroll.call(this, currentScrollY, toleranceExceeded);
     this.lastKnownScrollY = currentScrollY;
   }
 };
