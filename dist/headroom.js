@@ -1,6 +1,6 @@
 /*!
  * headroom.js v0.7.0 - Give your page some headroom. Hide your header until you need it
- * Copyright (c) 2014 Nick Williams - http://wicky.nillia.ms/headroom.js
+ * Copyright (c) 2015 Nick Williams - http://wicky.nillia.ms/headroom.js
  * License: MIT
  */
 
@@ -124,6 +124,7 @@
     this.onUnpin          = options.onUnpin;
     this.onTop            = options.onTop;
     this.onNotTop         = options.onNotTop;
+    this.useTouchmove     = options.useTouchmove;
   }
   Headroom.prototype = {
     constructor : Headroom,
@@ -153,6 +154,9 @@
   
       this.initialised = false;
       this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
+      if(this.usetouchmove && 'ontouchstart' in this.scroller){
+        this.scroller.removeEventListener('touchmove', this.debouncer, false);
+      }
       this.scroller.removeEventListener('scroll', this.debouncer, false);
     },
   
@@ -164,6 +168,9 @@
       if(!this.initialised){
         this.lastKnownScrollY = this.getScrollY();
         this.initialised = true;
+        if(this.useTouchmove && 'ontouchstart' in this.scroller){
+          this.scroller.addEventListener('touchmove', this.debouncer, false);
+        }
         this.scroller.addEventListener('scroll', this.debouncer, false);
   
         this.debouncer.handleEvent();
@@ -381,7 +388,8 @@
       top : 'headroom--top',
       notTop : 'headroom--not-top',
       initial : 'headroom'
-    }
+    },
+    useTouchmove: false
   };
   Headroom.cutsTheMustard = typeof features !== 'undefined' && features.rAF && features.bind && features.classList;
 

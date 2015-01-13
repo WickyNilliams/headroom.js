@@ -131,12 +131,42 @@
         expect(requestAnimationFrame.calls.length).toBe(1);
       });
 
-      it('will only ever add one listener', function() {
+      it('will only ever add two listeners if touchmove enabled', function() {
+        var temp = headroom.scroller.ontouchstart;
+        headroom.scroller.ontouchstart = 1;
+        headroom.useTouchmove = true;
+        headroom.init();
+
+        headroom.attachEvent();
+        headroom.attachEvent();
+
+        expect(addEventListener.calls.length).toBe(2);
+        expect(requestAnimationFrame.calls.length).toBe(1);
+
+        headroom.scroller.ontouchstart = temp;
+      });
+
+      it('will only ever add one listener if touchmove not enabled', function() {
+        headroom.useTouchmove = false;
+        headroom.init();
+
         headroom.attachEvent();
         headroom.attachEvent();
 
         expect(addEventListener.calls.length).toBe(1);
         expect(requestAnimationFrame.calls.length).toBe(1);
+      });
+
+      it('will only ever add one listener if touch not supported', function() {
+        var temp = headroom.scroller.ontouchstart;
+        headroom.scroller.ontouchstart = undefined;
+        headroom.attachEvent();
+        headroom.attachEvent();
+
+        expect(addEventListener.calls.length).toBe(1);
+        expect(requestAnimationFrame.calls.length).toBe(1);
+
+        headroom.scroller.ontouchstart = temp;
       });
 
     });
