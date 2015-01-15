@@ -120,6 +120,7 @@
     this.offset           = options.offset;
     this.scroller         = options.scroller;
     this.initialised      = false;
+    this.onInit           = options.onInit;
     this.onPin            = options.onPin;
     this.onUnpin          = options.onUnpin;
     this.onTop            = options.onTop;
@@ -136,6 +137,8 @@
         return;
       }
   
+      this.onInit && this.onInit.call(this);
+      
       this.elem.classList.add(this.classes.initial);
   
       // defer event registration to handle browser 
