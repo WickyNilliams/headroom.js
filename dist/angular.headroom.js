@@ -33,7 +33,7 @@
         }
         var headroom = new Headroom(element[0], options);
         headroom.init();
-        scope.$on('destroy', function() {
+        scope.$on('$destroy', function() {
           headroom.destroy();
         });
       }
