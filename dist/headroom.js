@@ -1,11 +1,25 @@
 /*!
  * headroom.js v0.7.0 - Give your page some headroom. Hide your header until you need it
- * Copyright (c) 2014 Nick Williams - http://wicky.nillia.ms/headroom.js
+ * Copyright (c) 2015 Nick Williams - http://wicky.nillia.ms/headroom.js
  * License: MIT
  */
 
-(function(window, document) {
+(function(root, factory) {
+  'use strict';
 
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define([], factory);
+  }
+  else if (typeof exports === 'object') {
+    // COMMONJS
+    module.exports = factory();
+  }
+  else {
+    // BROWSER
+    root.Headroom = factory();
+  }
+}(this, function() {
   'use strict';
 
   /* exported features */
@@ -251,6 +265,27 @@
     },
   
     /**
+     * Gets the physical height of the DOM element
+     * @param  {Object}  elm the element to calculate the physical height of which
+     * @return {int}     the physical height of the element in pixels
+     */
+    getElementPhysicalHeight : function (elm) {
+      return Math.max(
+        elm.offsetHeight,
+        elm.clientHeight
+      );
+    },
+    /**
+     * Gets the physical height of the scroller element
+     * @return {int} the physical height of the scroller element in pixels
+     */
+    getScrollerPhysicalHeight : function () {
+      return (this.scroller === window || this.scroller === document.body)
+        ? this.getViewportHeight()
+        : this.getElementPhysicalHeight(this.scroller);
+    },
+  
+    /**
      * Gets the height of the document
      * @see http://james.padolsey.com/javascript/get-document-height-cross-browser/
      * @return {int} the height of the document in pixels
@@ -296,7 +331,7 @@
      */
     isOutOfBounds : function (currentScrollY) {
       var pastTop  = currentScrollY < 0,
-        pastBottom = currentScrollY + this.getViewportHeight() > this.getScrollerHeight();
+        pastBottom = currentScrollY + this.getScrollerPhysicalHeight() > this.getScrollerHeight();
       
       return pastTop || pastBottom;
     },
@@ -385,6 +420,5 @@
   };
   Headroom.cutsTheMustard = typeof features !== 'undefined' && features.rAF && features.bind && features.classList;
 
-  window.Headroom = Headroom;
-
-}(window, document));
+  return Headroom;
+}));

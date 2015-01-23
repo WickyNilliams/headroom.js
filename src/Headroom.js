@@ -193,6 +193,27 @@ Headroom.prototype = {
   },
 
   /**
+   * Gets the physical height of the DOM element
+   * @param  {Object}  elm the element to calculate the physical height of which
+   * @return {int}     the physical height of the element in pixels
+   */
+  getElementPhysicalHeight : function (elm) {
+    return Math.max(
+      elm.offsetHeight,
+      elm.clientHeight
+    );
+  },
+  /**
+   * Gets the physical height of the scroller element
+   * @return {int} the physical height of the scroller element in pixels
+   */
+  getScrollerPhysicalHeight : function () {
+    return (this.scroller === window || this.scroller === document.body)
+      ? this.getViewportHeight()
+      : this.getElementPhysicalHeight(this.scroller);
+  },
+
+  /**
    * Gets the height of the document
    * @see http://james.padolsey.com/javascript/get-document-height-cross-browser/
    * @return {int} the height of the document in pixels
@@ -238,7 +259,7 @@ Headroom.prototype = {
    */
   isOutOfBounds : function (currentScrollY) {
     var pastTop  = currentScrollY < 0,
-      pastBottom = currentScrollY + this.getViewportHeight() > this.getScrollerHeight();
+      pastBottom = currentScrollY + this.getScrollerPhysicalHeight() > this.getScrollerHeight();
     
     return pastTop || pastBottom;
   },
