@@ -60,6 +60,7 @@ function Headroom (elem, options) {
   this.tolerance        = normalizeTolerance(options.tolerance);
   this.classes          = options.classes;
   this.offset           = options.offset;
+  this.pinOnPastOffset  = options.pinOnPastOffset;
   this.scroller         = options.scroller;
   this.initialised      = false;
   this.onPin            = options.onPin;
@@ -275,7 +276,7 @@ Headroom.prototype = {
     var scrollingUp  = currentScrollY < this.lastKnownScrollY,
       pastOffset = currentScrollY <= this.offset;
 
-    return (scrollingUp && toleranceExceeded) || pastOffset;
+    return (!this.pinOnPastOffset) ? (scrollingUp && toleranceExceeded) || pastOffset : pastOffset;
   },
 
   /**
@@ -316,6 +317,7 @@ Headroom.options = {
     down : 0
   },
   offset : 0,
+  pinOnPastOffset : false,
   scroller: window,
   classes : {
     pinned : 'headroom--pinned',
