@@ -88,7 +88,15 @@ Note: Zepto's additional [data module](https://github.com/madrobby/zepto#zepto-m
 
 ### With AngularJS
 
-Include the `headroom.js` and `angular.headroom.js` scripts in your page, and then:
+Include the `headroom.js` and `angular.headroom.js` scripts in your page, and include the Headroom module
+```javascript
+angular.module('app', [
+// your requires
+'headroom'
+]);
+```
+
+And then use the directive in your markup:
 
 ```html
 <header headroom></header>
