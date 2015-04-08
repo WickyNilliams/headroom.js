@@ -35,6 +35,12 @@ Relying on CSS classes affords headroom.js incredible flexibility. The choice of
 
 Using headroom.js is really simple. It has a pure JS API, plus an optional jQuery/Zepto plugin and AngularJS directive.
 
+### Install with bower
+
+```bash
+bower install headroom.js --save
+```
+
 ### Using Headroom.js with a CDN
 
 CDN provided by [cdnjs](https://cdnjs.com/libraries/headroom)
