@@ -56,7 +56,6 @@ function Headroom (elem, options) {
 
   this.lastKnownScrollY = 0;
   this.elem             = elem;
-  this.debouncer        = new Debouncer(this.update.bind(this));
   this.tolerance        = normalizeTolerance(options.tolerance);
   this.classes          = options.classes;
   this.offset           = options.offset;
@@ -77,7 +76,7 @@ Headroom.prototype = {
     if(!Headroom.cutsTheMustard) {
       return;
     }
-
+    this.debouncer = new Debouncer(this.update.bind(this));
     this.elem.classList.add(this.classes.initial);
 
     // defer event registration to handle browser 
@@ -92,8 +91,8 @@ Headroom.prototype = {
    */
   destroy : function() {
     var classes = this.classes;
-
     this.initialised = false;
+    window.removeEventListener('scroll', this.debouncer, false);
     this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
     this.scroller.removeEventListener('scroll', this.debouncer, false);
   },
