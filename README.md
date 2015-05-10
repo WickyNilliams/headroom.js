@@ -157,6 +157,8 @@ Headroom.js can also accept an options object to alter the way it behaves. You c
 
 Head over to the [headroom.js playroom](http://wicky.nillia.ms/headroom.js/playroom/) if you want see some example usages. There you can tweak all of headroom's options and apply different CSS effects in an interactive demo.
 
+Here is the Headroom.js generator with many of animation : [Headroom.js Generator](http://headroomjs.senviet.org/)
+
 ## Browser support
 
 Headroom.js is dependent on the following browser APIs:
