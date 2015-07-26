@@ -1,6 +1,6 @@
 {
   "name": "headroom.js",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "main": ["dist/headroom.js", "dist/jQuery.headroom.js", "dist/angular.headroom.js"],
   "ignore": [
     "**/.*",
