@@ -1,17 +1,14 @@
 (function(root, factory) {
   'use strict';
 
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
+  if (typeof(define) === 'function' && define.amd) {
     define([], factory);
   }
   else if (typeof exports === 'object') {
-    // COMMONJS
-    module.exports = factory();
+    module.exports = factory;
   }
   else {
-    // BROWSER
-    root.Headroom = factory();
+    root.Headroom = factory;
   }
 }(this, function() {
   'use strict';
