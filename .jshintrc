@@ -21,6 +21,7 @@
     "undef": true,
     "indent" : 2,
     "globals": {
+        "define": false,
         "requestAnimationFrame": false,
         "mozRequestAnimationFrame" : false,
         "webkitRequestAnimationFrame" : false,
