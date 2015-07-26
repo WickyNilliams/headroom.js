@@ -18,6 +18,9 @@
   ],
   "author": "Nick Williams",
   "homepage": "http://wicky.nillia.ms/headroom.js",
+  "contributors": [
+    { "name": "Dominik Schmidt", "email": "nick@kreativgebiet.com", "url": "http://kreativgebiet.com" }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/WickyNilliams/headroom.js/issues"
