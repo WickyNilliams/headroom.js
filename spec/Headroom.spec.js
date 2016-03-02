@@ -377,6 +377,52 @@
       });
     });
 
+    describe('isOutOfBounds of scroller element', function() {
+
+      var getViewportHeight, getElementPhysicalHeight, getDocumentHeight, getElementHeight;
+      var hr;
+
+      beforeEach(function() {
+        var userOpts = {
+          scroller: {}
+        };
+
+        hr = new Headroom(elem, userOpts);
+        getViewportHeight = spyOn(hr, 'getViewportHeight');
+        getElementPhysicalHeight = spyOn(hr, 'getElementPhysicalHeight');
+        getDocumentHeight = spyOn(hr, 'getDocumentHeight');
+        getElementHeight = spyOn(hr, 'getElementHeight');
+      });
+
+      it('return true if past top', function() {
+        var result = hr.isOutOfBounds(-1);
+        expect(result).toBe(true);
+      });
+
+      it('return true if past bottom', function() {
+        var elemHeight = 20;
+        var elemPhysicalHeight = 20;
+
+        getElementHeight.andReturn(elemHeight);
+        getElementPhysicalHeight.andReturn(elemPhysicalHeight);
+        var result = hr.isOutOfBounds(elemPhysicalHeight, 1);
+
+        expect(result).toBe(true);
+      });
+
+      it('return false if in bounds', function() {
+        var elemHeight = 200;
+        var elemPhysicalHeight = 20;
+
+        getElementHeight.andReturn(elemHeight);
+        getElementPhysicalHeight.andReturn(elemPhysicalHeight);
+        var result = hr.isOutOfBounds(10);
+
+        expect(result).toBe(false);
+      });
+
+    });
+
     describe('getDocumentHeight', function() {
 
     });
