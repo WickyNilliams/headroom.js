@@ -56,7 +56,6 @@ function Headroom (elem, options) {
 
   this.lastKnownScrollY = 0;
   this.elem             = elem;
-  this.debouncer        = new Debouncer(this.update.bind(this));
   this.tolerance        = normalizeTolerance(options.tolerance);
   this.classes          = options.classes;
   this.offset           = options.offset;
@@ -80,6 +79,7 @@ Headroom.prototype = {
       return;
     }
 
+    this.debouncer = new Debouncer(this.update.bind(this));
     this.elem.classList.add(this.classes.initial);
 
     // defer event registration to handle browser 
