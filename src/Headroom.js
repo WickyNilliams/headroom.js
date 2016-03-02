@@ -66,6 +66,8 @@ function Headroom (elem, options) {
   this.onUnpin          = options.onUnpin;
   this.onTop            = options.onTop;
   this.onNotTop         = options.onNotTop;
+  this.onBottom         = options.onBottom;
+  this.onNotBottom      = options.onNotBottom;
 }
 Headroom.prototype = {
   constructor : Headroom,
@@ -165,6 +167,31 @@ Headroom.prototype = {
       classList.add(classes.notTop);
       classList.remove(classes.top);
       this.onNotTop && this.onNotTop.call(this);
+    }
+  },
+
+  bottom : function() {
+    var classList = this.elem.classList,
+      classes = this.classes;
+    
+    if(!classList.contains(classes.bottom)) {
+      classList.add(classes.bottom);
+      classList.remove(classes.notBottom);
+      this.onBottom && this.onBottom.call(this);
+    }
+  },
+
+  /**
+   * Handles the not top state
+   */
+  notBottom : function() {
+    var classList = this.elem.classList,
+      classes = this.classes;
+    
+    if(!classList.contains(classes.notBottom)) {
+      classList.add(classes.notBottom);
+      classList.remove(classes.bottom);
+      this.onNotBottom && this.onNotBottom.call(this);
     }
   },
 
@@ -296,6 +323,13 @@ Headroom.prototype = {
       this.notTop();
     }
 
+    if(currentScrollY + this.getViewportHeight() >= this.getScrollerHeight()) {
+      this.bottom();
+    }
+    else {
+      this.notBottom();
+    }
+
     if(this.shouldUnpin(currentScrollY, toleranceExceeded)) {
       this.unpin();
     }
@@ -322,6 +356,8 @@ Headroom.options = {
     unpinned : 'headroom--unpinned',
     top : 'headroom--top',
     notTop : 'headroom--not-top',
+    bottom : 'headroom--bottom',
+    notBottom : 'headroom--not-bottom',
     initial : 'headroom'
   }
 };
