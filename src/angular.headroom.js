@@ -23,7 +23,7 @@
           options[key] = scope[key] || Headroom.options[key];
         });
         if (options.scroller) {
-          options.scroller = angular.element(options.scroller)[0];
+          options.scroller = document.querySelector(options.scroller);
         }
         var headroom = new Headroom(element[0], options);
         headroom.init();
