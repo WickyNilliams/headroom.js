@@ -23,6 +23,10 @@
       }
       if (typeof option === 'string') {
         data[option]();
+
+        if(option === 'destroy'){
+          $this.removeData('headroom');
+        }
       }
     });
   };
