@@ -94,7 +94,7 @@ Headroom.prototype = {
     var classes = this.classes;
 
     this.initialised = false;
-    this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.initial);
+    this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.notTop, classes.initial);
     this.scroller.removeEventListener('scroll', this.debouncer, false);
   },
 
