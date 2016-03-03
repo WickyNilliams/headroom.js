@@ -109,7 +109,7 @@ And then use the directive in your markup:
 <!-- or -->
 <headroom></headroom>
 <!-- or with options -->
-<headroom tolerance='0' offset='0' scroller=".app-view" classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"></headroom>
+<headroom tolerance='0' offset='0' scroller=".my-scroller" classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"></headroom>
 ```
 
 Note: in AngularJS, you cannot pass a DOM element as a directive attribute. Instead, you have to provide a selector that can be passed to [angular.element](http://docs.angularjs.org/api/ng/function/angular.element). If you use default AngularJS jQLite selector engine, [here are the compliant selectors](https://code.google.com/p/jqlite/wiki/UsingJQLite). 
@@ -150,6 +150,8 @@ Headroom.js can also accept an options object to alter the way it behaves. You c
     onTop : function() {},
     // callback when below offset, `this` is headroom object
     onNotTop : function() {}
+    // custom scroller
+    scroller : ".my-scroller"
 }
 ```
 
