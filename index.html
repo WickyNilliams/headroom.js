@@ -64,8 +64,8 @@
 <h2>Downloads</h2>
 <div class="downloads island">
     <div class="grid">
-        <div class="grid__item one-half"><a class="btn btn--secondary btn--full" href="https://raw.githubusercontent.com/WickyNilliams/headroom.js/v0.7.0/dist/headroom.js">Development <span class="complimentary subdued">(2.6kB)</span></a></div>
-        <div class="grid__item one-half"><a class="btn btn--secondary btn--full" href="https://raw.githubusercontent.com/WickyNilliams/headroom.js/v0.7.0/dist/headroom.min.js">Production <span class="complimentary subdued">(1.2kB)</span></a></div>
+        <div class="grid__item one-half"><a class="btn btn--secondary btn--full" href="https://npmcdn.com/headroom.js">Development <span class="complimentary subdued">(3.5KB)</span></a></div>
+        <div class="grid__item one-half"><a class="btn btn--secondary btn--full" href="https://npmcdn.com/headroom.js@0.8.0/dist/headroom.min.js">Production <span class="complimentary subdued">(2KB)</span></a></div>
     </div>
 </div>
 
@@ -132,7 +132,7 @@ $("#header").headroom();
 &lt;!-- or --&gt;
 &lt;headroom&gt;&lt;/headroom&gt;
 &lt;!-- or with options --&gt;
-&lt;headroom tolerance='0' offset='0' classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"&gt;&lt;/headroom&gt;
+&lt;headroom tolerance="0" offset="0" scroller=".my-scroller" classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"&gt;&lt;/headroom&gt;
 </code></pre>
 
 <h3>Options</h3>
@@ -160,7 +160,11 @@ $("#header").headroom();
         // when above offset
         top : "headroom--top",
         // when below offset
-        notTop : "headroom--not-top"
+        notTop : "headroom--not-top",
+        // when at bottom of scoll area
+        bottom : "headroom--bottom",
+        // when not at bottom of scroll area
+        notBottom : "headroom--not-bottom"
     },
     // element to listen to scroll events on, defaults to `window`
     scroller : someElement,
@@ -172,6 +176,10 @@ $("#header").headroom();
     onTop : function() {},
     // callback when below offset, `this` is headroom object
     onNotTop : function() {},
+    // callback when at bottom of page, `this` is headroom object
+    onBottom : function() {},
+    // callback when moving away from bottom of page, `this` is headroom object
+    onNotBottom : function() {}
 }
 </code></pre>
 
@@ -197,6 +205,7 @@ $("#header").headroom();
  * Adding them is left as an exercise for the reader.
  */
 .headroom {
+    will-change: transform;
     transition: transform 200ms linear;
 }
 .headroom--pinned {
@@ -234,6 +243,16 @@ $("#header").headroom();
 </p>
 
 <h2>Changelog</h2>
+<h3 id="v0.8.0">v0.8.0 <time class="subdued">(2016-03-16)</time></h3>
+<ul>
+    <li>Now available on npm as <code>headroom.js</code>!</li>
+    <li>Fix attempting to use function binding before feature test (thanks to <a href="https://github.com/rajivm">Rajiv Makhijani</a>)</li>
+    <li>Add classes and callbacks for scrolling to and from bottom of page</li>
+    <li>Improve element selection in angular directive (thanks to <a href="https://github.com/zwacky">Simon</a>)</li>
+    <li>Fix bug where some classes not removed on destroy (thanks to <a href="https://github.com/burkovsky">Anton Burkovsky</a>)</li>
+    <li>Added UMD support</li>
+    <li>Correctly destroy headroom instance in angular directive (thanks to <a href="https://github.com/kmc059000">Kenneth Crawford</a>)</li>
+</ul>
 <h3 id="v0.7.0">v0.7.0 <time class="subdued">(2014-08-04)</time></h3>
 <ul>
     <li>Can receive scroll events from elements other than window (thanks to <a href="https://github.com/pandaiolo">Pandaiolo</a> and <a href="https://github.com/homerjam">homerjam</a>)</li>
