@@ -12,7 +12,7 @@ module.exports = function(grunt) {
       },
       dist : {
         options :{
-          yuicompress : true,
+          compress : true,
           report : 'gzip'
         },
         src : '<%= less.dev.src %>',
