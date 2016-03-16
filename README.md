@@ -35,6 +35,12 @@ Relying on CSS classes affords headroom.js incredible flexibility. The choice of
 
 Using headroom.js is really simple. It has a pure JS API, plus an optional jQuery/Zepto plugin and AngularJS directive.
 
+### Install with npm
+
+```bash
+npm install headroom.js --save
+```
+
 ### Install with bower
 
 ```bash
@@ -43,22 +49,9 @@ bower install headroom.js --save
 
 ### Using Headroom.js with a CDN
 
-CDN provided by [cdnjs](https://cdnjs.com/libraries/headroom)
-```
-<script src="//cdnjs.cloudflare.com/ajax/libs/headroom/0.7.0/headroom.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/headroom/0.7.0/headroom.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/headroom/0.7.0/angular.headroom.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/headroom/0.7.0/angular.headroom.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/headroom/0.7.0/jQuery.headroom.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/headroom/0.7.0/jQuery.headroom.min.js"></script>
-```
+A universal build (suitable for script tags, CommonJS, and AMD) is available from npmcdn.com:
 
-CDN provided by [jsDelivr CDN](http://www.jsdelivr.com/#!headroomjs)
-```
-<script src="//cdn.jsdelivr.net/headroomjs/0.7.0/headroom.min.js"></script>
-<script src="//cdn.jsdelivr.net/headroomjs/0.7.0/angular.headroom.min.js"></script>
-<script src="//cdn.jsdelivr.net/headroomjs/0.7.0/jQuery.headroom.min.js"></script>
-```
+[https://npmcdn.com/headroom.js](https://npmcdn.com/headroom.js@)
 
 ### With pure JS
 
@@ -154,6 +147,10 @@ Headroom.js can also accept an options object to alter the way it behaves. You c
     onTop : function() {},
     // callback when below offset, `this` is headroom object
     onNotTop : function() {}
+    // callback at bottom of page, `this` is headroom object
+    onBottom : function() {},
+    // callback when moving away from bottom of page, `this` is headroom object
+    onNotBottom : function() {}
 }
 ```
 
