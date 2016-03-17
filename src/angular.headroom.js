@@ -1,37 +1,37 @@
-(function(angular) {
-
-  if(!angular) {
-    return;
-  }
-
-  ///////////////
-  // Directive //
-  ///////////////
-
-  angular.module('headroom', []).directive('headroom', function() {
+(function (angular, Headroom) {
+  
+  function headroom($document, HeadroomService) {
     return {
-      restrict: 'EA',
       scope: {
         tolerance: '=',
         offset: '=',
         classes: '=',
         scroller: '@'
       },
-      link: function(scope, element) {
+      link: function link($scope, $element) {
         var options = {};
-        angular.forEach(Headroom.options, function(value, key) {
-          options[key] = scope[key] || Headroom.options[key];
-        });
-        if (options.scroller) {
-          options.scroller = document.querySelector(options.scroller);
+        var opts = HeadroomService.options;
+        for (var prop in opts) {
+          options[prop] = $scope[prop] || opts[prop];
         }
-        var headroom = new Headroom(element[0], options);
-        headroom.init();
-        scope.$on('$destroy', function() {
-          headroom.destroy();
-        });
+        if (options.scroller && options.scroller.toString() !== '[object Window]') {
+          options.scroller = $document.querySelector(options.scroller);
+        }
+        var headroom = new HeadroomService($element[0], options).init();
+        $scope.$on('$destroy', headroom.destroy);
       }
     };
-  });
+  }
+  
+  headroom.$inject = ['$document', 'HeadroomService'];
 
-}(window.angular));
+  function HeadroomService() {
+    return Headroom;
+  }
+
+  angular
+    .module('headroom', [])
+    .directive('headroom', headroom)
+    .factory('HeadroomService', HeadroomService);
+  
+})(window.angular, window.Headroom);
