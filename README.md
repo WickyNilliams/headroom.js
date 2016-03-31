@@ -51,7 +51,7 @@ bower install headroom.js --save
 
 A universal build (suitable for script tags, CommonJS, and AMD) is available from npmcdn.com:
 
-[https://npmcdn.com/headroom.js](https://npmcdn.com/headroom.js@)
+[https://npmcdn.com/headroom.js](https://npmcdn.com/headroom.js)
 
 ### With pure JS
 
