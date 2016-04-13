@@ -83,20 +83,12 @@
   new Playground(document.querySelector('form'),
     new CodeGenerator(strategies),
     function (form) {
-      var styles = form.querySelectorAll('[name=classes]');
-      var classes;
-
-      for (var i = styles.length - 1; i >= 0; i--) {
-        if(styles[i].checked) {
-          classes = JSON.parse(styles[i].value);
-          break;
-        }
-      }
+      var style = form.querySelector('[name=classes]:checked');
 
       return {
         tolerance : form.querySelector('#tolerance').valueAsNumber,
         offset : form.querySelector('#offset').valueAsNumber,
-        classes : classes
+        classes : JSON.parse(style.value)
       };
     }
   ).init();
