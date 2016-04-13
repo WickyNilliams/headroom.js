@@ -1,4 +1,8 @@
 (function (angular, Headroom) {
+
+  if(!angular) {
+    return;
+  }
   
   function headroom($document, HeadroomService) {
     return {
