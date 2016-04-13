@@ -44,7 +44,7 @@ npm install headroom.js --save
 ### Install with bower
 
 ```bash
-bower install headroom.js --save
+bower install https://npmcdn.com/headroom.js/bower.zip --save
 ```
 
 ### Using Headroom.js with a CDN
