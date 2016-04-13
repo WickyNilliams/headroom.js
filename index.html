@@ -31,14 +31,14 @@
         <nav id="nav" class="nav-wrapper" role="navigation">
             <ul class="nav">
                 <li class="nav__item ">
-                    <a class="header__link subdued" href="https://www.github.com/WickyNilliams/headroom.js">
-                        <span aria-hidden="true" class="icon icon--github"></span>
+                    <a class="header__link" href="https://www.github.com/WickyNilliams/headroom.js">
+                        <span aria-hidden="true" class="icon icon--gh"></span>
                         <span class="complimentary push--left">GitHub</span>
                     </a>
                 </li>
                 <li class="nav__item ">
-                    <a class="header__link subdued" href="http://www.twitter.com/WickyNilliams">
-                        <span aria-hidden="true" class="icon icon--twitter"></span>
+                    <a class="header__link" href="http://www.twitter.com/WickyNilliams">
+                        <span aria-hidden="true" class="icon icon--tw"></span>
                         <span class="complimentary push--left">@WickyNilliams</span>
                     </a>
                 </li>
@@ -314,22 +314,19 @@ $("#header").headroom();
 <script>
 (function() {
     var header = document.querySelector("#header");
+
     if(window.location.hash) {
-      header.classList.add("slide--up");
+      header.classList.add("headroom--unpinned");
     }
 
-    new Headroom(header, {
+    var headroom = new Headroom(header, {
         tolerance: {
           down : 10,
           up : 20
         },
-        offset : 205,
-        classes: {
-          initial: "slide",
-          pinned: "slide--reset",
-          unpinned: "slide--up"
-        }
-    }).init();
+        offset : 205
+    });
+    headroom.init();
 
 }());
 </script>

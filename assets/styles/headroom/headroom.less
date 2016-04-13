@@ -1,53 +1,17 @@
-.btt {
-  display:none;
-  position: fixed;
-  left:0;
-  bottom: 0;
-  .micro;
+.headroom {
+  transition: transform 0.25s ease-in-out;
+  will-change: transform;
 
-  @media @deskBreakpoint {
-    display:block;
-  }
-
-  @media @wideDeskBreakpoint {
-    left: @atom;
-  }
-
-  -webkit-transform: translateY(4em);
-  -ms-transform: translateY(4em);
-  transform: translateY(4em);
-}
-
-.slide {
-  .transition(all, 0.25s, ease-in-out);
-
-  &--reset {
-    -webkit-transform: translateY(0);
-    -ms-transform: translateY(0);
+  &--pinned {
     transform: translateY(0);
   }
 
-  &--up {
-    -webkit-transform: translateY(-100%);
-    -ms-transform: translateY(-100%);
+  &--unpinned {
     transform: translateY(-100%);
   }
 }
 
-.icon:before {
-  .micro;
-  display: inline-block;
-  height:1em;
-  width:1em;
-  line-height: 1;
-}
-
-.icon--up:before {
-  content: "\25B2";
-}
-
 .sharing {
-  
   &__button {
     .nano;
 
@@ -63,7 +27,7 @@
 
 .question-set {
   border: none;
-  padding: 0;   
+  padding: 0;
   margin-bottom: 1.5em;
 
   &__title {
