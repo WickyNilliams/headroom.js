@@ -22,7 +22,9 @@
           options.scroller = document.querySelector($scope.scroller);
         }
         var headroom = new HeadroomService($element[0], options).init();
-        $scope.$on('$destroy', headroom.destroy);
+        $scope.$on('$destroy', function(){
+          headroom.destroy();
+        });
       }
     };
   }
