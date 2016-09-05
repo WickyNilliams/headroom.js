@@ -44,14 +44,14 @@ npm install headroom.js --save
 ### Install with bower
 
 ```bash
-bower install https://npmcdn.com/headroom.js/bower.zip --save
+bower install https://unpkg.com/headroom.js/bower.zip --save
 ```
 
 ### Using Headroom.js with a CDN
 
-A universal build (suitable for script tags, CommonJS, and AMD) is available from npmcdn.com:
+A universal build (suitable for script tags, CommonJS, and AMD) is available from unpkg.com:
 
-[https://npmcdn.com/headroom.js](https://npmcdn.com/headroom.js)
+[https://unpkg.com/headroom.js](https://unpkg.com/headroom.js)
 
 ### With pure JS
 
