@@ -3,8 +3,8 @@
   if(!angular) {
     return;
   }
-  
-  function headroom(HeadroomService) {
+
+  function headroom(HeadroomService, $timeout) {
     return {
       scope: {
         tolerance: '=',
@@ -13,31 +13,36 @@
         scroller: '@'
       },
       link: function ($scope, $element) {
+        var headroom;
         var options = {};
         var opts = HeadroomService.options;
         for (var prop in opts) {
           options[prop] = $scope[prop] || opts[prop];
         }
-        if ($scope.scroller) {
-          options.scroller = document.querySelector($scope.scroller);
-        }
-        var headroom = new HeadroomService($element[0], options).init();
+        $timeout(function () {
+          if ($scope.scroller) {
+            options.scroller = document.querySelector($scope.scroller);
+          }
+
+          headroom = new HeadroomService($element[0], options).init();
+        });
+
         $scope.$on('$destroy', function(){
-          headroom.destroy();
+          headroom && headroom.destroy();
         });
       }
     };
   }
-  
-  headroom.$inject = ['HeadroomService'];
+
+  headroom.$inject = ['HeadroomService', '$timeout'];
 
   function HeadroomService() {
     return Headroom;
   }
 
   angular
-    .module('headroom', [])
-    .directive('headroom', headroom)
-    .factory('HeadroomService', HeadroomService);
-  
+      .module('headroom', [])
+      .directive('headroom', headroom)
+      .factory('HeadroomService', HeadroomService);
+
 })(window.angular, window.Headroom);
