@@ -41,8 +41,8 @@
   }
 
   angular
-      .module('headroom', [])
-      .directive('headroom', headroom)
-      .factory('HeadroomService', HeadroomService);
+    .module('headroom', [])
+    .directive('headroom', headroom)
+    .factory('HeadroomService', HeadroomService);
 
 })(window.angular, window.Headroom);
