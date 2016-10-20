@@ -139,7 +139,9 @@ Headroom.js can also accept an options object to alter the way it behaves. You c
         // when at bottom of scoll area
         bottom : "headroom--bottom",
         // when not at bottom of scroll area
-        notBottom : "headroom--not-bottom"
+        notBottom : "headroom--not-bottom",
+        // when headroom should not change state
+        frozen : "headroom-frozen"
     },
     // callback when pinned, `this` is headroom object
     onPin : function() {},

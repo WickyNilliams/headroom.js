@@ -331,6 +331,10 @@ Headroom.prototype = {
    * Handles updating the state of the widget
    */
   update : function() {
+    if (this.elem.classList.contains(this.classes.frozen)) {
+      return;
+    }
+
     var currentScrollY  = this.getScrollY(),
       scrollDirection = currentScrollY > this.lastKnownScrollY ? 'down' : 'up',
       toleranceExceeded = this.toleranceExceeded(currentScrollY, scrollDirection);
@@ -380,7 +384,8 @@ Headroom.options = {
     notTop : 'headroom--not-top',
     bottom : 'headroom--bottom',
     notBottom : 'headroom--not-bottom',
-    initial : 'headroom'
+    initial : 'headroom',
+    frozen : 'headroom--frozen'
   }
 };
 Headroom.cutsTheMustard = typeof features !== 'undefined' && features.rAF && features.bind && features.classList;

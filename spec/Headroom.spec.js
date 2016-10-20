@@ -461,6 +461,15 @@
         isOutOfBounds = spyOn(Headroom.prototype, 'isOutOfBounds');
       });
 
+      it('should not do anything if it is frozen', function() {
+        classList.contains.andReturn(true);
+
+        headroom.update();
+
+        expect(pin).not.toHaveBeenCalled();
+        expect(unpin).not.toHaveBeenCalled();
+      });
+
       it('should pin if conditions are met', function() {
         shouldPin.andReturn(true);
         headroom.update();
