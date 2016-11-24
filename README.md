@@ -59,7 +59,7 @@ Include the `headroom.js` script in your page, and then:
 
 ```js
 // grab an element
-var myElement = document.querySelector("header");
+var myElement = document.querySelector("#header");
 // construct an instance of Headroom, passing the element
 var headroom  = new Headroom(myElement);
 // initialise
