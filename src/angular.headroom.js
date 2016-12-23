@@ -44,7 +44,7 @@
         });
         $scope.$watch('scroller', function (newScroller) {
           if (newScroller) {
-            headroom.scroller = newScroller;
+	    headroom.scroller = document.querySelector(newScroller);
           }
         });
 
