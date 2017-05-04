@@ -1,12 +1,7 @@
 {
   "name": "headroom.js",
   "main": [
-    "dist/headroom.js",
-    "dist/headroom.min.js",
-    "dist/jQuery.headroom.js",
-    "dist/jQuery.headroom.min.js",
-    "dist/angular.headroom.js",
-    "dist/angular.headroom.min.js"
+    "dist"
   ],
   "ignore": [
     "**/.*",
@@ -14,7 +9,6 @@
     "components",
     "spec",
     "Gruntfile.js",
-    "src",
     "bower_components",
     "test",
     "tests"
