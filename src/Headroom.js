@@ -82,7 +82,7 @@ Headroom.prototype = {
     this.debouncer = new Debouncer(this.update.bind(this));
     this.elem.classList.add(this.classes.initial);
 
-    // defer event registration to handle browser 
+    // defer event registration to handle browser
     // potentially restoring previous scroll position
     setTimeout(this.attachEvent.bind(this), 100);
 
@@ -96,7 +96,9 @@ Headroom.prototype = {
     var classes = this.classes;
 
     this.initialised = false;
-    this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.notTop, classes.initial);
+    for(var key in classes) {
+      this.elem.classList.remove(classes[key]);
+    }
     this.scroller.removeEventListener('scroll', this.debouncer, false);
   },
 
@@ -113,14 +115,14 @@ Headroom.prototype = {
       this.debouncer.handleEvent();
     }
   },
-  
+
   /**
    * Unpins the header if it's currently pinned
    */
   unpin : function() {
     var classList = this.elem.classList,
       classes = this.classes;
-    
+
     if(classList.contains(classes.pinned) || !classList.contains(classes.unpinned)) {
       classList.add(classes.unpinned);
       classList.remove(classes.pinned);
@@ -134,7 +136,7 @@ Headroom.prototype = {
   pin : function() {
     var classList = this.elem.classList,
       classes = this.classes;
-    
+
     if(classList.contains(classes.unpinned)) {
       classList.remove(classes.unpinned);
       classList.add(classes.pinned);
@@ -148,7 +150,7 @@ Headroom.prototype = {
   top : function() {
     var classList = this.elem.classList,
       classes = this.classes;
-    
+
     if(!classList.contains(classes.top)) {
       classList.add(classes.top);
       classList.remove(classes.notTop);
@@ -162,7 +164,7 @@ Headroom.prototype = {
   notTop : function() {
     var classList = this.elem.classList,
       classes = this.classes;
-    
+
     if(!classList.contains(classes.notTop)) {
       classList.add(classes.notTop);
       classList.remove(classes.top);
@@ -173,7 +175,7 @@ Headroom.prototype = {
   bottom : function() {
     var classList = this.elem.classList,
       classes = this.classes;
-    
+
     if(!classList.contains(classes.bottom)) {
       classList.add(classes.bottom);
       classList.remove(classes.notBottom);
@@ -187,7 +189,7 @@ Headroom.prototype = {
   notBottom : function() {
     var classList = this.elem.classList,
       classes = this.classes;
-    
+
     if(!classList.contains(classes.notBottom)) {
       classList.add(classes.notBottom);
       classList.remove(classes.bottom);
@@ -249,7 +251,7 @@ Headroom.prototype = {
   getDocumentHeight : function () {
     var body = document.body,
       documentElement = document.documentElement;
-  
+
     return Math.max(
       body.scrollHeight, documentElement.scrollHeight,
       body.offsetHeight, documentElement.offsetHeight,
@@ -288,7 +290,7 @@ Headroom.prototype = {
   isOutOfBounds : function (currentScrollY) {
     var pastTop  = currentScrollY < 0,
       pastBottom = currentScrollY + this.getScrollerPhysicalHeight() > this.getScrollerHeight();
-    
+
     return pastTop || pastBottom;
   },
 
