@@ -114,7 +114,7 @@
 
         headroom.destroy();
 
-        expect(classList.remove).toHaveBeenCalled();
+        expect(classList.remove.calls.length).toBe(Object.keys(Headroom.options.classes).length);
         expect(removeEventListener).toHaveBeenCalledWith('scroll', headroom.debouncer, false);
         expect(headroom.initialised).toBe(false);
       });

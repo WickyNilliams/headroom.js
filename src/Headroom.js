@@ -96,9 +96,13 @@ Headroom.prototype = {
     var classes = this.classes;
 
     this.initialised = false;
-    for(var key in classes) {
-      this.elem.classList.remove(classes[key]);
+
+    for (var key in classes) {
+      if(classes.hasOwnProperty(key)) {
+        this.elem.classList.remove(classes[key]);
+      }
     }
+
     this.scroller.removeEventListener('scroll', this.debouncer, false);
   },
 
