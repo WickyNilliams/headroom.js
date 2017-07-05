@@ -110,7 +110,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('prehint', ['jshint:prebuild', 'jshint:tests']);
   grunt.registerTask('ci', ['prehint', 'karma:continuous']);
-  grunt.registerTask('dist', ['ci', 'rig', 'uglify']);
+  grunt.registerTask('dist', ['rig', 'uglify']);
   grunt.registerTask('test', ['karma:continuous']);
   grunt.registerTask('default', ['karma:unit:start', 'watch']);
 };
