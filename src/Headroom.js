@@ -37,6 +37,43 @@ function extend (object /*, objectN ... */) {
 }
 
 /**
+ * Used to detect browser support for adding an event listener with options
+ * Credit: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+ */
+var supportsCaptureOption = false;
+try {
+  var opts = Object.defineProperty({}, 'capture', {
+    get: function () {
+      supportsCaptureOption = true;
+    }
+  });
+  window.addEventListener('test', null, opts);
+} catch (e) { }
+
+/**
+ * Helper to add an event listener with an options object in supported browsers
+ */
+function addEventListenerWithOptions(target, type, handler, options) {
+  var optionsOrCapture = options;
+  if (!supportsCaptureOption) {
+    optionsOrCapture = options.capture;
+  }
+  target.addEventListener(type, handler, optionsOrCapture);
+}
+
+/**
+ * Helper to remove an event listener with an options object in supported browsers
+ */
+function removeEventListenerWithOptions(target, type, handler, options) {
+  var optionsOrCapture = options;
+  if (!supportsCaptureOption) {
+    optionsOrCapture = options.capture;
+  }
+  target.removeEventListener(type, handler, optionsOrCapture);
+}
+
+
+/**
  * Helper function for normalizing tolerance option to object format
  */
 function normalizeTolerance (t) {
@@ -103,7 +140,10 @@ Headroom.prototype = {
       }
     }
 
-    this.scroller.removeEventListener('scroll', this.debouncer, false);
+    removeEventListenerWithOptions(this.scroller, 'scroll', this.debouncer, {
+      capture: false,
+      passive: true
+    });
   },
 
   /**
@@ -114,7 +154,10 @@ Headroom.prototype = {
     if(!this.initialised){
       this.lastKnownScrollY = this.getScrollY();
       this.initialised = true;
-      this.scroller.addEventListener('scroll', this.debouncer, false);
+      addEventListenerWithOptions(this.scroller, 'scroll', this.debouncer, {
+        capture: false,
+        passive: true
+      });
 
       this.debouncer.handleEvent();
     }
