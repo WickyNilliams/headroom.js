@@ -345,7 +345,7 @@ Headroom.prototype = {
       return;
     }
 
-    if (currentScrollY <= this.offset ) {
+    if (currentScrollY <= this.offset['up'] ) {
       this.top();
     } else {
       this.notTop();
