@@ -39,7 +39,7 @@ function extend (object /*, objectN ... */) {
 /**
  * Helper function for normalizing tolerance option to object format
  */
-function normalizeTolerance (t) {
+function normalizeUpDownObject (t) {
   return t === Object(t) ? t : { down : t, up : t };
 }
 
@@ -56,9 +56,9 @@ function Headroom (elem, options) {
 
   this.lastKnownScrollY = 0;
   this.elem             = elem;
-  this.tolerance        = normalizeTolerance(options.tolerance);
+  this.tolerance        = normalizeUpDownObject(options.tolerance);
   this.classes          = options.classes;
-  this.offset           = options.offset;
+  this.offset           = normalizeUpDownObject(options.offset);
   this.scroller         = options.scroller;
   this.initialised      = false;
   this.onPin            = options.onPin;
@@ -315,7 +315,7 @@ Headroom.prototype = {
    */
   shouldUnpin : function (currentScrollY, toleranceExceeded) {
     var scrollingDown = currentScrollY > this.lastKnownScrollY,
-      pastOffset = currentScrollY >= this.offset;
+      pastOffset = currentScrollY >= this.offset['down'];
 
     return scrollingDown && pastOffset && toleranceExceeded;
   },
@@ -328,7 +328,7 @@ Headroom.prototype = {
    */
   shouldPin : function (currentScrollY, toleranceExceeded) {
     var scrollingUp  = currentScrollY < this.lastKnownScrollY,
-      pastOffset = currentScrollY <= this.offset;
+      pastOffset = currentScrollY <= this.offset['up'];
 
     return (scrollingUp && toleranceExceeded) || pastOffset;
   },
@@ -377,7 +377,10 @@ Headroom.options = {
     up : 0,
     down : 0
   },
-  offset : 0,
+  offset : {
+    up : 0,
+    down : 0
+  },
   scroller: window,
   classes : {
     pinned : 'headroom--pinned',
