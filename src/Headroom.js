@@ -67,6 +67,7 @@ function Headroom (elem, options) {
   this.onNotTop         = options.onNotTop;
   this.onBottom         = options.onBottom;
   this.onNotBottom      = options.onNotBottom;
+  this.freezed          = false;
 }
 Headroom.prototype = {
   constructor : Headroom,
@@ -345,6 +346,11 @@ Headroom.prototype = {
       return;
     }
 
+    if (this.freezed === true) {
+      this.lastKnownScrollY = currentScrollY;
+      return;
+    }
+
     if (currentScrollY <= this.offset ) {
       this.top();
     } else {
@@ -366,7 +372,26 @@ Headroom.prototype = {
     }
 
     this.lastKnownScrollY = currentScrollY;
-  }
+  },
+
+  /**
+   * Freezes the current state of the widget
+   */
+  freeze : function() {
+    this.freezed = true;
+
+    this.elem.classList.add(this.classes.freezed);
+  },
+
+  /**
+   * Re-enables the default behaviour of the widget
+   */
+  unfreeze : function() {
+    this.freezed = false;
+
+    this.elem.classList.remove(this.classes.freezed);
+  },
+
 };
 /**
  * Default options
@@ -380,6 +405,7 @@ Headroom.options = {
   offset : 0,
   scroller: window,
   classes : {
+    freezed : 'headroom--freezed',
     pinned : 'headroom--pinned',
     unpinned : 'headroom--unpinned',
     top : 'headroom--top',
