@@ -1,7 +1,7 @@
 {
   "name": "CuriousCactus/headroom.js",
   "description": "Headroom.js for Drupal",
-  "type:drupal-library"
+  "type": "drupal-library",
   "license": "MIT",
   "authors": [
       {
