@@ -1,5 +1,5 @@
 {
-  "name": "CuriousCactus/headroom.js",
+  "name": "CuriousCactus/headroomjs",
   "description": "Headroom.js for Drupal",
   "type": "drupal-library",
   "license": "MIT",
@@ -12,7 +12,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/CuriousCactus/headroom.js"
+      "url": "https://github.com/CuriousCactus/headroomjs"
     }
   ]
 }
