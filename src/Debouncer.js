@@ -25,7 +25,7 @@ Debouncer.prototype = {
    */
   requestTick : function() {
     if(!this.ticking) {
-      features.rAF(this.rafCallback || (this.rafCallback = this.update.bind(this)));
+      features.rAF.call((this.rafCallback || (this.rafCallback = this.update.bind(this))), this);
       this.ticking = true;
     }
   },
