@@ -401,7 +401,7 @@ Headroom.options = {
     down : 0
   },
   offset : 0,
-  scroller: window,
+  scroller: features.window,
   classes : {
     frozen : 'headroom--frozen',
     pinned : 'headroom--pinned',

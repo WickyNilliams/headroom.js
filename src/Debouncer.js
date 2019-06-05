@@ -1,5 +1,3 @@
-window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
-
 /**
  * Handles debouncing of events via requestAnimationFrame
  * @see http://www.html5rocks.com/en/tutorials/speed/animations/
@@ -27,7 +25,7 @@ Debouncer.prototype = {
    */
   requestTick : function() {
     if(!this.ticking) {
-      requestAnimationFrame(this.rafCallback || (this.rafCallback = this.update.bind(this)));
+      features.rAF(this.rafCallback || (this.rafCallback = this.update.bind(this)));
       this.ticking = true;
     }
   },
