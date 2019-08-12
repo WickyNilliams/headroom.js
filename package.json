@@ -4,8 +4,7 @@
   "description": "Give your page some headroom. Hide your header until you need it",
   "main": "dist/headroom.js",
   "files": [
-    "dist",
-    "bower.json"
+    "dist"
   ],
   "scripts": {
     "start": "grunt",
