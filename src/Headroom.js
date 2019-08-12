@@ -48,6 +48,7 @@ try {
     }
   });
   window.addEventListener('test', null, opts);
+  window.removeEventListener('test', null, opts);
 } catch (e) { }
 
 /**
