@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "start": "rollup --config --watch",
-    "test": "grunt test --verbose",
+    "test": "npm run build && cypress run",
     "build": "rollup --config",
     "version": "npm run build",
     "postversion": "git push origin master --tags && npm publish"
@@ -30,6 +30,7 @@
     "url": "https://github.com/WickyNilliams/headroom.js/issues"
   },
   "devDependencies": {
+    "cypress": "^3.4.1",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-uglify": "^0.11.1",
