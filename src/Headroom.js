@@ -275,15 +275,15 @@ Headroom.prototype = {
   getScrollY: function() {
     if (this.scroller.pageYOffset !== undefined) {
       return this.scroller.pageYOffset;
-    } else if (this.scroller.scrollTop !== undefined) {
-      return this.scroller.scrollTop;
-    } else {
-      return (
-        document.documentElement ||
-        document.body.parentNode ||
-        document.body
-      ).scrollTop;
     }
+    if (this.scroller.scrollTop !== undefined) {
+      return this.scroller.scrollTop;
+    }
+    return (
+      document.documentElement ||
+      document.body.parentNode ||
+      document.body
+    ).scrollTop;
   },
 
   /**
