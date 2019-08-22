@@ -40,6 +40,7 @@
     "karma-firefox-launcher": "~0.1.2",
     "karma-opera-launcher": "~0.1.0",
     "karma-safari-launcher": "~0.1.1",
-    "rollup": "^1.19.4"
+    "rollup": "^1.19.4",
+    "rollup-plugin-license": "^0.12.1"
   }
 }
