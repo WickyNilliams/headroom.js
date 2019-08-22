@@ -1,4 +1,5 @@
 import license from "rollup-plugin-license";
+import { uglify } from "rollup-plugin-uglify";
 
 export default {
   input: "src/Headroom.js",
@@ -9,6 +10,7 @@ export default {
     compact: true
   },
   plugins: [
+    uglify(),
     license({
       banner: {
         commentStyle: "ignored",
