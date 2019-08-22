@@ -39,3 +39,5 @@ Debouncer.prototype = {
     this.requestTick();
   }
 };
+
+export default Debouncer;

@@ -1,3 +1,6 @@
+import features from "./features";
+import Debouncer from "./Debouncer";
+
 /**
  * Check if object is part of the DOM
  * @constructor
@@ -458,3 +461,5 @@ Headroom.options = {
   }
 };
 Headroom.cutsTheMustard = typeof features !== 'undefined' && features.rAF && features.bind && features.classList;
+
+export default Headroom;

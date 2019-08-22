@@ -9,7 +9,7 @@
   "scripts": {
     "start": "grunt",
     "test": "grunt test --verbose",
-    "build": "grunt dist",
+    "build": "rollup --config",
     "version": "npm run build",
     "postversion": "git push origin master --tags && npm publish"
   },
@@ -39,6 +39,7 @@
     "karma": "~0.10.8",
     "karma-firefox-launcher": "~0.1.2",
     "karma-opera-launcher": "~0.1.0",
-    "karma-safari-launcher": "~0.1.1"
+    "karma-safari-launcher": "~0.1.1",
+    "rollup": "^1.19.4"
   }
 }
