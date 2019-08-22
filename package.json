@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "start": "grunt",
+    "start": "rollup --config --watch",
     "test": "grunt test --verbose",
     "build": "rollup --config",
     "version": "npm run build",
