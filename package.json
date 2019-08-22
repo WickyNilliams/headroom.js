@@ -7,9 +7,9 @@
     "dist"
   ],
   "scripts": {
-    "start": "grunt",
-    "test": "grunt test --verbose",
-    "build": "grunt dist",
+    "start": "rollup --config --watch",
+    "test": "npm run build && cypress run",
+    "build": "rollup --config",
     "version": "npm run build",
     "postversion": "git push origin master --tags && npm publish"
   },
@@ -30,15 +30,11 @@
     "url": "https://github.com/WickyNilliams/headroom.js/issues"
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^1.0.0",
-    "grunt-contrib-uglify": "^0.11.1",
-    "grunt-contrib-watch": "~0.5.1",
-    "grunt-karma": "~0.6.2",
-    "grunt-rigger": "~0.5.0",
-    "karma": "~0.10.8",
-    "karma-firefox-launcher": "~0.1.2",
-    "karma-opera-launcher": "~0.1.0",
-    "karma-safari-launcher": "~0.1.1"
+    "cypress": "^3.4.1",
+    "rollup": "^1.19.4",
+    "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-filesize": "^6.2.0",
+    "rollup-plugin-license": "^0.12.1",
+    "rollup-plugin-uglify": "^6.0.2"
   }
 }
