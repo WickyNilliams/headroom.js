@@ -17,7 +17,9 @@ Debouncer.prototype = {
    * @private
    */
   update : function() {
-    this.callback && this.callback();
+    if(this.callback) {
+      this.callback();
+    }
     this.ticking = false;
   },
 

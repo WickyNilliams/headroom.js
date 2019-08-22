@@ -1,6 +1,7 @@
 import license from "rollup-plugin-license";
 import { uglify } from "rollup-plugin-uglify";
 import filesize from "rollup-plugin-filesize";
+import { eslint } from "rollup-plugin-eslint";
 
 const input = "src/Headroom.js";
 
@@ -25,6 +26,7 @@ const unminified = {
     file: "dist/headroom.js"
   },
   plugins: [
+    eslint(),
     licensePlugin,
     filesize({
       showMinifiedSize: false,
