@@ -183,8 +183,7 @@ Headroom.prototype = {
     ) {
       classList.add(classes.unpinned);
       classList.remove(classes.pinned);
-      
-      if(this.onUnpin) {
+      if (this.onUnpin) {
         this.onUnpin.call(this);
       }
     }
@@ -200,8 +199,7 @@ Headroom.prototype = {
     if (classList.contains(classes.unpinned)) {
       classList.remove(classes.unpinned);
       classList.add(classes.pinned);
-      
-      if(this.onPin) {
+      if (this.onPin) {
         this.onPin.call(this);
       }
     }
@@ -217,8 +215,7 @@ Headroom.prototype = {
     if (!classList.contains(classes.top)) {
       classList.add(classes.top);
       classList.remove(classes.notTop);
-      
-      if(this.onTop) {
+      if (this.onTop) {
         this.onTop.call(this);
       }
     }
@@ -234,8 +231,7 @@ Headroom.prototype = {
     if (!classList.contains(classes.notTop)) {
       classList.add(classes.notTop);
       classList.remove(classes.top);
-      
-      if(this.onNotTop) {
+      if (this.onNotTop) {
         this.onNotTop.call(this);
       }
     }
@@ -248,8 +244,7 @@ Headroom.prototype = {
     if (!classList.contains(classes.bottom)) {
       classList.add(classes.bottom);
       classList.remove(classes.notBottom);
-      
-      if(this.onBottom) {
+      if (this.onBottom) {
         this.onBottom.call(this);
       }
     }
@@ -265,8 +260,8 @@ Headroom.prototype = {
     if (!classList.contains(classes.notBottom)) {
       classList.add(classes.notBottom);
       classList.remove(classes.bottom);
-      
-      if(this.onNotBottom){
+
+      if (this.onNotBottom) {
         this.onNotBottom.call(this);
       }
     }
@@ -278,11 +273,17 @@ Headroom.prototype = {
    * @return {Number} pixels the page has scrolled along the Y-axis
    */
   getScrollY: function() {
-    return this.scroller.pageYOffset !== undefined
-      ? this.scroller.pageYOffset
-      : this.scroller.scrollTop !== undefined
-        ? this.scroller.scrollTop
-        : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+    if (this.scroller.pageYOffset !== undefined) {
+      return this.scroller.pageYOffset;
+    } else if (this.scroller.scrollTop !== undefined) {
+      return this.scroller.scrollTop;
+    } else {
+      return (
+        document.documentElement ||
+        document.body.parentNode ||
+        document.body
+      ).scrollTop;
+    }
   },
 
   /**
