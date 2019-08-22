@@ -1,5 +1,6 @@
 import license from "rollup-plugin-license";
 import { uglify } from "rollup-plugin-uglify";
+import filesize from "rollup-plugin-filesize";
 
 const input = "src/Headroom.js";
 
@@ -8,16 +9,14 @@ const output = {
   name: "Headroom"
 };
 
-const plugins = [
-  license({
-    banner: {
-      commentStyle: "ignored",
-      content: `<%= pkg.name %> v<%= pkg.version %> - <%= pkg.description %>
-                Copyright (c) <%= moment().format('YYYY') %> <%= pkg.author %> - <%= pkg.homepage %>
-                License: <%= pkg.license %>`
-    }
-  })
-];
+const licensePlugin = license({
+  banner: {
+    commentStyle: "ignored",
+    content: `<%= pkg.name %> v<%= pkg.version %> - <%= pkg.description %>
+              Copyright (c) <%= moment().format('YYYY') %> <%= pkg.author %> - <%= pkg.homepage %>
+              License: <%= pkg.license %>`
+  }
+});
 
 const unminified = {
   input,
@@ -25,7 +24,13 @@ const unminified = {
     ...output,
     file: "dist/headroom.js"
   },
-  plugins
+  plugins: [
+    licensePlugin,
+    filesize({
+      showMinifiedSize: false,
+      showGzippedSize: false
+    })
+  ]
 };
 
 const minified = {
@@ -35,7 +40,13 @@ const minified = {
     file: "dist/headroom.min.js",
     compact: true
   },
-  plugins: [uglify(), ...plugins]
+  plugins: [
+    uglify(),
+    licensePlugin,
+    filesize({
+      showMinifiedSize: false
+    })
+  ]
 };
 
 export default [unminified, minified];

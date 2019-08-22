@@ -41,6 +41,7 @@
     "karma-opera-launcher": "~0.1.0",
     "karma-safari-launcher": "~0.1.1",
     "rollup": "^1.19.4",
+    "rollup-plugin-filesize": "^6.2.0",
     "rollup-plugin-license": "^0.12.1",
     "rollup-plugin-uglify": "^6.0.2"
   }
