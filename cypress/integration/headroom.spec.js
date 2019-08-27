@@ -24,8 +24,8 @@ describe("Headroom", function() {
     });
     classNames({
       headroom: false,
-      "headroom--unpinned": false,
       "headroom--pinned": false,
+      "headroom--unpinned": false,
       "headroom--top": false,
       "headroom--not-top": false,
       "headroom--bottom": false,
@@ -38,26 +38,22 @@ describe("Headroom", function() {
 
     classNames({ headroom: true });
 
-    cy.scrollTo(0, 500);
+    cy.scrollTo(0, 50);
     classNames({
-      "headroom--unpinned": true,
       "headroom--pinned": false,
-
+      "headroom--unpinned": true,
       "headroom--top": false,
       "headroom--not-top": true,
-
       "headroom--bottom": false,
       "headroom--not-bottom": true
     });
 
-    cy.scrollTo(0, 250);
+    cy.scrollTo(0, 25);
     classNames({
-      "headroom--unpinned": false,
       "headroom--pinned": true,
-
+      "headroom--unpinned": false,
       "headroom--top": false,
       "headroom--not-top": true,
-
       "headroom--bottom": false,
       "headroom--not-bottom": true
     });
@@ -66,10 +62,8 @@ describe("Headroom", function() {
     classNames({
       "headroom--pinned": true,
       "headroom--unpinned": false,
-
       "headroom--top": true,
       "headroom--not-top": false,
-
       "headroom--bottom": false,
       "headroom--not-bottom": true
     });
@@ -117,26 +111,26 @@ describe("Headroom", function() {
 
     cy.scrollTo(0, 5);
     classNames({
-      "headroom--unpinned": false,
-      "headroom--pinned": false
+      "headroom--pinned": false,
+      "headroom--unpinned": false
     });
 
     cy.scrollTo(0, 15);
     classNames({
-      "headroom--unpinned": true,
-      "headroom--pinned": false
+      "headroom--pinned": false,
+      "headroom--unpinned": true
     });
 
     cy.scrollTo(0, 12);
     classNames({
-      "headroom--unpinned": true,
-      "headroom--pinned": false
+      "headroom--pinned": false,
+      "headroom--unpinned": true
     });
 
     cy.scrollTo(0, 2);
     classNames({
-      "headroom--unpinned": false,
-      "headroom--pinned": true
+      "headroom--pinned": true,
+      "headroom--unpinned": false
     });
   });
 
@@ -148,20 +142,98 @@ describe("Headroom", function() {
 
     cy.scrollTo(0, 25);
     classNames({
-      "headroom--unpinned": false,
-      "headroom--pinned": false
+      "headroom--pinned": false,
+      "headroom--unpinned": false
     });
 
     cy.scrollTo(0, 55);
     classNames({
-      "headroom--unpinned": true,
-      "headroom--pinned": false
+      "headroom--pinned": false,
+      "headroom--unpinned": true
     });
 
     cy.scrollTo(0, 49);
     classNames({
+      "headroom--pinned": true,
+      "headroom--unpinned": false
+    });
+  });
+
+  it("can be frozen / unfrozen", () => {
+    initialiseHeadroom();
+
+    cy.scrollTo(0, 20);
+    classNames({
+      "headroom--pinned": false,
+      "headroom--unpinned": true
+    });
+
+    cy.window().then(win => {
+      win.hr.freeze();
+    });
+
+    cy.scrollTo(0, 10);
+    classNames({
+      "headroom--pinned": false,
+      "headroom--unpinned": true
+    });
+
+    cy.window().then(win => {
+      win.hr.unfreeze();
+    });
+
+    cy.scrollTo(0, 5);
+    classNames({
+      "headroom--pinned": true,
+      "headroom--unpinned": false
+    });
+  });
+
+  it("handles scrollers besides window", () => {
+    cy.get(".scroller").then(scroller => {
+      initialiseHeadroom({ scroller: scroller[0] });
+    });
+
+    classNames({ headroom: true });
+
+    cy.get(".scroller").scrollTo(0, 50);
+    classNames({
+      "headroom--pinned": false,
+      "headroom--unpinned": true,
+      "headroom--top": false,
+      "headroom--not-top": true,
+      "headroom--bottom": false,
+      "headroom--not-bottom": true
+    });
+
+    cy.get(".scroller").scrollTo(0, 25);
+    classNames({
+      "headroom--pinned": true,
       "headroom--unpinned": false,
-      "headroom--pinned": true
+      "headroom--top": false,
+      "headroom--not-top": true,
+      "headroom--bottom": false,
+      "headroom--not-bottom": true
+    });
+
+    cy.get(".scroller").scrollTo(0, 0);
+    classNames({
+      "headroom--pinned": true,
+      "headroom--unpinned": false,
+      "headroom--top": true,
+      "headroom--not-top": false,
+      "headroom--bottom": false,
+      "headroom--not-bottom": true
+    });
+
+    cy.get(".scroller").scrollTo("bottom");
+    classNames({
+      "headroom--pinned": false,
+      "headroom--unpinned": true,
+      "headroom--top": false,
+      "headroom--not-top": true,
+      "headroom--bottom": true,
+      "headroom--not-bottom": false
     });
   });
 
