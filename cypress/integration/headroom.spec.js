@@ -20,7 +20,7 @@ describe("Headroom", function() {
   });
 
   it("works!", function() {
-    initialiseHeadroom({});
+    initialiseHeadroom();
 
     cy.get("header").should("be.initialised");
 
@@ -111,14 +111,18 @@ describe("Headroom", function() {
     });
 
     cy.scrollTo(0, 10);
-    cy.get("header").should("not.be.pinned");
+    cy.get("header")
+      .should("be.froze")
+      .should("not.be.pinned");
 
     cy.window().then(win => {
       win.hr.unfreeze();
     });
 
     cy.scrollTo(0, 5);
-    cy.get("header").should("be.pinned");
+    cy.get("header")
+      .should("not.be.froze")
+      .should("be.pinned");
   });
 
   it("handles scrollers besides window", () => {

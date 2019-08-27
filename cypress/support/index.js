@@ -74,6 +74,20 @@ chai.use((_chai, utils) => {
 });
 
 chai.use((_chai, utils) => {
+  _chai.Assertion.addMethod("froze", function assertIsFrozen() {
+    const negate = utils.flag(this, "negate");
+    const obj = utils.flag(this, "object");
+    const assertion = new _chai.Assertion(obj);
+
+    if (negate) {
+      assertion.not.to.have.class("headroom--frozen");
+    } else {
+      assertion.to.have.class("headroom--frozen");
+    }
+  });
+});
+
+chai.use((_chai, utils) => {
   _chai.Assertion.addMethod("destroyed", function assertIsDestroyed() {
     const obj = utils.flag(this, "object");
     const assertion = new _chai.Assertion(obj);
