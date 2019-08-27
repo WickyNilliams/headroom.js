@@ -8,6 +8,7 @@ import features from "./features";
 function Debouncer(callback) {
   this.callback = callback;
   this.ticking = false;
+  this.update = this.update.bind(this);
 }
 Debouncer.prototype = {
   constructor: Debouncer,
@@ -27,9 +28,9 @@ Debouncer.prototype = {
    * ensures events don't get stacked
    * @private
    */
-  requestTick : function() {
-    if(!this.ticking) {
-      features.rAF(this.rafCallback || (this.rafCallback = this.update.bind(this)));
+  requestTick: function() {
+    if (!this.ticking) {
+      features.rAF(this.update);
       this.ticking = true;
     }
   },

@@ -1,68 +1,13 @@
 import features from "./features";
 import Debouncer from "./Debouncer";
-
-/**
- * Check if object is part of the DOM
- * @constructor
- * @param {Object} obj element to check
- */
-function isDOMElement(obj) {
-  return (
-    obj && typeof window !== "undefined" && (obj === window || obj.nodeType)
-  );
-}
-
-/**
- * Helper function for extending objects
- */
-function extend(object /*, objectN ... */) {
-  if (arguments.length <= 0) {
-    throw new Error("Missing arguments in extend function");
-  }
-
-  var result = object || {},
-    key,
-    i;
-
-  for (i = 1; i < arguments.length; i++) {
-    var replacement = arguments[i] || {};
-
-    for (key in replacement) {
-      // Recurse into object except if the object is a DOM element
-      if (typeof result[key] === "object" && !isDOMElement(result[key])) {
-        result[key] = extend(result[key], replacement[key]);
-      } else {
-        result[key] = result[key] || replacement[key];
-      }
-    }
-  }
-
-  return result;
-}
-
-/**
- * Used to detect browser support for adding an event listener with options
- * Credit: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
- */
-var supportsCaptureOption = false;
-try {
-  var opts = Object.defineProperty({}, "capture", {
-    get: function() {
-      return (supportsCaptureOption = true);
-    }
-  });
-  window.addEventListener("test", null, opts);
-  window.removeEventListener("test", null, opts);
-} catch (e) {
-  /* eslint-ignore-line */
-}
+import { extend } from "./utils";
 
 /**
  * Helper to add an event listener with an options object in supported browsers
  */
 function addEventListenerWithOptions(target, type, handler, options) {
   var optionsOrCapture = options;
-  if (!supportsCaptureOption) {
+  if (!features.passiveSupported()) {
     optionsOrCapture = options.capture;
   }
   target.addEventListener(type, handler, optionsOrCapture);
@@ -73,7 +18,7 @@ function addEventListenerWithOptions(target, type, handler, options) {
  */
 function removeEventListenerWithOptions(target, type, handler, options) {
   var optionsOrCapture = options;
-  if (!supportsCaptureOption) {
+  if (!features.passiveSupported()) {
     optionsOrCapture = options.capture;
   }
   target.removeEventListener(type, handler, optionsOrCapture);
@@ -493,10 +438,6 @@ Headroom.options = {
   }
 };
 
-Headroom.cutsTheMustard =
-  typeof features !== "undefined" &&
-  features.rAF &&
-  features.bind &&
-  features.classList;
+Headroom.cutsTheMustard = features.rAF && features.bind && features.classList;
 
 export default Headroom;
