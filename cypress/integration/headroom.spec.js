@@ -1,11 +1,4 @@
 describe("Headroom", function() {
-  const classNames = obj => {
-    const element = cy.get("header");
-    Object.keys(obj).forEach(k => {
-      element.should(obj[k] ? "have.class" : "not.have.class", k);
-    });
-  };
-
   const initialiseHeadroom = options => {
     cy.window().then(win => {
       win.hr = new win.Headroom(win.document.querySelector("header"), options);
@@ -22,51 +15,32 @@ describe("Headroom", function() {
     cy.window().then(win => {
       win.hr.destroy();
     });
-    classNames({
-      headroom: false,
-      "headroom--pinned": false,
-      "headroom--unpinned": false,
-      "headroom--top": false,
-      "headroom--not-top": false,
-      "headroom--bottom": false,
-      "headroom--not-bottom": false
-    });
+
+    cy.get("header").should("be.destroyed");
   });
 
   it("works!", function() {
     initialiseHeadroom({});
 
-    classNames({ headroom: true });
+    cy.get("header").should("be.initialised");
 
     cy.scrollTo(0, 50);
-    classNames({
-      "headroom--pinned": false,
-      "headroom--unpinned": true,
-      "headroom--top": false,
-      "headroom--not-top": true,
-      "headroom--bottom": false,
-      "headroom--not-bottom": true
-    });
+    cy.get("header")
+      .should("not.be.pinned")
+      .should("not.be.top")
+      .should("not.be.bottom");
 
     cy.scrollTo(0, 25);
-    classNames({
-      "headroom--pinned": true,
-      "headroom--unpinned": false,
-      "headroom--top": false,
-      "headroom--not-top": true,
-      "headroom--bottom": false,
-      "headroom--not-bottom": true
-    });
+    cy.get("header")
+      .should("be.pinned")
+      .should("not.be.top")
+      .should("not.be.bottom");
 
     cy.scrollTo(0, 0);
-    classNames({
-      "headroom--pinned": true,
-      "headroom--unpinned": false,
-      "headroom--top": true,
-      "headroom--not-top": false,
-      "headroom--bottom": false,
-      "headroom--not-bottom": true
-    });
+    cy.get("header")
+      .should("be.pinned")
+      .should("be.top")
+      .should("not.be.bottom");
 
     cy.window()
       .then(win => {
@@ -79,28 +53,16 @@ describe("Headroom", function() {
         const scrollDistanceToBottom = scrollHeight - height;
 
         cy.scrollTo(0, scrollDistanceToBottom - 1);
-        classNames({
-          "headroom--pinned": false,
-          "headroom--unpinned": true,
-
-          "headroom--top": false,
-          "headroom--not-top": true,
-
-          "headroom--bottom": false,
-          "headroom--not-bottom": true
-        });
+        cy.get("header")
+          .should("not.be.pinned")
+          .should("not.be.top")
+          .should("not.be.bottom");
 
         cy.scrollTo(0, scrollDistanceToBottom);
-        classNames({
-          "headroom--pinned": false,
-          "headroom--unpinned": true,
-
-          "headroom--top": false,
-          "headroom--not-top": true,
-
-          "headroom--bottom": true,
-          "headroom--not-bottom": false
-        });
+        cy.get("header")
+          .should("not.be.pinned")
+          .should("not.be.top")
+          .should("be.bottom");
       });
   });
 
@@ -110,28 +72,16 @@ describe("Headroom", function() {
     });
 
     cy.scrollTo(0, 5);
-    classNames({
-      "headroom--pinned": false,
-      "headroom--unpinned": false
-    });
+    cy.get("header").should("be.initialised");
 
     cy.scrollTo(0, 15);
-    classNames({
-      "headroom--pinned": false,
-      "headroom--unpinned": true
-    });
+    cy.get("header").should("not.be.pinned");
 
     cy.scrollTo(0, 12);
-    classNames({
-      "headroom--pinned": false,
-      "headroom--unpinned": true
-    });
+    cy.get("header").should("not.be.pinned");
 
     cy.scrollTo(0, 2);
-    classNames({
-      "headroom--pinned": true,
-      "headroom--unpinned": false
-    });
+    cy.get("header").should("be.pinned");
   });
 
   it("handles offset correctly", () => {
@@ -141,52 +91,34 @@ describe("Headroom", function() {
     });
 
     cy.scrollTo(0, 25);
-    classNames({
-      "headroom--pinned": false,
-      "headroom--unpinned": false
-    });
+    cy.get("header").should("be.initialised");
 
     cy.scrollTo(0, 55);
-    classNames({
-      "headroom--pinned": false,
-      "headroom--unpinned": true
-    });
+    cy.get("header").should("not.be.pinned");
 
     cy.scrollTo(0, 49);
-    classNames({
-      "headroom--pinned": true,
-      "headroom--unpinned": false
-    });
+    cy.get("header").should("be.pinned");
   });
 
   it("can be frozen / unfrozen", () => {
     initialiseHeadroom();
 
     cy.scrollTo(0, 20);
-    classNames({
-      "headroom--pinned": false,
-      "headroom--unpinned": true
-    });
+    cy.get("header").should("not.be.pinned");
 
     cy.window().then(win => {
       win.hr.freeze();
     });
 
     cy.scrollTo(0, 10);
-    classNames({
-      "headroom--pinned": false,
-      "headroom--unpinned": true
-    });
+    cy.get("header").should("not.be.pinned");
 
     cy.window().then(win => {
       win.hr.unfreeze();
     });
 
     cy.scrollTo(0, 5);
-    classNames({
-      "headroom--pinned": true,
-      "headroom--unpinned": false
-    });
+    cy.get("header").should("be.pinned");
   });
 
   it("handles scrollers besides window", () => {
@@ -194,90 +126,25 @@ describe("Headroom", function() {
       initialiseHeadroom({ scroller: scroller[0] });
     });
 
-    classNames({ headroom: true });
+    cy.get("header").should("be.initialised");
 
     cy.get(".scroller").scrollTo(0, 50);
-    classNames({
-      "headroom--pinned": false,
-      "headroom--unpinned": true,
-      "headroom--top": false,
-      "headroom--not-top": true,
-      "headroom--bottom": false,
-      "headroom--not-bottom": true
-    });
+    cy.get("header")
+      .should("not.be.pinned")
+      .should("not.be.top")
+      .should("not.be.bottom");
 
     cy.get(".scroller").scrollTo(0, 25);
-    classNames({
-      "headroom--pinned": true,
-      "headroom--unpinned": false,
-      "headroom--top": false,
-      "headroom--not-top": true,
-      "headroom--bottom": false,
-      "headroom--not-bottom": true
-    });
+    cy.get("header")
+      .should("be.pinned")
+      .should("not.be.top")
+      .should("not.be.bottom");
 
     cy.get(".scroller").scrollTo(0, 0);
-    classNames({
-      "headroom--pinned": true,
-      "headroom--unpinned": false,
-      "headroom--top": true,
-      "headroom--not-top": false,
-      "headroom--bottom": false,
-      "headroom--not-bottom": true
-    });
-
-    cy.get(".scroller").scrollTo("bottom");
-    classNames({
-      "headroom--pinned": false,
-      "headroom--unpinned": true,
-      "headroom--top": false,
-      "headroom--not-top": true,
-      "headroom--bottom": true,
-      "headroom--not-bottom": false
-    });
-  });
-
-  it("handles scrollers besides window", () => {
-    cy.get(".scroller").then(scroller => {
-      initialiseHeadroom({ scroller: scroller[0] });
-    });
-    classNames({ headroom: true });
-
-    cy.get(".scroller").scrollTo(0, 50);
-    classNames({
-      "headroom--pinned": false,
-      "headroom--unpinned": true,
-
-      "headroom--top": false,
-      "headroom--not-top": true,
-
-      "headroom--bottom": false,
-      "headroom--not-bottom": true
-    });
-
-    cy.get(".scroller").scrollTo(0, 25);
-    classNames({
-      "headroom--pinned": true,
-      "headroom--unpinned": false,
-
-      "headroom--top": false,
-      "headroom--not-top": true,
-
-      "headroom--bottom": false,
-      "headroom--not-bottom": true
-    });
-
-    cy.get(".scroller").scrollTo(0, 0);
-    classNames({
-      "headroom--pinned": true,
-      "headroom--unpinned": false,
-
-      "headroom--top": true,
-      "headroom--not-top": false,
-
-      "headroom--bottom": false,
-      "headroom--not-bottom": true
-    });
+    cy.get("header")
+      .should("be.pinned")
+      .should("be.top")
+      .should("not.be.bottom");
 
     cy.window()
       .then(win => {
@@ -290,28 +157,16 @@ describe("Headroom", function() {
         const scrollDistanceToBottom = scrollHeight - height;
 
         cy.get(".scroller").scrollTo(0, scrollDistanceToBottom - 1);
-        classNames({
-          "headroom--pinned": false,
-          "headroom--unpinned": true,
-
-          "headroom--top": false,
-          "headroom--not-top": true,
-
-          "headroom--bottom": false,
-          "headroom--not-bottom": true
-        });
+        cy.get("header")
+          .should("not.be.pinned")
+          .should("not.be.top")
+          .should("not.be.bottom");
 
         cy.get(".scroller").scrollTo(0, scrollDistanceToBottom);
-        classNames({
-          "headroom--pinned": false,
-          "headroom--unpinned": true,
-
-          "headroom--top": false,
-          "headroom--not-top": true,
-
-          "headroom--bottom": true,
-          "headroom--not-bottom": false
-        });
+        cy.get("header")
+          .should("not.be.pinned")
+          .should("not.be.top")
+          .should("be.bottom");
       });
   });
 });
