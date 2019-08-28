@@ -43,22 +43,17 @@ describe("Headroom", function() {
       .should("not.be.bottom");
 
     cy.window()
-      .then(win => {
-        return {
-          scrollHeight: win.hr.getScrollerHeight(),
-          height: win.hr.getScrollerPhysicalHeight()
-        };
-      })
-      .then(({ height, scrollHeight }) => {
-        const scrollDistanceToBottom = scrollHeight - height;
+      .then(win => win.hr.scrollSource)
+      .then(scroller => {
+        const distanceToBottom = scroller.scrollHeight() - scroller.height();
 
-        cy.scrollTo(0, scrollDistanceToBottom - 1);
+        cy.scrollTo(0, distanceToBottom - 1);
         cy.get("header")
           .should("not.be.pinned")
           .should("not.be.top")
           .should("not.be.bottom");
 
-        cy.scrollTo(0, scrollDistanceToBottom);
+        cy.scrollTo(0, distanceToBottom);
         cy.get("header")
           .should("not.be.pinned")
           .should("not.be.top")
@@ -151,22 +146,17 @@ describe("Headroom", function() {
       .should("not.be.bottom");
 
     cy.window()
-      .then(win => {
-        return {
-          scrollHeight: win.hr.getScrollerHeight(),
-          height: win.hr.getScrollerPhysicalHeight()
-        };
-      })
-      .then(({ height, scrollHeight }) => {
-        const scrollDistanceToBottom = scrollHeight - height;
+      .then(win => win.hr.scrollSource)
+      .then(scroller => {
+        const distanceToBottom = scroller.scrollHeight() - scroller.height();
 
-        cy.get(".scroller").scrollTo(0, scrollDistanceToBottom - 1);
+        cy.get(".scroller").scrollTo(0, distanceToBottom - 1);
         cy.get("header")
           .should("not.be.pinned")
           .should("not.be.top")
           .should("not.be.bottom");
 
-        cy.get(".scroller").scrollTo(0, scrollDistanceToBottom);
+        cy.get(".scroller").scrollTo(0, distanceToBottom);
         cy.get("header")
           .should("not.be.pinned")
           .should("not.be.top")

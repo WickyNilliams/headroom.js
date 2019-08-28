@@ -81,7 +81,7 @@ Headroom.prototype = {
   },
 
   /**
-   * Unattaches events and removes any classes that were added
+   * Detaches events and removes any classes that were added
    */
   destroy: function() {
     var classes = this.classes;
@@ -339,7 +339,7 @@ Headroom.options = {
     down: 0
   },
   offset: 0,
-  scroller: features.window,
+  scroller: features.browser() ? window : undefined,
   classes: {
     frozen: "headroom--frozen",
     pinned: "headroom--pinned",
@@ -351,7 +351,10 @@ Headroom.options = {
     initial: "headroom"
   }
 };
-
-Headroom.cutsTheMustard = features.rAF && features.bind && features.classList;
+Headroom.cutsTheMustard =
+  features.browser() &&
+  features.rAF() &&
+  features.bind() &&
+  features.classList();
 
 export default Headroom;

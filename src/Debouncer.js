@@ -1,5 +1,3 @@
-import features from "./features";
-
 /**
  * Handles debouncing of events via requestAnimationFrame
  * @see http://www.html5rocks.com/en/tutorials/speed/animations/
@@ -30,7 +28,7 @@ Debouncer.prototype = {
    */
   requestTick: function() {
     if (!this.ticking) {
-      features.rAF(this.update);
+      requestAnimationFrame(this.update);
       this.ticking = true;
     }
   },
