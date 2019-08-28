@@ -1,6 +1,7 @@
 import features from "./features";
 import Debouncer from "./Debouncer";
 import { extend } from "./utils";
+import createScroller from "./scroller";
 
 /**
  * Helper to add an event listener with an options object in supported browsers
@@ -48,6 +49,7 @@ function Headroom(elem, options) {
   this.classes = options.classes;
   this.offset = options.offset;
   this.scroller = options.scroller;
+  this.scrollSource = createScroller(options.scroller);
   this.initialised = false;
   this.onPin = options.onPin;
   this.onUnpin = options.onUnpin;
@@ -104,7 +106,7 @@ Headroom.prototype = {
    */
   attachEvent: function() {
     if (!this.initialised) {
-      this.lastKnownScrollY = this.getScrollY();
+      this.lastKnownScrollY = this.scrollSource.scrollY();
       this.initialised = true;
       addEventListenerWithOptions(this.scroller, "scroll", this.debouncer, {
         capture: false,
@@ -119,8 +121,8 @@ Headroom.prototype = {
    * Unpins the header if it's currently pinned
    */
   unpin: function() {
-    var classList = this.elem.classList,
-      classes = this.classes;
+    var classList = this.elem.classList;
+    var classes = this.classes;
 
     if (
       classList.contains(classes.pinned) ||
@@ -138,8 +140,8 @@ Headroom.prototype = {
    * Pins the header if it's currently unpinned
    */
   pin: function() {
-    var classList = this.elem.classList,
-      classes = this.classes;
+    var classList = this.elem.classList;
+    var classes = this.classes;
 
     if (classList.contains(classes.unpinned)) {
       classList.remove(classes.unpinned);
@@ -154,8 +156,8 @@ Headroom.prototype = {
    * Handles the top states
    */
   top: function() {
-    var classList = this.elem.classList,
-      classes = this.classes;
+    var classList = this.elem.classList;
+    var classes = this.classes;
 
     if (!classList.contains(classes.top)) {
       classList.add(classes.top);
@@ -170,8 +172,8 @@ Headroom.prototype = {
    * Handles the not top state
    */
   notTop: function() {
-    var classList = this.elem.classList,
-      classes = this.classes;
+    var classList = this.elem.classList;
+    var classes = this.classes;
 
     if (!classList.contains(classes.notTop)) {
       classList.add(classes.notTop);
@@ -183,8 +185,8 @@ Headroom.prototype = {
   },
 
   bottom: function() {
-    var classList = this.elem.classList,
-      classes = this.classes;
+    var classList = this.elem.classList;
+    var classes = this.classes;
 
     if (!classList.contains(classes.bottom)) {
       classList.add(classes.bottom);
@@ -199,8 +201,8 @@ Headroom.prototype = {
    * Handles the not top state
    */
   notBottom: function() {
-    var classList = this.elem.classList,
-      classes = this.classes;
+    var classList = this.elem.classList;
+    var classes = this.classes;
 
     if (!classList.contains(classes.notBottom)) {
       classList.add(classes.notBottom);
@@ -213,104 +215,15 @@ Headroom.prototype = {
   },
 
   /**
-   * Gets the Y scroll position
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollY
-   * @return {Number} pixels the page has scrolled along the Y-axis
-   */
-  getScrollY: function() {
-    if (this.scroller.pageYOffset !== undefined) {
-      return this.scroller.pageYOffset;
-    }
-    if (this.scroller.scrollTop !== undefined) {
-      return this.scroller.scrollTop;
-    }
-    return (
-      document.documentElement ||
-      document.body.parentNode ||
-      document.body
-    ).scrollTop;
-  },
-
-  /**
-   * Gets the height of the viewport
-   * @see http://andylangton.co.uk/blog/development/get-viewport-size-width-and-height-javascript
-   * @return {int} the height of the viewport in pixels
-   */
-  getViewportHeight: function() {
-    return (
-      window.innerHeight ||
-      document.documentElement.clientHeight ||
-      document.body.clientHeight
-    );
-  },
-
-  /**
-   * Gets the physical height of the DOM element
-   * @param  {Object}  elm the element to calculate the physical height of which
-   * @return {int}     the physical height of the element in pixels
-   */
-  getElementPhysicalHeight: function(elm) {
-    return Math.max(elm.offsetHeight, elm.clientHeight);
-  },
-
-  /**
-   * Gets the physical height of the scroller element
-   * @return {int} the physical height of the scroller element in pixels
-   */
-  getScrollerPhysicalHeight: function() {
-    return this.scroller === window || this.scroller === document.body
-      ? this.getViewportHeight()
-      : this.getElementPhysicalHeight(this.scroller);
-  },
-
-  /**
-   * Gets the height of the document
-   * @see http://james.padolsey.com/javascript/get-document-height-cross-browser/
-   * @return {int} the height of the document in pixels
-   */
-  getDocumentHeight: function() {
-    var body = document.body,
-      documentElement = document.documentElement;
-
-    return Math.max(
-      body.scrollHeight,
-      documentElement.scrollHeight,
-      body.offsetHeight,
-      documentElement.offsetHeight,
-      body.clientHeight,
-      documentElement.clientHeight
-    );
-  },
-
-  /**
-   * Gets the height of the DOM element
-   * @param  {Object}  elm the element to calculate the height of which
-   * @return {int}     the height of the element in pixels
-   */
-  getElementHeight: function(elm) {
-    return Math.max(elm.scrollHeight, elm.offsetHeight, elm.clientHeight);
-  },
-
-  /**
-   * Gets the height of the scroller element
-   * @return {int} the height of the scroller element in pixels
-   */
-  getScrollerHeight: function() {
-    return this.scroller === window || this.scroller === document.body
-      ? this.getDocumentHeight()
-      : this.getElementHeight(this.scroller);
-  },
-
-  /**
    * determines if the scroll position is outside of document boundaries
    * @param  {int}  currentScrollY the current y scroll position
    * @return {bool} true if out of bounds, false otherwise
    */
   isOutOfBounds: function(currentScrollY) {
-    var pastTop = currentScrollY < 0,
-      pastBottom =
-        currentScrollY + this.getScrollerPhysicalHeight() >
-        this.getScrollerHeight();
+    var pastTop = currentScrollY < 0;
+    var pastBottom =
+      currentScrollY + this.scrollSource.height() >
+      this.scrollSource.scrollHeight();
 
     return pastTop || pastBottom;
   },
@@ -334,8 +247,8 @@ Headroom.prototype = {
    * @return {bool} true if should unpin, false otherwise
    */
   shouldUnpin: function(currentScrollY, toleranceExceeded) {
-    var scrollingDown = currentScrollY > this.lastKnownScrollY,
-      pastOffset = currentScrollY >= this.offset;
+    var scrollingDown = currentScrollY > this.lastKnownScrollY;
+    var pastOffset = currentScrollY >= this.offset;
 
     return scrollingDown && pastOffset && toleranceExceeded;
   },
@@ -347,8 +260,8 @@ Headroom.prototype = {
    * @return {bool} true if should pin, false otherwise
    */
   shouldPin: function(currentScrollY, toleranceExceeded) {
-    var scrollingUp = currentScrollY < this.lastKnownScrollY,
-      pastOffset = currentScrollY <= this.offset;
+    var scrollingUp = currentScrollY < this.lastKnownScrollY;
+    var pastOffset = currentScrollY <= this.offset;
 
     return (scrollingUp && toleranceExceeded) || pastOffset;
   },
@@ -357,12 +270,13 @@ Headroom.prototype = {
    * Handles updating the state of the widget
    */
   update: function() {
-    var currentScrollY = this.getScrollY(),
-      scrollDirection = currentScrollY > this.lastKnownScrollY ? "down" : "up",
-      toleranceExceeded = this.toleranceExceeded(
-        currentScrollY,
-        scrollDirection
-      );
+    var currentScrollY = this.scrollSource.scrollY();
+    var scrollDirection =
+      currentScrollY > this.lastKnownScrollY ? "down" : "up";
+    var toleranceExceeded = this.toleranceExceeded(
+      currentScrollY,
+      scrollDirection
+    );
 
     if (this.isOutOfBounds(currentScrollY)) {
       // Ignore bouncy scrolling in OSX
@@ -381,8 +295,8 @@ Headroom.prototype = {
     }
 
     if (
-      currentScrollY + this.getScrollerPhysicalHeight() >=
-      this.getScrollerHeight()
+      currentScrollY + this.scrollSource.height() >=
+      this.scrollSource.scrollHeight()
     ) {
       this.bottom();
     } else {
