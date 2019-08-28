@@ -173,4 +173,20 @@ describe("Headroom", function() {
           .should("be.bottom");
       });
   });
+
+  it("handles programmatically pinning/unpinning", () => {
+    initialiseHeadroom();
+
+    cy.window().then(win => {
+      win.hr.unpin();
+    });
+
+    cy.get("header").should("not.be.pinned");
+
+    cy.window().then(win => {
+      win.hr.pin();
+    });
+
+    cy.get("header").should("be.pinned");
+  });
 });
