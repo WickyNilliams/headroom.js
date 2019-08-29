@@ -1,6 +1,5 @@
 import features from "./features";
 import Debouncer from "./Debouncer";
-import { extend } from "./utils";
 import createScroller from "./scroller";
 
 /**
@@ -41,22 +40,19 @@ function normalizeTolerance(t) {
  * @param {Object} options options for the widget
  */
 function Headroom(elem, options) {
-  options = extend(options, Headroom.options);
+  options = options || {};
+  this.options = Object.assign({}, Headroom.options, options);
+  Object.assign(
+    this.options.classes,
+    Headroom.options.classes,
+    options.classes
+  );
 
   this.lastKnownScrollY = 0;
+  this.scrollSource = createScroller(this.options.scroller);
   this.elem = elem;
-  this.tolerance = normalizeTolerance(options.tolerance);
-  this.classes = options.classes;
-  this.offset = options.offset;
-  this.scroller = options.scroller;
-  this.scrollSource = createScroller(options.scroller);
+  this.tolerance = normalizeTolerance(this.options.tolerance);
   this.initialised = false;
-  this.onPin = options.onPin;
-  this.onUnpin = options.onUnpin;
-  this.onTop = options.onTop;
-  this.onNotTop = options.onNotTop;
-  this.onBottom = options.onBottom;
-  this.onNotBottom = options.onNotBottom;
   this.frozen = false;
 }
 Headroom.prototype = {
@@ -71,7 +67,7 @@ Headroom.prototype = {
     }
 
     this.debouncer = new Debouncer(this.update.bind(this));
-    this.elem.classList.add(this.classes.initial);
+    this.elem.classList.add(this.options.classes.initial);
 
     // defer event registration to handle browser
     // potentially restoring previous scroll position
@@ -84,7 +80,7 @@ Headroom.prototype = {
    * Detaches events and removes any classes that were added
    */
   destroy: function() {
-    var classes = this.classes;
+    var classes = this.options.classes;
 
     this.initialised = false;
 
@@ -94,10 +90,15 @@ Headroom.prototype = {
       }
     }
 
-    removeEventListenerWithOptions(this.scroller, "scroll", this.debouncer, {
-      capture: false,
-      passive: true
-    });
+    removeEventListenerWithOptions(
+      this.options.scroller,
+      "scroll",
+      this.debouncer,
+      {
+        capture: false,
+        passive: true
+      }
+    );
   },
 
   /**
@@ -108,10 +109,15 @@ Headroom.prototype = {
     if (!this.initialised) {
       this.lastKnownScrollY = this.scrollSource.scrollY();
       this.initialised = true;
-      addEventListenerWithOptions(this.scroller, "scroll", this.debouncer, {
-        capture: false,
-        passive: true
-      });
+      addEventListenerWithOptions(
+        this.options.scroller,
+        "scroll",
+        this.debouncer,
+        {
+          capture: false,
+          passive: true
+        }
+      );
 
       this.debouncer.handleEvent();
     }
@@ -122,7 +128,7 @@ Headroom.prototype = {
    */
   unpin: function() {
     var classList = this.elem.classList;
-    var classes = this.classes;
+    var classes = this.options.classes;
 
     if (
       classList.contains(classes.pinned) ||
@@ -130,8 +136,8 @@ Headroom.prototype = {
     ) {
       classList.add(classes.unpinned);
       classList.remove(classes.pinned);
-      if (this.onUnpin) {
-        this.onUnpin.call(this);
+      if (this.options.onUnpin) {
+        this.options.onUnpin.call(this);
       }
     }
   },
@@ -141,13 +147,13 @@ Headroom.prototype = {
    */
   pin: function() {
     var classList = this.elem.classList;
-    var classes = this.classes;
+    var classes = this.options.classes;
 
     if (classList.contains(classes.unpinned)) {
       classList.remove(classes.unpinned);
       classList.add(classes.pinned);
-      if (this.onPin) {
-        this.onPin.call(this);
+      if (this.options.onPin) {
+        this.options.onPin.call(this);
       }
     }
   },
@@ -157,13 +163,13 @@ Headroom.prototype = {
    */
   top: function() {
     var classList = this.elem.classList;
-    var classes = this.classes;
+    var classes = this.options.classes;
 
     if (!classList.contains(classes.top)) {
       classList.add(classes.top);
       classList.remove(classes.notTop);
-      if (this.onTop) {
-        this.onTop.call(this);
+      if (this.options.onTop) {
+        this.options.onTop.call(this);
       }
     }
   },
@@ -173,26 +179,26 @@ Headroom.prototype = {
    */
   notTop: function() {
     var classList = this.elem.classList;
-    var classes = this.classes;
+    var classes = this.options.classes;
 
     if (!classList.contains(classes.notTop)) {
       classList.add(classes.notTop);
       classList.remove(classes.top);
-      if (this.onNotTop) {
-        this.onNotTop.call(this);
+      if (this.options.onNotTop) {
+        this.options.onNotTop.call(this);
       }
     }
   },
 
   bottom: function() {
     var classList = this.elem.classList;
-    var classes = this.classes;
+    var classes = this.options.classes;
 
     if (!classList.contains(classes.bottom)) {
       classList.add(classes.bottom);
       classList.remove(classes.notBottom);
-      if (this.onBottom) {
-        this.onBottom.call(this);
+      if (this.options.onBottom) {
+        this.options.onBottom.call(this);
       }
     }
   },
@@ -202,14 +208,14 @@ Headroom.prototype = {
    */
   notBottom: function() {
     var classList = this.elem.classList;
-    var classes = this.classes;
+    var classes = this.options.classes;
 
     if (!classList.contains(classes.notBottom)) {
       classList.add(classes.notBottom);
       classList.remove(classes.bottom);
 
-      if (this.onNotBottom) {
-        this.onNotBottom.call(this);
+      if (this.options.onNotBottom) {
+        this.options.onNotBottom.call(this);
       }
     }
   },
@@ -248,7 +254,7 @@ Headroom.prototype = {
    */
   shouldUnpin: function(currentScrollY, toleranceExceeded) {
     var scrollingDown = currentScrollY > this.lastKnownScrollY;
-    var pastOffset = currentScrollY >= this.offset;
+    var pastOffset = currentScrollY >= this.options.offset;
 
     return scrollingDown && pastOffset && toleranceExceeded;
   },
@@ -261,7 +267,7 @@ Headroom.prototype = {
    */
   shouldPin: function(currentScrollY, toleranceExceeded) {
     var scrollingUp = currentScrollY < this.lastKnownScrollY;
-    var pastOffset = currentScrollY <= this.offset;
+    var pastOffset = currentScrollY <= this.options.offset;
 
     return (scrollingUp && toleranceExceeded) || pastOffset;
   },
@@ -288,7 +294,7 @@ Headroom.prototype = {
       return;
     }
 
-    if (currentScrollY <= this.offset) {
+    if (currentScrollY <= this.options.offset) {
       this.top();
     } else {
       this.notTop();
@@ -317,7 +323,7 @@ Headroom.prototype = {
    */
   freeze: function() {
     this.frozen = true;
-    this.elem.classList.add(this.classes.frozen);
+    this.elem.classList.add(this.options.classes.frozen);
   },
 
   /**
@@ -325,7 +331,7 @@ Headroom.prototype = {
    */
   unfreeze: function() {
     this.frozen = false;
-    this.elem.classList.remove(this.classes.frozen);
+    this.elem.classList.remove(this.options.classes.frozen);
   }
 };
 
@@ -339,7 +345,7 @@ Headroom.options = {
     down: 0
   },
   offset: 0,
-  scroller: features.browser() ? window : undefined,
+  scroller: features.browser() && window,
   classes: {
     frozen: "headroom--frozen",
     pinned: "headroom--pinned",
