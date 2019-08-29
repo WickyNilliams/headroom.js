@@ -22,7 +22,6 @@ describe("Headroom", function() {
     cy.window().then(win => {
       win.hr.destroy();
     });
-
     classNames({
       headroom: false,
       "headroom--unpinned": false,
@@ -75,17 +74,40 @@ describe("Headroom", function() {
       "headroom--not-bottom": true
     });
 
-    cy.scrollTo("bottom");
-    classNames({
-      "headroom--unpinned": true,
-      "headroom--pinned": false,
+    cy.window()
+      .then(win => {
+        return {
+          scrollHeight: win.hr.getScrollerHeight(),
+          height: win.hr.getScrollerPhysicalHeight()
+        };
+      })
+      .then(({ height, scrollHeight }) => {
+        const scrollDistanceToBottom = scrollHeight - height;
 
-      "headroom--top": false,
-      "headroom--not-top": true,
+        cy.scrollTo(0, scrollDistanceToBottom - 1);
+        classNames({
+          "headroom--pinned": false,
+          "headroom--unpinned": true,
 
-      "headroom--bottom": true,
-      "headroom--not-bottom": false
-    });
+          "headroom--top": false,
+          "headroom--not-top": true,
+
+          "headroom--bottom": false,
+          "headroom--not-bottom": true
+        });
+
+        cy.scrollTo(0, scrollDistanceToBottom);
+        classNames({
+          "headroom--pinned": false,
+          "headroom--unpinned": true,
+
+          "headroom--top": false,
+          "headroom--not-top": true,
+
+          "headroom--bottom": true,
+          "headroom--not-bottom": false
+        });
+      });
   });
 
   it("handles tolerance correctly", () => {
@@ -141,5 +163,83 @@ describe("Headroom", function() {
       "headroom--unpinned": false,
       "headroom--pinned": true
     });
+  });
+
+  it("handles scrollers besides window", () => {
+    cy.get(".scroller").then(scroller => {
+      initialiseHeadroom({ scroller: scroller[0] });
+    });
+    classNames({ headroom: true });
+
+    cy.get(".scroller").scrollTo(0, 50);
+    classNames({
+      "headroom--pinned": false,
+      "headroom--unpinned": true,
+
+      "headroom--top": false,
+      "headroom--not-top": true,
+
+      "headroom--bottom": false,
+      "headroom--not-bottom": true
+    });
+
+    cy.get(".scroller").scrollTo(0, 25);
+    classNames({
+      "headroom--pinned": true,
+      "headroom--unpinned": false,
+
+      "headroom--top": false,
+      "headroom--not-top": true,
+
+      "headroom--bottom": false,
+      "headroom--not-bottom": true
+    });
+
+    cy.get(".scroller").scrollTo(0, 0);
+    classNames({
+      "headroom--pinned": true,
+      "headroom--unpinned": false,
+
+      "headroom--top": true,
+      "headroom--not-top": false,
+
+      "headroom--bottom": false,
+      "headroom--not-bottom": true
+    });
+
+    cy.window()
+      .then(win => {
+        return {
+          scrollHeight: win.hr.getScrollerHeight(),
+          height: win.hr.getScrollerPhysicalHeight()
+        };
+      })
+      .then(({ height, scrollHeight }) => {
+        const scrollDistanceToBottom = scrollHeight - height;
+
+        cy.get(".scroller").scrollTo(0, scrollDistanceToBottom - 1);
+        classNames({
+          "headroom--pinned": false,
+          "headroom--unpinned": true,
+
+          "headroom--top": false,
+          "headroom--not-top": true,
+
+          "headroom--bottom": false,
+          "headroom--not-bottom": true
+        });
+
+        cy.get(".scroller").scrollTo(0, scrollDistanceToBottom);
+        classNames({
+          "headroom--pinned": false,
+          "headroom--unpinned": true,
+
+          "headroom--top": false,
+          "headroom--not-top": true,
+
+          "headroom--bottom": true,
+          "headroom--not-bottom": false
+        });
+      });
   });
 });

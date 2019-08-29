@@ -435,7 +435,10 @@ Headroom.prototype = {
       this.notTop();
     }
 
-    if (currentScrollY + this.getViewportHeight() >= this.getScrollerHeight()) {
+    if (
+      currentScrollY + this.getScrollerPhysicalHeight() >=
+      this.getScrollerHeight()
+    ) {
       this.bottom();
     } else {
       this.notBottom();
