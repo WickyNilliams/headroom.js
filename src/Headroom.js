@@ -1,4 +1,4 @@
-import features from "./features";
+import { isBrowser, passiveEventsSupported } from "./features";
 import Debouncer from "./Debouncer";
 import createScroller from "./scroller";
 
@@ -6,7 +6,7 @@ import createScroller from "./scroller";
  * Helper to add an event listener with an options object in supported browsers
  */
 function addEventListenerWithOptions(target, type, handler, options) {
-  options = features.passiveSupported() ? options : options.capture;
+  options = passiveEventsSupported() ? options : options.capture;
   target.addEventListener(type, handler, options);
 }
 
@@ -14,7 +14,7 @@ function addEventListenerWithOptions(target, type, handler, options) {
  * Helper to remove an event listener with an options object in supported browsers
  */
 function removeEventListenerWithOptions(target, type, handler, options) {
-  options = features.passiveSupported() ? options : options.capture;
+  options = passiveEventsSupported() ? options : options.capture;
   target.removeEventListener(type, handler, options);
 }
 
@@ -56,10 +56,6 @@ Headroom.prototype = {
    * Initialises the widget
    */
   init: function() {
-    if (!Headroom.cutsTheMustard) {
-      return;
-    }
-
     this.debouncer = new Debouncer(this.update.bind(this));
     this.elem.classList.add(this.options.classes.initial);
 
@@ -339,7 +335,7 @@ Headroom.options = {
     down: 0
   },
   offset: 0,
-  scroller: features.browser() && window,
+  scroller: isBrowser() ? window : null,
   classes: {
     frozen: "headroom--frozen",
     pinned: "headroom--pinned",
@@ -351,10 +347,5 @@ Headroom.options = {
     initial: "headroom"
   }
 };
-Headroom.cutsTheMustard =
-  features.browser() &&
-  features.rAF() &&
-  features.bind() &&
-  features.classList();
 
 export default Headroom;
