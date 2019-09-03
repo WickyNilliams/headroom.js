@@ -1,7 +1,4 @@
-window.requestAnimationFrame =
-  window.requestAnimationFrame ||
-  window.webkitRequestAnimationFrame ||
-  window.mozRequestAnimationFrame;
+import features from "./features";
 
 /**
  * Handles debouncing of events via requestAnimationFrame
@@ -30,11 +27,9 @@ Debouncer.prototype = {
    * ensures events don't get stacked
    * @private
    */
-  requestTick: function() {
-    if (!this.ticking) {
-      requestAnimationFrame(
-        this.rafCallback || (this.rafCallback = this.update.bind(this))
-      );
+  requestTick : function() {
+    if(!this.ticking) {
+      features.rAF(this.rafCallback || (this.rafCallback = this.update.bind(this)));
       this.ticking = true;
     }
   },

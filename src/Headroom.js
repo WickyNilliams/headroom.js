@@ -469,6 +469,7 @@ Headroom.prototype = {
     this.elem.classList.remove(this.classes.frozen);
   }
 };
+
 /**
  * Default options
  * @type {Object}
@@ -479,7 +480,7 @@ Headroom.options = {
     down: 0
   },
   offset: 0,
-  scroller: window,
+  scroller: features.window,
   classes: {
     frozen: "headroom--frozen",
     pinned: "headroom--pinned",
@@ -491,6 +492,7 @@ Headroom.options = {
     initial: "headroom"
   }
 };
+
 Headroom.cutsTheMustard =
   typeof features !== "undefined" &&
   features.rAF &&
