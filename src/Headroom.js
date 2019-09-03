@@ -6,22 +6,16 @@ import createScroller from "./scroller";
  * Helper to add an event listener with an options object in supported browsers
  */
 function addEventListenerWithOptions(target, type, handler, options) {
-  var optionsOrCapture = options;
-  if (!features.passiveSupported()) {
-    optionsOrCapture = options.capture;
-  }
-  target.addEventListener(type, handler, optionsOrCapture);
+  options = features.passiveSupported() ? options : options.capture;
+  target.addEventListener(type, handler, options);
 }
 
 /**
  * Helper to remove an event listener with an options object in supported browsers
  */
 function removeEventListenerWithOptions(target, type, handler, options) {
-  var optionsOrCapture = options;
-  if (!features.passiveSupported()) {
-    optionsOrCapture = options.capture;
-  }
-  target.removeEventListener(type, handler, optionsOrCapture);
+  options = features.passiveSupported() ? options : options.capture;
+  target.removeEventListener(type, handler, options);
 }
 
 /**
