@@ -1,0 +1,13 @@
+{
+  "env": {
+    "browser": false
+  },
+  "globals": {
+    "describe": false,
+    "it": false,
+    "expect": false,
+    "cy": false,
+    "beforeEach": false,
+    "afterEach": false
+  }
+}
