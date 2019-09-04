@@ -3,6 +3,8 @@ function isDocument(obj) {
 }
 
 function isWindow(obj) {
+  // `obj === window` or `obj instanceof Window` is not sufficient,
+  // as the obj may be the window of an iframe.
   return obj && obj.document && isDocument(obj.document);
 }
 
@@ -52,7 +54,6 @@ function windowScroller(win) {
 function elementScroller(element) {
   return {
     /**
-     * @see http://james.padolsey.com/javascript/get-document-height-cross-browser/
      * @return {Number} the scroll height of the element in pixels
      */
     scrollHeight: function() {
@@ -64,7 +65,6 @@ function elementScroller(element) {
     },
 
     /**
-     * @see http://andylangton.co.uk/blog/development/get-viewport-size-width-and-height-javascript
      * @return {Number} the height of the element in pixels
      */
     height: function() {

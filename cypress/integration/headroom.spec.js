@@ -45,7 +45,7 @@ describe("Headroom", function() {
       .should("not.be.bottom");
 
     cy.window()
-      .then(win => win.hr.scrollSource)
+      .then(win => createScroller(win.hr.options.scroller))
       .then(scroller => {
         const distanceToBottom = scroller.scrollHeight() - scroller.height();
 
@@ -148,7 +148,7 @@ describe("Headroom", function() {
       .should("not.be.bottom");
 
     cy.window()
-      .then(win => win.hr.scrollSource)
+      .then(win => createScroller(win.hr.options.scroller))
       .then(scroller => {
         const distanceToBottom = scroller.scrollHeight() - scroller.height();
 
