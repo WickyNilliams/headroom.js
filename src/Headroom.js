@@ -26,6 +26,10 @@ function Headroom(elem, options) {
 Headroom.prototype = {
   constructor: Headroom,
 
+  /**
+   * Start listening to scrolling
+   * @public
+   */
   init: function() {
     this.addClass("initial");
 
@@ -36,6 +40,10 @@ Headroom.prototype = {
     return this;
   },
 
+  /**
+   * Destroy the widget, clearing up after itself
+   * @public
+   */
   destroy: function() {
     var classes = this.classes;
 
@@ -59,30 +67,59 @@ Headroom.prototype = {
     this.scrollTracker = trackScroll(this.scroller, this.update.bind(this));
   },
 
+  /**
+   * Unpin the element
+   * @public
+   */
   unpin: function() {
     if (this.hasClass("pinned") || !this.hasClass("unpinned")) {
       this.addClass("unpinned");
       this.removeClass("pinned");
+
       if (this.onUnpin) {
         this.onUnpin.call(this);
       }
     }
   },
 
+  /**
+   * Pin the element
+   * @public
+   */
   pin: function() {
     if (this.hasClass("unpinned")) {
       this.addClass("pinned");
       this.removeClass("unpinned");
+
       if (this.onPin) {
         this.onPin.call(this);
       }
     }
   },
 
+  /**
+   * Freezes the current state of the widget
+   * @public
+   */
+  freeze: function() {
+    this.frozen = true;
+    this.addClass("frozen");
+  },
+
+  /**
+   * Re-enables the default behaviour of the widget
+   * @public
+   */
+  unfreeze: function() {
+    this.frozen = false;
+    this.removeClass("frozen");
+  },
+
   top: function() {
     if (!this.hasClass("top")) {
       this.addClass("top");
       this.removeClass("notTop");
+
       if (this.onTop) {
         this.onTop.call(this);
       }
@@ -93,6 +130,7 @@ Headroom.prototype = {
     if (!this.hasClass("notTop")) {
       this.addClass("notTop");
       this.removeClass("top");
+
       if (this.onNotTop) {
         this.onNotTop.call(this);
       }
@@ -103,6 +141,7 @@ Headroom.prototype = {
     if (!this.hasClass("bottom")) {
       this.addClass("bottom");
       this.removeClass("notBottom");
+
       if (this.onBottom) {
         this.onBottom.call(this);
       }
@@ -180,22 +219,6 @@ Headroom.prototype = {
     ) {
       this.pin();
     }
-  },
-
-  /**
-   * Freezes the current state of the widget
-   */
-  freeze: function() {
-    this.frozen = true;
-    this.addClass("frozen");
-  },
-
-  /**
-   * Re-enables the default behaviour of the widget
-   */
-  unfreeze: function() {
-    this.frozen = false;
-    this.removeClass("frozen");
   }
 };
 
