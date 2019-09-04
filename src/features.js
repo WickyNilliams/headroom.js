@@ -11,8 +11,9 @@ export function passiveEventsSupported() {
 
   try {
     var options = {
+      // eslint-disable-next-line getter-return
       get passive() {
-        return (supported = true);
+        supported = true;
       }
     };
     window.addEventListener("test", options, options);
