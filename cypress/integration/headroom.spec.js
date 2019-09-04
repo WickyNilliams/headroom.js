@@ -207,4 +207,85 @@ describe("Headroom", function() {
       .should("not.be.top")
       .should("not.be.bottom");
   });
+
+  it("fires callbacks", () => {
+    const flags = {
+      pin: false,
+      unpin: false,
+      top: false,
+      notTop: false,
+      bottom: false,
+      notBottom: false
+    };
+
+    initialiseHeadroom({
+      onPin: () => {
+        flags.pin = true;
+      },
+      onUnpin: () => {
+        flags.unpin = true;
+      },
+      onTop: () => {
+        flags.top = true;
+      },
+      onNotTop: () => {
+        flags.notTop = true;
+      },
+      onBottom: () => {
+        flags.bottom = true;
+      },
+      onNotBottom: () => {
+        flags.notBottom = true;
+      }
+    });
+
+    cy.scrollTo(0, 50);
+    cy.should(() => {
+      expect(flags).to.deep.equal({
+        unpin: true,
+        notTop: true,
+        notBottom: true,
+        pin: false,
+        top: false,
+        bottom: false
+      });
+    });
+
+    cy.scrollTo(0, 25);
+    cy.should(() => {
+      expect(flags).to.deep.equal({
+        unpin: true,
+        notTop: true,
+        notBottom: true,
+        pin: true,
+        top: false,
+        bottom: false
+      });
+    });
+    cy.wait(20).then(() => {});
+
+    cy.scrollTo(0, 0);
+    cy.should(() => {
+      expect(flags).to.deep.equal({
+        unpin: true,
+        notTop: true,
+        notBottom: true,
+        pin: true,
+        top: true,
+        bottom: false
+      });
+    });
+
+    cy.scrollTo("bottom");
+    cy.should(() => {
+      expect(flags).to.deep.equal({
+        unpin: true,
+        notTop: true,
+        notBottom: true,
+        pin: true,
+        top: true,
+        bottom: true
+      });
+    });
+  });
 });
