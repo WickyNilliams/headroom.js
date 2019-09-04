@@ -45,16 +45,8 @@ Headroom.prototype = {
    * @public
    */
   destroy: function() {
-    var classes = this.classes;
-
     this.initialised = false;
-
-    for (var key in classes) {
-      if (Object.prototype.hasOwnProperty.call(classes, key)) {
-        this.removeClass(key);
-      }
-    }
-
+    Object.keys(this.classes).forEach(this.removeClass, this);
     this.scrollTracker.destroy();
   },
 
