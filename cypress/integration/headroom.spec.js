@@ -1,3 +1,5 @@
+import createScroller from "../../src/scroller";
+
 describe("Headroom", function() {
   const initialiseHeadroom = options => {
     cy.window().then(win => {
@@ -178,5 +180,31 @@ describe("Headroom", function() {
     });
 
     cy.get("header").should("be.pinned");
+  });
+
+  it("handles an iframe's window as the scroll source", () => {
+    cy.get("iframe").then(([iframe]) => {
+      initialiseHeadroom({
+        scroller: iframe.contentWindow
+      });
+    });
+
+    cy.get("header").should("be.initialised");
+
+    cy.get("iframe").then(([iframe]) => {
+      iframe.contentWindow.scroll(0, 50);
+    });
+    cy.get("header")
+      .should("not.be.pinned")
+      .should("not.be.top")
+      .should("not.be.bottom");
+
+    cy.get("iframe").then(([iframe]) => {
+      iframe.contentWindow.scroll(0, 25);
+    });
+    cy.get("header")
+      .should("be.pinned")
+      .should("not.be.top")
+      .should("not.be.bottom");
   });
 });

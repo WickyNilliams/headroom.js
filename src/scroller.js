@@ -1,24 +1,29 @@
-function isWindowOrDocument(obj) {
-  return obj === window || obj === document || obj === document.body;
+function isDocument(obj) {
+  return obj.nodeType === 9; // Node.DOCUMENT_NODE === 9
 }
 
-function windowScroller(/* win */) {
+function isWindow(obj) {
+  return obj && obj.document && isDocument(obj.document);
+}
+
+function windowScroller(win) {
+  var doc = win.document;
+  var body = doc.body;
+  var html = doc.documentElement;
+
   return {
     /**
      * @see http://james.padolsey.com/javascript/get-document-height-cross-browser/
      * @return {Number} the scroll height of the document in pixels
      */
     scrollHeight: function() {
-      var body = document.body;
-      var documentElement = document.documentElement;
-
       return Math.max(
         body.scrollHeight,
-        documentElement.scrollHeight,
+        html.scrollHeight,
         body.offsetHeight,
-        documentElement.offsetHeight,
+        html.offsetHeight,
         body.clientHeight,
-        documentElement.clientHeight
+        html.clientHeight
       );
     },
 
@@ -27,11 +32,7 @@ function windowScroller(/* win */) {
      * @return {Number} the height of the viewport in pixels
      */
     height: function() {
-      return (
-        window.innerHeight ||
-        document.documentElement.clientHeight ||
-        document.body.clientHeight
-      );
+      return win.innerHeight || html.clientHeight || body.clientHeight;
     },
 
     /**
@@ -39,15 +40,11 @@ function windowScroller(/* win */) {
      * @return {Number} pixels the page has scrolled along the Y-axis
      */
     scrollY: function() {
-      if (window.pageYOffset !== undefined) {
-        return window.pageYOffset;
+      if (win.pageYOffset !== undefined) {
+        return win.pageYOffset;
       }
 
-      return (
-        document.documentElement ||
-        document.body.parentNode ||
-        document.body
-      ).scrollTop;
+      return (html || body.parentNode || body).scrollTop;
     }
   };
 }
@@ -85,7 +82,5 @@ function elementScroller(element) {
 }
 
 export default function createScroller(element) {
-  return isWindowOrDocument(element)
-    ? windowScroller(element)
-    : elementScroller(element);
+  return isWindow(element) ? windowScroller(element) : elementScroller(element);
 }
