@@ -31,15 +31,23 @@ Headroom.prototype = {
    * @public
    */
   init: function() {
-    if (!Headroom.cutsTheMustard) {
-      return;
+    if (Headroom.cutsTheMustard && !this.initialised) {
+      this.addClass("initial");
+      this.initialised = true;
+
+      // defer event registration to handle browser
+      // potentially restoring previous scroll position
+      setTimeout(
+        function(self) {
+          self.scrollTracker = trackScroll(
+            self.scroller,
+            self.update.bind(self)
+          );
+        },
+        100,
+        this
+      );
     }
-
-    this.addClass("initial");
-
-    // defer event registration to handle browser
-    // potentially restoring previous scroll position
-    setTimeout(this.attachEvent.bind(this), 100);
 
     return this;
   },
@@ -52,15 +60,6 @@ Headroom.prototype = {
     this.initialised = false;
     Object.keys(this.classes).forEach(this.removeClass, this);
     this.scrollTracker.destroy();
-  },
-
-  attachEvent: function() {
-    if (this.initialised) {
-      return;
-    }
-
-    this.initialised = true;
-    this.scrollTracker = trackScroll(this.scroller, this.update.bind(this));
   },
 
   /**
