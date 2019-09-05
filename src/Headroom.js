@@ -1,4 +1,4 @@
-import { isBrowser } from "./features";
+import { isBrowser, isSupported } from "./features";
 import trackScroll from "./trackScroll";
 
 function normalizeTolerance(t) {
@@ -31,6 +31,10 @@ Headroom.prototype = {
    * @public
    */
   init: function() {
+    if (!Headroom.cutsTheMustard) {
+      return;
+    }
+
     this.addClass("initial");
 
     // defer event registration to handle browser
@@ -236,5 +240,7 @@ Headroom.options = {
     initial: "headroom"
   }
 };
+
+Headroom.cutsTheMustard = isSupported();
 
 export default Headroom;

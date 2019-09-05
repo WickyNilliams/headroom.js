@@ -24,3 +24,14 @@ export function passiveEventsSupported() {
 
   return supported;
 }
+
+export function isSupported() {
+  return !!(
+    isBrowser() &&
+    function() {}.bind &&
+    "classList" in document.documentElement &&
+    Object.assign &&
+    Object.keys &&
+    requestAnimationFrame
+  );
+}
