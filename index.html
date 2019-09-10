@@ -109,7 +109,7 @@ var myElement = document.querySelector("header");
 // construct an instance of Headroom, passing the element
 var headroom  = new Headroom(myElement);
 // initialise
-headroom.init(); 
+headroom.init();
 </code></pre>
 
 <h3>With jQuery/Zepto</h3>
@@ -140,7 +140,7 @@ $("#header").headroom();
 
 <p>Headroom.js can also accept an options object to alter the way it behaves. You can see the default options by inspecting <code>Headroom.options</code>. The structure of an options object is as follows:</p>
 
-<pre class="language-javascript"><code>{
+<pre class="language-javascript"><code>var options = {
     // vertical offset in px before element is first unpinned
     offset : 0,
     // scroll tolerance in px before state changes
@@ -165,7 +165,9 @@ $("#header").headroom();
         // when at bottom of scoll area
         bottom : "headroom--bottom",
         // when not at bottom of scroll area
-        notBottom : "headroom--not-bottom"
+        notBottom : "headroom--not-bottom",
+        // when frozen method has been called
+        frozen: "headroom--frozen"
     },
     // element to listen to scroll events on, defaults to `window`
     scroller : someElement,
@@ -181,7 +183,9 @@ $("#header").headroom();
     onBottom : function() {},
     // callback when moving away from bottom of page, `this` is headroom object
     onNotBottom : function() {}
-}
+};
+
+var headroom = new Headroom(element, options);
 </code></pre>
 
 <h3>CSS</h3>
