@@ -46,7 +46,8 @@ const minified = {
     uglify(),
     licensePlugin,
     filesize({
-      showMinifiedSize: false
+      showMinifiedSize: false,
+      showBrotliSize: true
     })
   ]
 };
