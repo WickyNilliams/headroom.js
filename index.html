@@ -225,6 +225,25 @@ $("#header").headroom();
     The CSS above is enough to get you started, but feel free to try something entirely different. Let you imagination run wild. But not <em>too wild</em>, your users won't appreciate that.
 </p>
 
+<h3>Methods</h3>
+
+<p>The following methods are available to be called on a headroom instance:</p>
+
+<ul>
+    <li>
+        <code>pin()</code>: forcibly set the headroom instance's state to pinned
+    </li>
+    <li>
+        <code>unpin()</code>: forcibly set the headroom instance's state to unpinned
+    </li>
+    <li>
+        <code>freeze()</code>: freeze the headroom instance's state (pinned or unpinned), and no longer respond to scroll events
+    </li>
+    <li>
+        <code>unfreeze()</code>: resume responding to scroll events
+    </li>
+</ul>
+
 <h2>Examples</h2>
 <p>
     Head over to the <a href="playroom/">headroom.js playroom</a> if you want see some example uses. There you can tweak all of headroom's options and try out various CSS effects in an interactive demo.
