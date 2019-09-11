@@ -135,6 +135,8 @@ Headroom.js can also accept an options object to alter the way it behaves. You c
         bottom : "headroom--bottom",
         // when not at bottom of scroll area
         notBottom : "headroom--not-bottom"
+        // when frozen
+        frozen : "headroom--frozen"
     },
     // callback when pinned, `this` is headroom object
     onPin : function() {},
@@ -150,6 +152,12 @@ Headroom.js can also accept an options object to alter the way it behaves. You c
     onNotBottom : function() {}
 }
 ```
+
+## Methods
+Headroom.js also provides the following methods:
+* `freeze()`: When called, this method will freeze the current headroom's state (pinned or unpinned). Headroom will not react to the user's scroll. If you wish to re-enable the headroom's default behaviour, you can call the `unfreeze` method.
+* `unfreeze()`: When called, this method will resume headroom's default behaviour (Headroom will pin or unpin when the user scrolls the page). By default, Headroom is not frozen.
+
 
 ## Examples
 
