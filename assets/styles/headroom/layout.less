@@ -1,24 +1,23 @@
 @spacing: 1.5em;
 
-
 ////////////////
 // border-box //
 ////////////////
 
-*, ::after, ::before {
+*,
+::after,
+::before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-
 ///////////////////////////////////////
 // Consistent margins on block elems //
 ///////////////////////////////////////
 
-
-h1, 
-h2, 
+h1,
+h2,
 h3,
 h4,
 h5,
@@ -39,6 +38,10 @@ body {
   margin: 0;
 }
 
+html,
+body {
+  scroll-padding-top: 75px;
+}
 
 /////////////////////
 // Building blocks //
@@ -46,7 +49,7 @@ body {
 
 .container {
   max-width: 41em;
-  
+
   //TODO: refactor into separate classes?
   margin: 0 auto;
   padding: 0 @spacing;

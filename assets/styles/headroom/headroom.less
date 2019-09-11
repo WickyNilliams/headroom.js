@@ -39,9 +39,9 @@
 
     padding: 0.25em;
     border: 1px solid lighten(@darkColor, 50%);
-  
+
     &:focus {
-      outline:none;
+      outline: none;
       box-shadow: @primaryColor 0 0 3px 0;
     }
   }
@@ -50,10 +50,10 @@
     margin-bottom: 0.25em;
 
     &--block {
-      display:block;
+      display: block;
     }
 
-    input[type=radio] {
+    input[type="radio"] {
       margin-right: 0.75em;
     }
   }
@@ -61,12 +61,17 @@
 
 :not(pre) > code {
   background-color: lighten(@darkColor, 65);
-  padding: 0.3em 0.2em 0.1em;
+  padding: 0.2em 0.25em 0.25em;
   border-radius: 0.25em;
 }
 
+a > code {
+  padding-bottom: 0;
+}
+
 p + h2,
-p + h3 {
+p + h3,
+ul + h3 {
   margin-top: 1.5em;
 }
 

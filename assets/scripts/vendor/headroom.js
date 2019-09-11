@@ -1,120 +1,195 @@
 /*!
- * headroom.js v0.9.1 - Give your page some headroom. Hide your header until you need it
- * Copyright (c) 2016 Nick Williams - http://wicky.nillia.ms/headroom.js
+ * headroom.js v0.10.0 - Give your page some headroom. Hide your header until you need it
+ * Copyright (c) 2019 Nick Williams - http://wicky.nillia.ms/headroom.js
  * License: MIT
  */
 
-(function(root, factory) {
-  'use strict';
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global = global || self, global.Headroom = factory());
+}(this, function () { 'use strict';
 
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module.
-    define([], factory);
+  function isBrowser() {
+    return typeof window !== "undefined";
   }
-  else if (typeof exports === 'object') {
-    // COMMONJS
-    module.exports = factory();
-  }
-  else {
-    // BROWSER
-    root.Headroom = factory();
-  }
-}(this, function() {
-  'use strict';
 
-  /* exported features */
-  
-  var features = {
-    bind : !!(function(){}.bind),
-    classList : 'classList' in document.documentElement,
-    rAF : !!(window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame)
-  };
-  window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
-  
   /**
-   * Handles debouncing of events via requestAnimationFrame
-   * @see http://www.html5rocks.com/en/tutorials/speed/animations/
-   * @param {Function} callback The callback to handle whichever event
+   * Used to detect browser support for adding an event listener with options
+   * Credit: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
    */
-  function Debouncer (callback) {
-    this.callback = callback;
-    this.ticking = false;
-  }
-  Debouncer.prototype = {
-    constructor : Debouncer,
-  
-    /**
-     * dispatches the event to the supplied callback
-     * @private
-     */
-    update : function() {
-      this.callback && this.callback();
-      this.ticking = false;
-    },
-  
-    /**
-     * ensures events don't get stacked
-     * @private
-     */
-    requestTick : function() {
-      if(!this.ticking) {
-        requestAnimationFrame(this.rafCallback || (this.rafCallback = this.update.bind(this)));
-        this.ticking = true;
-      }
-    },
-  
-    /**
-     * Attach this as the event listeners
-     */
-    handleEvent : function() {
-      this.requestTick();
-    }
-  };
-  /**
-   * Check if object is part of the DOM
-   * @constructor
-   * @param {Object} obj element to check
-   */
-  function isDOMElement(obj) {
-    return obj && typeof window !== 'undefined' && (obj === window || obj.nodeType);
-  }
-  
-  /**
-   * Helper function for extending objects
-   */
-  function extend (object /*, objectN ... */) {
-    if(arguments.length <= 0) {
-      throw new Error('Missing arguments in extend function');
-    }
-  
-    var result = object || {},
-        key,
-        i;
-  
-    for (i = 1; i < arguments.length; i++) {
-      var replacement = arguments[i] || {};
-  
-      for (key in replacement) {
-        // Recurse into object except if the object is a DOM element
-        if(typeof result[key] === 'object' && ! isDOMElement(result[key])) {
-          result[key] = extend(result[key], replacement[key]);
+  function passiveEventsSupported() {
+    var supported = false;
+
+    try {
+      var options = {
+        // eslint-disable-next-line getter-return
+        get passive() {
+          supported = true;
         }
-        else {
-          result[key] = result[key] || replacement[key];
+      };
+      window.addEventListener("test", options, options);
+      window.removeEventListener("test", options, options);
+    } catch (err) {
+      supported = false;
+    }
+
+    return supported;
+  }
+
+  function isSupported() {
+    return !!(
+      isBrowser() &&
+      function() {}.bind &&
+      "classList" in document.documentElement &&
+      Object.assign &&
+      Object.keys &&
+      requestAnimationFrame
+    );
+  }
+
+  function isDocument(obj) {
+    return obj.nodeType === 9; // Node.DOCUMENT_NODE === 9
+  }
+
+  function isWindow(obj) {
+    // `obj === window` or `obj instanceof Window` is not sufficient,
+    // as the obj may be the window of an iframe.
+    return obj && obj.document && isDocument(obj.document);
+  }
+
+  function windowScroller(win) {
+    var doc = win.document;
+    var body = doc.body;
+    var html = doc.documentElement;
+
+    return {
+      /**
+       * @see http://james.padolsey.com/javascript/get-document-height-cross-browser/
+       * @return {Number} the scroll height of the document in pixels
+       */
+      scrollHeight: function() {
+        return Math.max(
+          body.scrollHeight,
+          html.scrollHeight,
+          body.offsetHeight,
+          html.offsetHeight,
+          body.clientHeight,
+          html.clientHeight
+        );
+      },
+
+      /**
+       * @see http://andylangton.co.uk/blog/development/get-viewport-size-width-and-height-javascript
+       * @return {Number} the height of the viewport in pixels
+       */
+      height: function() {
+        return win.innerHeight || html.clientHeight || body.clientHeight;
+      },
+
+      /**
+       * Gets the Y scroll position
+       * @return {Number} pixels the page has scrolled along the Y-axis
+       */
+      scrollY: function() {
+        if (win.pageYOffset !== undefined) {
+          return win.pageYOffset;
         }
+
+        return (html || body.parentNode || body).scrollTop;
+      }
+    };
+  }
+
+  function elementScroller(element) {
+    return {
+      /**
+       * @return {Number} the scroll height of the element in pixels
+       */
+      scrollHeight: function() {
+        return Math.max(
+          element.scrollHeight,
+          element.offsetHeight,
+          element.clientHeight
+        );
+      },
+
+      /**
+       * @return {Number} the height of the element in pixels
+       */
+      height: function() {
+        return Math.max(element.offsetHeight, element.clientHeight);
+      },
+
+      /**
+       * Gets the Y scroll position
+       * @return {Number} pixels the element has scrolled along the Y-axis
+       */
+      scrollY: function() {
+        return element.scrollTop;
+      }
+    };
+  }
+
+  function createScroller(element) {
+    return isWindow(element) ? windowScroller(element) : elementScroller(element);
+  }
+
+  /**
+   * @param element EventTarget
+   */
+  function trackScroll(element, callback) {
+    var isPassiveSupported = passiveEventsSupported();
+    var rafId;
+    var scrolled = false;
+    var scroller = createScroller(element);
+    var lastScrollY = scroller.scrollY();
+    var details = {};
+
+    function update() {
+      var scrollY = scroller.scrollY();
+      var height = scroller.height();
+      var scrollHeight = scroller.scrollHeight();
+
+      // reuse object for less memory churn
+      details.scrollY = scrollY;
+      details.lastScrollY = lastScrollY;
+      details.direction = scrollY > lastScrollY ? "down" : "up";
+      details.distance = Math.abs(scrollY - lastScrollY);
+      details.isOutOfBounds = scrollY < 0 || scrollY + height > scrollHeight;
+      details.top = scrollY <= 0;
+      details.bottom = scrollY + height >= scrollHeight;
+
+      callback(details);
+
+      lastScrollY = scrollY;
+      scrolled = false;
+    }
+
+    function handleScroll() {
+      if (!scrolled) {
+        scrolled = true;
+        rafId = requestAnimationFrame(update);
       }
     }
-  
-    return result;
+
+    var eventOptions = isPassiveSupported
+      ? { passive: true, capture: false }
+      : false;
+    element.addEventListener("scroll", handleScroll, eventOptions);
+
+    return {
+      destroy: function() {
+        cancelAnimationFrame(rafId);
+        element.removeEventListener("scroll", handleScroll, eventOptions);
+      }
+    };
   }
-  
-  /**
-   * Helper function for normalizing tolerance option to object format
-   */
-  function normalizeTolerance (t) {
-    return t === Object(t) ? t : { down : t, up : t };
+
+  function normalizeTolerance(t) {
+    return t === Object(t) ? t : { down: t, up: t };
   }
-  
+
   /**
    * UI enhancement for fixed headers.
    * Hides header when scrolling down
@@ -123,339 +198,235 @@
    * @param {DOMElement} elem the header element
    * @param {Object} options options for the widget
    */
-  function Headroom (elem, options) {
-    options = extend(options, Headroom.options);
-  
-    this.lastKnownScrollY = 0;
-    this.elem             = elem;
-    this.tolerance        = normalizeTolerance(options.tolerance);
-    this.classes          = options.classes;
-    this.offset           = options.offset;
-    this.scroller         = options.scroller;
-    this.initialised      = false;
-    this.onPin            = options.onPin;
-    this.onUnpin          = options.onUnpin;
-    this.onTop            = options.onTop;
-    this.onNotTop         = options.onNotTop;
-    this.onBottom         = options.onBottom;
-    this.onNotBottom      = options.onNotBottom;
+  function Headroom(elem, options) {
+    options = options || {};
+    Object.assign(this, Headroom.options, options);
+    Object.assign(this.classes, Headroom.options.classes, options.classes);
+
+    this.elem = elem;
+    this.tolerance = normalizeTolerance(this.tolerance);
+    this.initialised = false;
+    this.frozen = false;
   }
   Headroom.prototype = {
-    constructor : Headroom,
-  
+    constructor: Headroom,
+
     /**
-     * Initialises the widget
+     * Start listening to scrolling
+     * @public
      */
-    init : function() {
-      if(!Headroom.cutsTheMustard) {
-        return;
+    init: function() {
+      if (Headroom.cutsTheMustard && !this.initialised) {
+        this.addClass("initial");
+        this.initialised = true;
+
+        // defer event registration to handle browser
+        // potentially restoring previous scroll position
+        setTimeout(
+          function(self) {
+            self.scrollTracker = trackScroll(
+              self.scroller,
+              self.update.bind(self)
+            );
+          },
+          100,
+          this
+        );
       }
-  
-      this.debouncer = new Debouncer(this.update.bind(this));
-      this.elem.classList.add(this.classes.initial);
-  
-      // defer event registration to handle browser 
-      // potentially restoring previous scroll position
-      setTimeout(this.attachEvent.bind(this), 100);
-  
+
       return this;
     },
-  
+
     /**
-     * Unattaches events and removes any classes that were added
+     * Destroy the widget, clearing up after itself
+     * @public
      */
-    destroy : function() {
-      var classes = this.classes;
-  
+    destroy: function() {
       this.initialised = false;
-      this.elem.classList.remove(classes.unpinned, classes.pinned, classes.top, classes.notTop, classes.initial);
-      this.scroller.removeEventListener('scroll', this.debouncer, false);
+      Object.keys(this.classes).forEach(this.removeClass, this);
+      this.scrollTracker.destroy();
     },
-  
+
     /**
-     * Attaches the scroll event
-     * @private
+     * Unpin the element
+     * @public
      */
-    attachEvent : function() {
-      if(!this.initialised){
-        this.lastKnownScrollY = this.getScrollY();
-        this.initialised = true;
-        this.scroller.addEventListener('scroll', this.debouncer, false);
-  
-        this.debouncer.handleEvent();
+    unpin: function() {
+      if (this.hasClass("pinned") || !this.hasClass("unpinned")) {
+        this.addClass("unpinned");
+        this.removeClass("pinned");
+
+        if (this.onUnpin) {
+          this.onUnpin.call(this);
+        }
       }
     },
-    
+
     /**
-     * Unpins the header if it's currently pinned
+     * Pin the element
+     * @public
      */
-    unpin : function() {
-      var classList = this.elem.classList,
-        classes = this.classes;
-      
-      if(classList.contains(classes.pinned) || !classList.contains(classes.unpinned)) {
-        classList.add(classes.unpinned);
-        classList.remove(classes.pinned);
-        this.onUnpin && this.onUnpin.call(this);
+    pin: function() {
+      if (this.hasClass("unpinned")) {
+        this.addClass("pinned");
+        this.removeClass("unpinned");
+
+        if (this.onPin) {
+          this.onPin.call(this);
+        }
       }
     },
-  
+
     /**
-     * Pins the header if it's currently unpinned
+     * Freezes the current state of the widget
+     * @public
      */
-    pin : function() {
-      var classList = this.elem.classList,
-        classes = this.classes;
-      
-      if(classList.contains(classes.unpinned)) {
-        classList.remove(classes.unpinned);
-        classList.add(classes.pinned);
-        this.onPin && this.onPin.call(this);
+    freeze: function() {
+      this.frozen = true;
+      this.addClass("frozen");
+    },
+
+    /**
+     * Re-enables the default behaviour of the widget
+     * @public
+     */
+    unfreeze: function() {
+      this.frozen = false;
+      this.removeClass("frozen");
+    },
+
+    top: function() {
+      if (!this.hasClass("top")) {
+        this.addClass("top");
+        this.removeClass("notTop");
+
+        if (this.onTop) {
+          this.onTop.call(this);
+        }
       }
     },
-  
-    /**
-     * Handles the top states
-     */
-    top : function() {
-      var classList = this.elem.classList,
-        classes = this.classes;
-      
-      if(!classList.contains(classes.top)) {
-        classList.add(classes.top);
-        classList.remove(classes.notTop);
-        this.onTop && this.onTop.call(this);
+
+    notTop: function() {
+      if (!this.hasClass("notTop")) {
+        this.addClass("notTop");
+        this.removeClass("top");
+
+        if (this.onNotTop) {
+          this.onNotTop.call(this);
+        }
       }
     },
-  
-    /**
-     * Handles the not top state
-     */
-    notTop : function() {
-      var classList = this.elem.classList,
-        classes = this.classes;
-      
-      if(!classList.contains(classes.notTop)) {
-        classList.add(classes.notTop);
-        classList.remove(classes.top);
-        this.onNotTop && this.onNotTop.call(this);
+
+    bottom: function() {
+      if (!this.hasClass("bottom")) {
+        this.addClass("bottom");
+        this.removeClass("notBottom");
+
+        if (this.onBottom) {
+          this.onBottom.call(this);
+        }
       }
     },
-  
-    bottom : function() {
-      var classList = this.elem.classList,
-        classes = this.classes;
-      
-      if(!classList.contains(classes.bottom)) {
-        classList.add(classes.bottom);
-        classList.remove(classes.notBottom);
-        this.onBottom && this.onBottom.call(this);
+
+    notBottom: function() {
+      if (!this.hasClass("notBottom")) {
+        this.addClass("notBottom");
+        this.removeClass("bottom");
+
+        if (this.onNotBottom) {
+          this.onNotBottom.call(this);
+        }
       }
     },
-  
-    /**
-     * Handles the not top state
-     */
-    notBottom : function() {
-      var classList = this.elem.classList,
-        classes = this.classes;
-      
-      if(!classList.contains(classes.notBottom)) {
-        classList.add(classes.notBottom);
-        classList.remove(classes.bottom);
-        this.onNotBottom && this.onNotBottom.call(this);
-      }
-    },
-  
-    /**
-     * Gets the Y scroll position
-     * @see https://developer.mozilla.org/en-US/docs/Web/API/Window.scrollY
-     * @return {Number} pixels the page has scrolled along the Y-axis
-     */
-    getScrollY : function() {
-      return (this.scroller.pageYOffset !== undefined)
-        ? this.scroller.pageYOffset
-        : (this.scroller.scrollTop !== undefined)
-          ? this.scroller.scrollTop
-          : (document.documentElement || document.body.parentNode || document.body).scrollTop;
-    },
-  
-    /**
-     * Gets the height of the viewport
-     * @see http://andylangton.co.uk/blog/development/get-viewport-size-width-and-height-javascript
-     * @return {int} the height of the viewport in pixels
-     */
-    getViewportHeight : function () {
-      return window.innerHeight
-        || document.documentElement.clientHeight
-        || document.body.clientHeight;
-    },
-  
-    /**
-     * Gets the physical height of the DOM element
-     * @param  {Object}  elm the element to calculate the physical height of which
-     * @return {int}     the physical height of the element in pixels
-     */
-    getElementPhysicalHeight : function (elm) {
-      return Math.max(
-        elm.offsetHeight,
-        elm.clientHeight
-      );
-    },
-  
-    /**
-     * Gets the physical height of the scroller element
-     * @return {int} the physical height of the scroller element in pixels
-     */
-    getScrollerPhysicalHeight : function () {
-      return (this.scroller === window || this.scroller === document.body)
-        ? this.getViewportHeight()
-        : this.getElementPhysicalHeight(this.scroller);
-    },
-  
-    /**
-     * Gets the height of the document
-     * @see http://james.padolsey.com/javascript/get-document-height-cross-browser/
-     * @return {int} the height of the document in pixels
-     */
-    getDocumentHeight : function () {
-      var body = document.body,
-        documentElement = document.documentElement;
-    
-      return Math.max(
-        body.scrollHeight, documentElement.scrollHeight,
-        body.offsetHeight, documentElement.offsetHeight,
-        body.clientHeight, documentElement.clientHeight
-      );
-    },
-  
-    /**
-     * Gets the height of the DOM element
-     * @param  {Object}  elm the element to calculate the height of which
-     * @return {int}     the height of the element in pixels
-     */
-    getElementHeight : function (elm) {
-      return Math.max(
-        elm.scrollHeight,
-        elm.offsetHeight,
-        elm.clientHeight
-      );
-    },
-  
-    /**
-     * Gets the height of the scroller element
-     * @return {int} the height of the scroller element in pixels
-     */
-    getScrollerHeight : function () {
-      return (this.scroller === window || this.scroller === document.body)
-        ? this.getDocumentHeight()
-        : this.getElementHeight(this.scroller);
-    },
-  
-    /**
-     * determines if the scroll position is outside of document boundaries
-     * @param  {int}  currentScrollY the current y scroll position
-     * @return {bool} true if out of bounds, false otherwise
-     */
-    isOutOfBounds : function (currentScrollY) {
-      var pastTop  = currentScrollY < 0,
-        pastBottom = currentScrollY + this.getScrollerPhysicalHeight() > this.getScrollerHeight();
-      
-      return pastTop || pastBottom;
-    },
-  
-    /**
-     * determines if the tolerance has been exceeded
-     * @param  {int} currentScrollY the current scroll y position
-     * @return {bool} true if tolerance exceeded, false otherwise
-     */
-    toleranceExceeded : function (currentScrollY, direction) {
-      return Math.abs(currentScrollY-this.lastKnownScrollY) >= this.tolerance[direction];
-    },
-  
-    /**
-     * determine if it is appropriate to unpin
-     * @param  {int} currentScrollY the current y scroll position
-     * @param  {bool} toleranceExceeded has the tolerance been exceeded?
-     * @return {bool} true if should unpin, false otherwise
-     */
-    shouldUnpin : function (currentScrollY, toleranceExceeded) {
-      var scrollingDown = currentScrollY > this.lastKnownScrollY,
-        pastOffset = currentScrollY >= this.offset;
-  
+
+    shouldUnpin: function(scrollY, lastScrollY, toleranceExceeded) {
+      var scrollingDown = scrollY > lastScrollY;
+      var pastOffset = scrollY >= this.offset;
+
       return scrollingDown && pastOffset && toleranceExceeded;
     },
-  
-    /**
-     * determine if it is appropriate to pin
-     * @param  {int} currentScrollY the current y scroll position
-     * @param  {bool} toleranceExceeded has the tolerance been exceeded?
-     * @return {bool} true if should pin, false otherwise
-     */
-    shouldPin : function (currentScrollY, toleranceExceeded) {
-      var scrollingUp  = currentScrollY < this.lastKnownScrollY,
-        pastOffset = currentScrollY <= this.offset;
-  
+
+    shouldPin: function(scrollY, lastScrollY, toleranceExceeded) {
+      var scrollingUp = scrollY < lastScrollY;
+      var pastOffset = scrollY <= this.offset;
+
       return (scrollingUp && toleranceExceeded) || pastOffset;
     },
-  
-    /**
-     * Handles updating the state of the widget
-     */
-    update : function() {
-      var currentScrollY  = this.getScrollY(),
-        scrollDirection = currentScrollY > this.lastKnownScrollY ? 'down' : 'up',
-        toleranceExceeded = this.toleranceExceeded(currentScrollY, scrollDirection);
-  
-      if(this.isOutOfBounds(currentScrollY)) { // Ignore bouncy scrolling in OSX
+
+    addClass: function(className) {
+      this.elem.classList.add(this.classes[className]);
+    },
+
+    removeClass: function(className) {
+      this.elem.classList.remove(this.classes[className]);
+    },
+
+    hasClass: function(className) {
+      return this.elem.classList.contains(this.classes[className]);
+    },
+
+    update: function(details) {
+      var toleranceExceeded =
+        details.distance > this.tolerance[details.direction];
+
+      if (details.isOutOfBounds) {
+        // Ignore bouncy scrolling in OSX
         return;
       }
-  
-      if (currentScrollY <= this.offset ) {
+
+      if (this.frozen === true) {
+        return;
+      }
+
+      if (details.top) {
         this.top();
       } else {
         this.notTop();
       }
-  
-      if(currentScrollY + this.getViewportHeight() >= this.getScrollerHeight()) {
+
+      if (details.bottom) {
         this.bottom();
-      }
-      else {
+      } else {
         this.notBottom();
       }
-  
-      if(this.shouldUnpin(currentScrollY, toleranceExceeded)) {
+
+      if (
+        this.shouldUnpin(details.scrollY, details.lastScrollY, toleranceExceeded)
+      ) {
         this.unpin();
-      }
-      else if(this.shouldPin(currentScrollY, toleranceExceeded)) {
+      } else if (
+        this.shouldPin(details.scrollY, details.lastScrollY, toleranceExceeded)
+      ) {
         this.pin();
       }
-  
-      this.lastKnownScrollY = currentScrollY;
     }
   };
+
   /**
    * Default options
    * @type {Object}
    */
   Headroom.options = {
-    tolerance : {
-      up : 0,
-      down : 0
+    tolerance: {
+      up: 0,
+      down: 0
     },
-    offset : 0,
-    scroller: window,
-    classes : {
-      pinned : 'headroom--pinned',
-      unpinned : 'headroom--unpinned',
-      top : 'headroom--top',
-      notTop : 'headroom--not-top',
-      bottom : 'headroom--bottom',
-      notBottom : 'headroom--not-bottom',
-      initial : 'headroom'
+    offset: 0,
+    scroller: isBrowser() ? window : null,
+    classes: {
+      frozen: "headroom--frozen",
+      pinned: "headroom--pinned",
+      unpinned: "headroom--unpinned",
+      top: "headroom--top",
+      notTop: "headroom--not-top",
+      bottom: "headroom--bottom",
+      notBottom: "headroom--not-bottom",
+      initial: "headroom"
     }
   };
-  Headroom.cutsTheMustard = typeof features !== 'undefined' && features.rAF && features.bind && features.classList;
+
+  Headroom.cutsTheMustard = isSupported();
 
   return Headroom;
+
 }));
