@@ -105,9 +105,8 @@ yarn install headroom.js
 
 <h2>Usage</h2>
 
-<p>Using headroom.js is really simple. It has a pure JS API, plus an optional jQuery/Zepto plugin and AngularJS directive.</p>
+<p>Using headroom.js is really simple. It has a pure JS API, plus an optional jQuery plugin and AngularJS directive.</p>
 
-<h3>With plain JS</h3>
 <p>Include the <code>headroom.js</code> script in your page, and then:</p>
 <pre class="language-javascript"><code>// if you're using a bundler, first import:
 import Headroom from "headroom.js";
@@ -119,33 +118,9 @@ var headroom  = new Headroom(myElement);
 headroom.init();
 </code></pre>
 
-<h3>With jQuery/Zepto</h3>
-<p>Include the <code>headroom.js</code> and <code>jQuery.headroom.js</code> scripts in your page, and then:</p>
-<pre class="language-javascript"><code>// simple as this!
-// NOTE: init() is implicitly called with the plugin
-$("#header").headroom();
-</code></pre>
-
-<p>The plugin also offers a data-* API if you prefer a declarative approach.</p>
-
-<pre class="language-markup"><code>&lt;!-- selects $(&quot;[data-headroom]&quot;) --&gt;
-&lt;header data-headroom&gt;
-</code></pre>
-
-<p>Note: Zepto's additional <a href="https://github.com/madrobby/zepto#zepto-modules" title="https://github.com/madrobby/zepto#zepto-modules">data module</a> is required for compatibility.</p>
-
-<h3>With AngularJS</h3>
-<p>Include the <code>headroom.js</code> and <code>angular.headroom.js</code> scripts in your page and require the <code>headroom</code> module in your AngularJS application module. Then:</p>
-<pre class="language-markup"><code>&lt;header headroom&gt;&lt;/header&gt;
-&lt;!-- or --&gt;
-&lt;headroom&gt;&lt;/headroom&gt;
-&lt;!-- or with options --&gt;
-&lt;headroom tolerance="0" offset="0" scroller=".my-scroller" classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"&gt;&lt;/headroom&gt;
-</code></pre>
-
 <h3>Options</h3>
 
-<p>Headroom.js can also accept an options object to alter the way it behaves. You can see the default options by inspecting <code>Headroom.options</code>. The structure of an options object is as follows:</p>
+<p>Headroom.js can also accept an options object to alter the way it behaves. You can see the default options by inspecting <code>Headroom.options</code>. The full structure of an options object is as follows:</p>
 
 <pre class="language-javascript"><code>var options = {
     // vertical offset in px before element is first unpinned
@@ -243,6 +218,9 @@ var headroom = new Headroom(element, options);
 
 <ul>
     <li>
+        <code>destroy()</code>: destroy the headroom instance, removing event listeners and any classes added
+    </li>
+    <li>
         <code>pin()</code>: forcibly set the headroom instance's state to pinned
     </li>
     <li>
@@ -264,6 +242,32 @@ var headroom = new Headroom(element, options);
 body {
     scroll-padding-top: 65px; /* set to the height of your header */
 }</code></pre>
+
+<h3>Usage with jQuery</h3>
+<p>Include the <code>headroom.js</code> and <code>jQuery.headroom.js</code> scripts in your page, and then:</p>
+<pre class="language-javascript"><code>// simple as this!
+// NOTE: init() is implicitly called with the plugin
+$("#header").headroom();
+// or with options
+$("#header").headroom(options);
+</code></pre>
+
+<p>The plugin also offers a data-* API if you prefer a declarative approach.</p>
+
+<pre class="language-markup"><code>&lt;!-- selects $(&quot;[data-headroom]&quot;) --&gt;
+&lt;header data-headroom&gt;&lt;/header&gt;
+&lt;!-- or with options --&gt;
+&lt;header data-headroom data-tolerance="5" data-offset="205"&gt;&lt;/header&gt;
+</code></pre>
+
+<h3>Usage with AngularJS</h3>
+<p>Include the <code>headroom.js</code> and <code>angular.headroom.js</code> scripts in your page, and require the <code>headroom</code> module in your AngularJS application module. Then:</p>
+<pre class="language-markup"><code>&lt;header headroom&gt;&lt;/header&gt;
+&lt;!-- or --&gt;
+&lt;headroom&gt;&lt;/headroom&gt;
+&lt;!-- or with options --&gt;
+&lt;headroom tolerance="0" offset="0" scroller=".my-scroller" classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"&gt;&lt;/headroom&gt;
+</code></pre>
 
 
 <h2>Examples</h2>
