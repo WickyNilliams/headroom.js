@@ -291,8 +291,8 @@ body {
 <ul>
     <li>Community: <a href="https://github.com/WickyNilliams/headroom.js/pull/288">hacknug</a> has kindly offered to assist in project maintenance</li>
     <li>Performance: <a href="https://github.com/WickyNilliams/headroom.js/pull/288">switch to passive scroll event listeners</a> (thanks to <a href="https://github.com/nedbaldessin">Ned Baldessin</a>)</li>
-    <li>Feature: <a href="https://github.com/WickyNilliams/headroom.js/pull/309"></a>Add freeze/unfreeze methods</a> (thanks to <a href="https://github.com/andreivictor">Andrei Victor Bulearca</a>)</li>
-    <li>Chore: <a href="https://github.com/WickyNilliams/headroom.js/pull/324">modernise codebase and toolings</a></li>
+    <li>Feature: <a href="https://github.com/WickyNilliams/headroom.js/pull/309">Add freeze/unfreeze methods</a> (thanks to <a href="https://github.com/andreivictor">Andrei Victor Bulearca</a>)</li>
+    <li>Housekeeping: <a href="https://github.com/WickyNilliams/headroom.js/pull/324">modernise codebase and toolings</a></li>
     <li>Bugfix: <a href="https://github.com/WickyNilliams/headroom.js/pull/326">incorrectly detecting scroll to bottom on non-window scrollers</a></li>
     <li>Feature: <a href="https://github.com/WickyNilliams/headroom.js/pull/318">support importing on server for SSR</a> (thanks to <a href="https://github.com/r00dY">Andrzej</a>)</li>
     <li>Bugfix: <a href="https://github.com/WickyNilliams/headroom.js/issues/329">support using an iframe's window as scroller</a></li>
@@ -383,16 +383,12 @@ body {
 (function() {
     var header = document.querySelector("#header");
 
-    if(window.location.hash) {
-      header.classList.add("headroom--unpinned");
-    }
-
     var headroom = new Headroom(header, {
         tolerance: {
-          down : 10,
-          up : 20
+            down : 10,
+            up : 20
         },
-        offset : 205
+        offset : 15,
     });
     headroom.init();
 
