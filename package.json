@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "start": "rollup --config --watch",
+    "start": "rollup --config --watch & cypress open",
     "test": "npm run build && cypress run",
     "build": "rollup --config",
     "version": "npm run build",
