@@ -248,6 +248,16 @@ var headroom = new Headroom(element, options);
     </li>
 </ul>
 
+<h3>Dealing with anchor links</h3>
+
+<p>Clicking on anchor links (links within the same page) causes scrolling of the page. If this causes a scroll upwards, Headroom will pin the header. This can cause the linked element to be obscured by the header.</p>
+<p>To avoid this problem we can define <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-padding"><code>scroll-padding</code></a> in CSS, which is designed for just this purpose:</p>
+<pre class="language-css"><code>html,
+body {
+    scroll-padding-top: 65px; /* set to the height of your header */
+}</code></pre>
+
+
 <h2>Examples</h2>
 <p>
     Head over to the <a href="playroom/">headroom.js playroom</a> if you want see some example uses. There you can tweak all of headroom's options and try out various CSS effects in an interactive demo.
