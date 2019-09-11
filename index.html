@@ -61,14 +61,19 @@
 
 <div class="container block main" role="main">
 
-<h2>Downloads</h2>
-<p class="complimentary">Note: the sizes shown are after gzipping.</p>
+<h2>Installation</h2>
+<p>Download here<span class="complimentary"> (sizes shown are after gzipping)</span>:</p>
+
 <div class="downloads island">
     <div class="grid">
         <div class="grid__item one-half"><a class="btn btn--secondary btn--full" href="https://unpkg.com/headroom.js">Development <span class="complimentary subdued">(2.78KB)</span></a></div>
         <div class="grid__item one-half"><a class="btn btn--secondary btn--full" href="https://unpkg.com/headroom.js/dist/headroom.min.js">Production <span class="complimentary subdued">(1.38KB)</span></a></div>
     </div>
 </div>
+<p>Or install via npm/yarn:</p>
+<pre class="language-shell"><code>npm install headroom.js --save
+yarn install headroom.js
+</code></pre>
 
 <h2>What's it all about?</h2>
 
@@ -104,7 +109,9 @@
 
 <h3>With plain JS</h3>
 <p>Include the <code>headroom.js</code> script in your page, and then:</p>
-<pre class="language-javascript"><code>// grab an element
+<pre class="language-javascript"><code>// if you're using a bundler, first import:
+import Headroom from "headroom.js";
+// grab an element
 var myElement = document.querySelector("header");
 // construct an instance of Headroom, passing the element
 var headroom  = new Headroom(myElement);
@@ -184,7 +191,8 @@ $("#header").headroom();
     // callback when moving away from bottom of page, `this` is headroom object
     onNotBottom : function() {}
 };
-
+// pass options as the second argument to the constructor
+// supplied options are merged with defaults
 var headroom = new Headroom(element, options);
 </code></pre>
 
