@@ -16,7 +16,7 @@ function normalizeTolerance(t) {
 function Headroom(elem, options) {
   options = options || {};
   Object.assign(this, Headroom.options, options);
-  Object.assign(this.classes, Headroom.options.classes, options.classes);
+  this.classes = Object.assign({}, Headroom.options.classes, options.classes);
 
   this.elem = elem;
   this.tolerance = normalizeTolerance(this.tolerance);
