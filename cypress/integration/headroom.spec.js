@@ -288,4 +288,37 @@ describe("Headroom", function() {
       });
     });
   });
+
+  describe("handling options and defaults", () => {
+    it("merges our own classes and preserves other defaults", () => {
+      const classes = {
+        initial: "foo",
+        pinned: "foo--pinned"
+      };
+
+      initialiseHeadroom({ classes });
+
+      cy.window().then(win => {
+        expect(win.hr.classes).to.deep.contain(classes);
+        const { initial, pinned, ...defaultClasses } = win.hr.classes;
+        expect(win.hr.classes).to.deep.contain(defaultClasses);
+      });
+    });
+
+    it("assigns default classes if no options supplied", () => {
+      initialiseHeadroom();
+
+      cy.window().then(win => {
+        expect(win.hr.classes).to.deep.equal(win.Headroom.options.classes);
+      });
+    });
+
+    it("assigns default classes if no no classes supplied", () => {
+      initialiseHeadroom({ tolerance: 5 });
+
+      cy.window().then(win => {
+        expect(win.hr.classes).to.deep.equal(win.Headroom.options.classes);
+      });
+    });
+  });
 });
