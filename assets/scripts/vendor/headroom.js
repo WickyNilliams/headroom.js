@@ -1,5 +1,5 @@
 /*!
- * headroom.js v0.10.0 - Give your page some headroom. Hide your header until you need it
+ * headroom.js v0.10.2 - Give your page some headroom. Hide your header until you need it
  * Copyright (c) 2019 Nick Williams - http://wicky.nillia.ms/headroom.js
  * License: MIT
  */
@@ -201,7 +201,7 @@
   function Headroom(elem, options) {
     options = options || {};
     Object.assign(this, Headroom.options, options);
-    Object.assign(this.classes, Headroom.options.classes, options.classes);
+    this.classes = Object.assign({}, Headroom.options.classes, options.classes);
 
     this.elem = elem;
     this.tolerance = normalizeTolerance(this.tolerance);
