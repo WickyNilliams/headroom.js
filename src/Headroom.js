@@ -5,6 +5,15 @@ function normalizeTolerance(t) {
   return t === Object(t) ? t : { down: t, up: t };
 }
 
+function clearScrollTrackerTimeoutId() {
+  var scrollTrackerTimeoutId = this.scrollTrackerTimeoutId;
+
+  if (scrollTrackerTimeoutId !== undefined) {
+    clearTimeout(scrollTrackerTimeoutId);
+    this.scrollTrackerTimeoutId = undefined;
+  }
+}
+
 /**
  * UI enhancement for fixed headers.
  * Hides header when scrolling down
@@ -37,8 +46,9 @@ Headroom.prototype = {
 
       // defer event registration to handle browser
       // potentially restoring previous scroll position
-      setTimeout(
+      this.scrollTrackerTimeoutId = setTimeout(
         function(self) {
+          clearScrollTrackerTimeoutId.call(self);
           self.scrollTracker = trackScroll(
             self.scroller,
             self.update.bind(self)
@@ -59,7 +69,13 @@ Headroom.prototype = {
   destroy: function() {
     this.initialised = false;
     Object.keys(this.classes).forEach(this.removeClass, this);
-    this.scrollTracker.destroy();
+    
+    clearScrollTrackerTimeoutId.call(this);
+
+    if (this.scrollTracker) {
+      this.scrollTracker.destroy();
+      this.scrollTracker = undefined;
+    }
   },
 
   /**
