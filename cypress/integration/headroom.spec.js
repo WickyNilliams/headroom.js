@@ -320,3 +320,70 @@ describe("Headroom", function() {
     });
   });
 });
+
+describe("jQuery.headroom", () => {
+  const initialiseHeadroom = options => {
+    cy.window().then(win => {
+      win.registerJQueryHeadroom(win.$, win.Headroom);
+      win.$("header").headroom(options);
+    });
+    cy.wait(200);
+  };
+
+  beforeEach(() => {
+    cy.visit("./cypress/fixtures/jquery.html");
+  });
+
+  afterEach(() => {
+    cy.window().then(win => {
+      win.$("header").headroom("destroy");
+    });
+
+    cy.get("header").should("be.destroyed");
+  });
+
+  it("works!", function() {
+    initialiseHeadroom();
+
+    cy.get("header").should("be.initialised");
+
+    cy.scrollTo(0, 50);
+    cy.get("header")
+      .should("not.be.pinned")
+      .should("not.be.top")
+      .should("not.be.bottom");
+
+    cy.scrollTo(0, 25);
+    cy.get("header")
+      .should("be.pinned")
+      .should("not.be.top")
+      .should("not.be.bottom");
+
+    cy.scrollTo(0, 0);
+    cy.get("header")
+      .should("be.pinned")
+      .should("be.top")
+      .should("not.be.bottom");
+
+    cy.window()
+      .then(win => {
+        var hr = win.$("header").data("headroom");
+        return createScroller(hr.scroller);
+      })
+      .then(scroller => {
+        const distanceToBottom = scroller.scrollHeight() - scroller.height();
+
+        cy.scrollTo(0, distanceToBottom - 1);
+        cy.get("header")
+          .should("not.be.pinned")
+          .should("not.be.top")
+          .should("not.be.bottom");
+
+        cy.scrollTo(0, distanceToBottom);
+        cy.get("header")
+          .should("not.be.pinned")
+          .should("not.be.top")
+          .should("be.bottom");
+      });
+  });
+});
