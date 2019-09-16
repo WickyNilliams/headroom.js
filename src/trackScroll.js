@@ -13,7 +13,7 @@ export default function trackScroll(element, callback) {
   var details = {};
 
   function update() {
-    var scrollY = scroller.scrollY();
+    var scrollY = Math.round(scroller.scrollY());
     var height = scroller.height();
     var scrollHeight = scroller.scrollHeight();
 
