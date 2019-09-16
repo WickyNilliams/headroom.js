@@ -59,6 +59,31 @@ const generateTestSuite = ({ url, initialiseHeadroom, invokeMethod }) => {
     runBasicTest(scrollTo);
   });
 
+  it("works with scrollers besides window", () => {
+    cy.get(".scroller").then(scroller => {
+      initialiseHeadroom({ scroller: scroller[0] });
+    });
+
+    const scrollTo = (...args) => cy.get(".scroller").scrollTo(...args);
+    runBasicTest(scrollTo);
+  });
+
+  it("works with an iframe's window as the scroller", () => {
+    cy.get("iframe").then(([iframe]) => {
+      initialiseHeadroom({
+        scroller: iframe.contentWindow
+      });
+    });
+
+    const scrollTo = (...args) => {
+      cy.get("iframe").then(([iframe]) => {
+        iframe.contentWindow.scroll(...args);
+      });
+    };
+
+    runBasicTest(scrollTo);
+  });
+
   it("handles tolerance correctly", () => {
     initialiseHeadroom({
       tolerance: 10
@@ -114,15 +139,6 @@ const generateTestSuite = ({ url, initialiseHeadroom, invokeMethod }) => {
       .should("be.pinned");
   });
 
-  it("handles scrollers besides window", () => {
-    cy.get(".scroller").then(scroller => {
-      initialiseHeadroom({ scroller: scroller[0] });
-    });
-
-    const scrollTo = (...args) => cy.get(".scroller").scrollTo(...args);
-    runBasicTest(scrollTo);
-  });
-
   it("handles programmatically pinning/unpinning", () => {
     initialiseHeadroom();
 
@@ -131,22 +147,6 @@ const generateTestSuite = ({ url, initialiseHeadroom, invokeMethod }) => {
 
     invokeMethod("pin");
     cy.get("header").should("be.pinned");
-  });
-
-  it("handles an iframe's window as the scroll source", () => {
-    cy.get("iframe").then(([iframe]) => {
-      initialiseHeadroom({
-        scroller: iframe.contentWindow
-      });
-    });
-
-    const scrollTo = (...args) => {
-      cy.get("iframe").then(([iframe]) => {
-        iframe.contentWindow.scroll(...args);
-      });
-    };
-
-    runBasicTest(scrollTo);
   });
 
   it("fires callbacks", () => {
