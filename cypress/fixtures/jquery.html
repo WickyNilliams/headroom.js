@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <script src="./jquery.js"></script>
+    <script src="../../dist/headroom.js"></script>
+    <script src="../../dist/jQuery.headroom.js"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: sans-serif;
+      }
+
+      header {
+        font-size: 1.5em;
+        background-color: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 1em;
+        position: fixed;
+        width: 100%;
+        will-change: transform;
+        transition: transform 200ms ease-in;
+      }
+
+      .headroom--pinned {
+        transform: translateY(0);
+      }
+
+      .headroom--unpinned {
+        transform: translateY(-100%);
+      }
+
+      h1 {
+        font-size: 5em;
+        text-align: center;
+        background-color: coral;
+        color: white;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+        margin: 0;
+        height: 100vh;
+        padding-top: 2.5em;
+      }
+
+      main {
+        max-width: 40em;
+      }
+
+      .scroller {
+        background-color: rgba(0, 0, 0, 0.3);
+        height: 400px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header id="header">
+      hello world
+    </header>
+    <h1>Lorem ipsum</h1>
+    <main>
+      <p>
+        <strong>Pellentesque habitant morbi tristique</strong> senectus et netus
+        et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet
+        quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris
+        placerat eleifend leo. Quisque sit amet est et sapien ullamcorper
+        pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum,
+        elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus
+        lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar
+        facilisis. Ut felis.
+      </p>
+
+      <h2>Header Level 2</h2>
+
+      <ol>
+        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+        <li>Aliquam tincidunt mauris eu risus.</li>
+      </ol>
+
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+          magna. Cras in mi at felis aliquet congue. Ut a est eget ligula
+          molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis
+          mollis, tellus est malesuada tellus, at luctus turpis elit sit amet
+          quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+
+      <h3>Header Level 3</h3>
+
+      <ul>
+        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+        <li>Aliquam tincidunt mauris eu risus.</li>
+      </ul>
+
+      <pre><code>
+#header h1 a {
+  display: block;
+  width: 300px;
+  height: 80px;
+}
+</code></pre>
+      <p>
+        <strong>Pellentesque habitant morbi tristique</strong> senectus et netus
+        et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet
+        quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris
+        placerat eleifend leo. Quisque sit amet est et sapien ullamcorper
+        pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum,
+        elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus
+        lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar
+        facilisis. Ut felis.
+      </p>
+
+      <h2>Header Level 2</h2>
+
+      <ol>
+        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+        <li>Aliquam tincidunt mauris eu risus.</li>
+      </ol>
+
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+          magna. Cras in mi at felis aliquet congue. Ut a est eget ligula
+          molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis
+          mollis, tellus est malesuada tellus, at luctus turpis elit sit amet
+          quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+
+      <h3>Header Level 3</h3>
+
+      <ul>
+        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+        <li>Aliquam tincidunt mauris eu risus.</li>
+      </ul>
+
+      <pre><code>
+#header h1 a {
+display: block;
+width: 300px;
+height: 80px;
+}
+</code></pre>
+      <p>
+        <strong>Pellentesque habitant morbi tristique</strong> senectus et netus
+        et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet
+        quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris
+        placerat eleifend leo. Quisque sit amet est et sapien ullamcorper
+        pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum,
+        elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus
+        lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar
+        facilisis. Ut felis.
+      </p>
+
+      <h2>Header Level 2</h2>
+
+      <ol>
+        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+        <li>Aliquam tincidunt mauris eu risus.</li>
+      </ol>
+
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+          magna. Cras in mi at felis aliquet congue. Ut a est eget ligula
+          molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis
+          mollis, tellus est malesuada tellus, at luctus turpis elit sit amet
+          quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+
+      <h3>Header Level 3</h3>
+
+      <ul>
+        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+        <li>Aliquam tincidunt mauris eu risus.</li>
+      </ul>
+
+      <pre><code>
+#header h1 a {
+display: block;
+width: 300px;
+height: 80px;
+}
+</code></pre>
+      <p>
+        <strong>Pellentesque habitant morbi tristique</strong> senectus et netus
+        et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet
+        quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris
+        placerat eleifend leo. Quisque sit amet est et sapien ullamcorper
+        pharetra. Vestibulum erat wisi, condimentum sed,
+        <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum,
+        elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus
+        lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar
+        facilisis. Ut felis.
+      </p>
+
+      <h2>Header Level 2</h2>
+
+      <ol>
+        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+        <li>Aliquam tincidunt mauris eu risus.</li>
+      </ol>
+
+      <blockquote>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+          magna. Cras in mi at felis aliquet congue. Ut a est eget ligula
+          molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis
+          mollis, tellus est malesuada tellus, at luctus turpis elit sit amet
+          quam. Vivamus pretium ornare est.
+        </p>
+      </blockquote>
+
+      <h3>Header Level 3</h3>
+
+      <ul>
+        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+        <li>Aliquam tincidunt mauris eu risus.</li>
+      </ul>
+
+      <pre><code>
+#header h1 a {
+display: block;
+width: 300px;
+height: 80px;
+}
+</code></pre>
+      <div class="scroller">
+        <p>
+          <strong>Pellentesque habitant morbi tristique</strong> senectus et
+          netus et malesuada fames ac turpis egestas. Vestibulum tortor quam,
+          feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero
+          sit amet quam egestas semper.
+          <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo.
+          Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat
+          wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet,
+          wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum
+          rutrum orci, sagittis tempus lacus enim ac dui.
+          <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.
+        </p>
+
+        <h2>Header Level 2</h2>
+
+        <ol>
+          <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+          <li>Aliquam tincidunt mauris eu risus.</li>
+        </ol>
+
+        <blockquote>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+            magna. Cras in mi at felis aliquet congue. Ut a est eget ligula
+            molestie gravida. Curabitur massa. Donec eleifend, libero at
+            sagittis mollis, tellus est malesuada tellus, at luctus turpis elit
+            sit amet quam. Vivamus pretium ornare est.
+          </p>
+        </blockquote>
+
+        <h3>Header Level 3</h3>
+
+        <ul>
+          <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+          <li>Aliquam tincidunt mauris eu risus.</li>
+        </ul>
+
+        <pre><code>
+#header h1 a {
+display: block;
+width: 300px;
+height: 80px;
+}
+</code></pre>
+      </div>
+
+      <iframe
+        srcdoc='<p> <strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p><h2>Header Level 2</h2><ol><li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li><li>Aliquam tincidunt mauris eu risus.</li></ol><blockquote><p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote><h3>Header Level 3</h3><ul><li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li><li>Aliquam tincidunt mauris eu risus.</li></ul>'
+      ></iframe>
+    </main>
+  </body>
+</html>
