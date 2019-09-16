@@ -1,65 +1,62 @@
 import createScroller from "../../src/scroller";
 
-describe("Headroom", function() {
-  const initialiseHeadroom = options => {
-    cy.window().then(win => {
-      win.hr = new win.Headroom(win.document.querySelector("header"), options);
-      win.hr.init();
-    });
-  };
-
+const generateTestSuite = ({ url, initialiseHeadroom, invokeMethod }) => {
   beforeEach(() => {
-    cy.visit("./cypress/fixtures/index.html");
+    cy.visit(url);
   });
 
   afterEach(() => {
-    cy.window().then(win => {
-      win.hr.destroy();
-    });
-
+    invokeMethod("destroy");
     cy.get("header").should("be.destroyed");
   });
 
-  it("works!", function() {
-    initialiseHeadroom();
+  const getDistanceToBottom = () => {
+    return cy.window().then(win => {
+      var scroller = createScroller(win.hr.scroller);
+      return scroller.scrollHeight() - scroller.height();
+    });
+  };
 
+  const runBasicTest = scrollTo => {
     cy.get("header").should("be.initialised");
 
-    cy.scrollTo(0, 50);
+    scrollTo(0, 50);
     cy.get("header")
       .should("not.be.pinned")
       .should("not.be.top")
       .should("not.be.bottom");
 
-    cy.scrollTo(0, 25);
+    scrollTo(0, 25);
     cy.get("header")
       .should("be.pinned")
       .should("not.be.top")
       .should("not.be.bottom");
 
-    cy.scrollTo(0, 0);
+    scrollTo(0, 0);
     cy.get("header")
       .should("be.pinned")
       .should("be.top")
       .should("not.be.bottom");
 
-    cy.window()
-      .then(win => createScroller(win.hr.scroller))
-      .then(scroller => {
-        const distanceToBottom = scroller.scrollHeight() - scroller.height();
+    getDistanceToBottom().then(distanceToBottom => {
+      scrollTo(0, distanceToBottom - 1);
+      cy.get("header")
+        .should("not.be.pinned")
+        .should("not.be.top")
+        .should("not.be.bottom");
 
-        cy.scrollTo(0, distanceToBottom - 1);
-        cy.get("header")
-          .should("not.be.pinned")
-          .should("not.be.top")
-          .should("not.be.bottom");
+      scrollTo(0, distanceToBottom);
+      cy.get("header")
+        .should("not.be.pinned")
+        .should("not.be.top")
+        .should("be.bottom");
+    });
+  };
 
-        cy.scrollTo(0, distanceToBottom);
-        cy.get("header")
-          .should("not.be.pinned")
-          .should("not.be.top")
-          .should("be.bottom");
-      });
+  it("works!", function() {
+    initialiseHeadroom();
+    const scrollTo = (...args) => cy.scrollTo(...args);
+    runBasicTest(scrollTo);
   });
 
   it("handles tolerance correctly", () => {
@@ -102,18 +99,14 @@ describe("Headroom", function() {
     cy.scrollTo(0, 20);
     cy.get("header").should("not.be.pinned");
 
-    cy.window().then(win => {
-      win.hr.freeze();
-    });
+    invokeMethod("freeze");
 
     cy.scrollTo(0, 10);
     cy.get("header")
       .should("be.froze")
       .should("not.be.pinned");
 
-    cy.window().then(win => {
-      win.hr.unfreeze();
-    });
+    invokeMethod("unfreeze");
 
     cy.scrollTo(0, 5);
     cy.get("header")
@@ -126,58 +119,17 @@ describe("Headroom", function() {
       initialiseHeadroom({ scroller: scroller[0] });
     });
 
-    cy.get("header").should("be.initialised");
-
-    cy.get(".scroller").scrollTo(0, 50);
-    cy.get("header")
-      .should("not.be.pinned")
-      .should("not.be.top")
-      .should("not.be.bottom");
-
-    cy.get(".scroller").scrollTo(0, 25);
-    cy.get("header")
-      .should("be.pinned")
-      .should("not.be.top")
-      .should("not.be.bottom");
-
-    cy.get(".scroller").scrollTo(0, 0);
-    cy.get("header")
-      .should("be.pinned")
-      .should("be.top")
-      .should("not.be.bottom");
-
-    cy.window()
-      .then(win => createScroller(win.hr.scroller))
-      .then(scroller => {
-        const distanceToBottom = scroller.scrollHeight() - scroller.height();
-
-        cy.get(".scroller").scrollTo(0, distanceToBottom - 1);
-        cy.get("header")
-          .should("not.be.pinned")
-          .should("not.be.top")
-          .should("not.be.bottom");
-
-        cy.get(".scroller").scrollTo(0, distanceToBottom);
-        cy.get("header")
-          .should("not.be.pinned")
-          .should("not.be.top")
-          .should("be.bottom");
-      });
+    const scrollTo = (...args) => cy.get(".scroller").scrollTo(...args);
+    runBasicTest(scrollTo);
   });
 
   it("handles programmatically pinning/unpinning", () => {
     initialiseHeadroom();
 
-    cy.window().then(win => {
-      win.hr.unpin();
-    });
-
+    invokeMethod("unpin");
     cy.get("header").should("not.be.pinned");
 
-    cy.window().then(win => {
-      win.hr.pin();
-    });
-
+    invokeMethod("pin");
     cy.get("header").should("be.pinned");
   });
 
@@ -188,23 +140,13 @@ describe("Headroom", function() {
       });
     });
 
-    cy.get("header").should("be.initialised");
+    const scrollTo = (...args) => {
+      cy.get("iframe").then(([iframe]) => {
+        iframe.contentWindow.scroll(...args);
+      });
+    };
 
-    cy.get("iframe").then(([iframe]) => {
-      iframe.contentWindow.scroll(0, 50);
-    });
-    cy.get("header")
-      .should("not.be.pinned")
-      .should("not.be.top")
-      .should("not.be.bottom");
-
-    cy.get("iframe").then(([iframe]) => {
-      iframe.contentWindow.scroll(0, 25);
-    });
-    cy.get("header")
-      .should("be.pinned")
-      .should("not.be.top")
-      .should("not.be.bottom");
+    runBasicTest(scrollTo);
   });
 
   it("fires callbacks", () => {
@@ -311,7 +253,7 @@ describe("Headroom", function() {
       });
     });
 
-    it("assigns default classes if no no classes supplied", () => {
+    it("assigns default classes if no classes supplied", () => {
       initialiseHeadroom({ tolerance: 5 });
 
       cy.window().then(win => {
@@ -319,71 +261,49 @@ describe("Headroom", function() {
       });
     });
   });
+};
+
+describe("Headroom", function() {
+  const initialiseHeadroom = options => {
+    cy.window().then(win => {
+      win.hr = new win.Headroom(win.document.querySelector("header"), options);
+      win.hr.init();
+    });
+    cy.wait(200);
+  };
+
+  const invokeMethod = method => {
+    cy.window().then(win => {
+      win.hr[method]();
+    });
+  };
+
+  generateTestSuite({
+    url: "./cypress/fixtures/index.html",
+    initialiseHeadroom,
+    invokeMethod
+  });
 });
 
 describe("jQuery.headroom", () => {
   const initialiseHeadroom = options => {
     cy.window().then(win => {
       win.registerJQueryHeadroom(win.$, win.Headroom);
+
       win.$("header").headroom(options);
+      win.hr = win.$("header").data("headroom");
     });
-    cy.wait(200);
   };
 
-  beforeEach(() => {
-    cy.visit("./cypress/fixtures/jquery.html");
-  });
-
-  afterEach(() => {
+  const invokeMethod = method => {
     cy.window().then(win => {
-      win.$("header").headroom("destroy");
+      win.$("header").headroom(method);
     });
+  };
 
-    cy.get("header").should("be.destroyed");
-  });
-
-  it("works!", function() {
-    initialiseHeadroom();
-
-    cy.get("header").should("be.initialised");
-
-    cy.scrollTo(0, 50);
-    cy.get("header")
-      .should("not.be.pinned")
-      .should("not.be.top")
-      .should("not.be.bottom");
-
-    cy.scrollTo(0, 25);
-    cy.get("header")
-      .should("be.pinned")
-      .should("not.be.top")
-      .should("not.be.bottom");
-
-    cy.scrollTo(0, 0);
-    cy.get("header")
-      .should("be.pinned")
-      .should("be.top")
-      .should("not.be.bottom");
-
-    cy.window()
-      .then(win => {
-        var hr = win.$("header").data("headroom");
-        return createScroller(hr.scroller);
-      })
-      .then(scroller => {
-        const distanceToBottom = scroller.scrollHeight() - scroller.height();
-
-        cy.scrollTo(0, distanceToBottom - 1);
-        cy.get("header")
-          .should("not.be.pinned")
-          .should("not.be.top")
-          .should("not.be.bottom");
-
-        cy.scrollTo(0, distanceToBottom);
-        cy.get("header")
-          .should("not.be.pinned")
-          .should("not.be.top")
-          .should("be.bottom");
-      });
+  generateTestSuite({
+    url: "./cypress/fixtures/jquery.html",
+    initialiseHeadroom,
+    invokeMethod
   });
 });
