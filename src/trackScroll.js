@@ -25,6 +25,8 @@ export default function trackScroll(element, options, callback) {
     details.isOutOfBounds = scrollY < 0 || scrollY + height > scrollHeight;
     details.top = scrollY <= options.offset;
     details.bottom = scrollY + height >= scrollHeight;
+    details.toleranceExceeded =
+      details.distance > options.tolerance[details.direction];
 
     callback(details);
 
