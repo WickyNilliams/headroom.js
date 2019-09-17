@@ -88,13 +88,19 @@ describe("Headroom", function() {
     });
 
     cy.scrollTo(0, 25);
-    cy.get("header").should("be.initialised");
+    cy.get("header")
+      .should("be.initialised")
+      .should("be.top");
 
     cy.scrollTo(0, 55);
-    cy.get("header").should("not.be.pinned");
+    cy.get("header")
+      .should("not.be.pinned")
+      .should("not.be.top");
 
     cy.scrollTo(0, 49);
-    cy.get("header").should("be.pinned");
+    cy.get("header")
+      .should("be.pinned")
+      .should("be.top");
   });
 
   it("can be frozen / unfrozen", () => {
