@@ -41,6 +41,7 @@ Headroom.prototype = {
         function(self) {
           self.scrollTracker = trackScroll(
             self.scroller,
+            { offset: self.offset },
             self.update.bind(self)
           );
         },
