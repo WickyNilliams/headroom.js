@@ -3,8 +3,7 @@ import createScroller from "../../src/scroller";
 describe("Headroom", function() {
   const initialiseHeadroom = options => {
     cy.window().then(win => {
-      win.hr = new win.Headroom(win.document.querySelector("header"), options);
-      win.hr.init();
+      win.hr = win.headroom(win.document.querySelector("header"), options);
     });
   };
 
@@ -313,7 +312,7 @@ describe("Headroom", function() {
       initialiseHeadroom();
 
       cy.window().then(win => {
-        expect(win.hr.classes).to.deep.equal(win.Headroom.options.classes);
+        expect(win.hr.classes).to.deep.equal(win.headroom.options.classes);
       });
     });
 
@@ -321,7 +320,7 @@ describe("Headroom", function() {
       initialiseHeadroom({ tolerance: 5 });
 
       cy.window().then(win => {
-        expect(win.hr.classes).to.deep.equal(win.Headroom.options.classes);
+        expect(win.hr.classes).to.deep.equal(win.headroom.options.classes);
       });
     });
   });

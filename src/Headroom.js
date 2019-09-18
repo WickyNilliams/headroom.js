@@ -6,6 +6,29 @@ function normalizeTolerance(t) {
 }
 
 /**
+ * Default options
+ * @type {Object}
+ */
+var defaultOptions = {
+  tolerance: {
+    up: 0,
+    down: 0
+  },
+  offset: 0,
+  scroller: isBrowser() ? window : null,
+  classes: {
+    frozen: "headroom--frozen",
+    pinned: "headroom--pinned",
+    unpinned: "headroom--unpinned",
+    top: "headroom--top",
+    notTop: "headroom--not-top",
+    bottom: "headroom--bottom",
+    notBottom: "headroom--not-bottom",
+    initial: "headroom"
+  }
+};
+
+/**
  * UI enhancement for fixed headers.
  * Hides header when scrolling down
  * Shows header when scrolling up
@@ -15,8 +38,8 @@ function normalizeTolerance(t) {
  */
 function Headroom(elem, options) {
   options = options || {};
-  Object.assign(this, Headroom.options, options);
-  this.classes = Object.assign({}, Headroom.options.classes, options.classes);
+  Object.assign(this, defaultOptions, options);
+  this.classes = Object.assign({}, defaultOptions.classes, options.classes);
 
   this.elem = elem;
   this.tolerance = normalizeTolerance(this.tolerance);
@@ -201,29 +224,9 @@ Headroom.prototype = {
   }
 };
 
-/**
- * Default options
- * @type {Object}
- */
-Headroom.options = {
-  tolerance: {
-    up: 0,
-    down: 0
-  },
-  offset: 0,
-  scroller: isBrowser() ? window : null,
-  classes: {
-    frozen: "headroom--frozen",
-    pinned: "headroom--pinned",
-    unpinned: "headroom--unpinned",
-    top: "headroom--top",
-    notTop: "headroom--not-top",
-    bottom: "headroom--bottom",
-    notBottom: "headroom--not-bottom",
-    initial: "headroom"
-  }
-};
+export default function headroom(element, options) {
+  return new Headroom(element, options).init();
+}
 
-Headroom.isSupported = isSupported();
-
-export default Headroom;
+headroom.options = defaultOptions;
+headroom.isSupported = isSupported();

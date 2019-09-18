@@ -7,7 +7,7 @@ const input = "src/Headroom.js";
 
 const output = {
   format: "umd",
-  name: "Headroom"
+  name: "headroom"
 };
 
 const licensePlugin = license({
