@@ -35,18 +35,10 @@ Headroom.prototype = {
       this.addClass("initial");
       this.initialised = true;
 
-      // defer event registration to handle browser
-      // potentially restoring previous scroll position
-      setTimeout(
-        function(self) {
-          self.scrollTracker = trackScroll(
-            self.scroller,
-            { offset: self.offset, tolerance: self.tolerance },
-            self.update.bind(self)
-          );
-        },
-        100,
-        this
+      this.scrollTracker = trackScroll(
+        this.scroller,
+        { offset: this.offset, tolerance: this.tolerance },
+        this.update.bind(this)
       );
     }
 
