@@ -6,6 +6,7 @@ describe("Headroom", function() {
       win.hr = new win.Headroom(win.document.querySelector("header"), options);
       win.hr.init();
     });
+    cy.wait(200);
   };
 
   beforeEach(() => {
@@ -261,6 +262,7 @@ describe("Headroom", function() {
         bottom: false
       });
     });
+    cy.wait(20).then(() => {});
 
     cy.scrollTo(0, 0);
     cy.should(() => {
