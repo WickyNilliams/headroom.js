@@ -4,7 +4,7 @@ import { passiveEventsSupported } from "./features";
 /**
  * @param element EventTarget
  */
-export default function trackScroll(element, callback) {
+export default function trackScroll(element, options, callback) {
   var isPassiveSupported = passiveEventsSupported();
   var rafId;
   var scrolled = false;
@@ -23,8 +23,10 @@ export default function trackScroll(element, callback) {
     details.direction = scrollY > lastScrollY ? "down" : "up";
     details.distance = Math.abs(scrollY - lastScrollY);
     details.isOutOfBounds = scrollY < 0 || scrollY + height > scrollHeight;
-    details.top = scrollY <= 0;
+    details.top = scrollY <= options.offset;
     details.bottom = scrollY + height >= scrollHeight;
+    details.toleranceExceeded =
+      details.distance > options.tolerance[details.direction];
 
     callback(details);
 

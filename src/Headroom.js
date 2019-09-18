@@ -41,6 +41,7 @@ Headroom.prototype = {
         function(self) {
           self.scrollTracker = trackScroll(
             self.scroller,
+            { offset: self.offset, tolerance: self.tolerance },
             self.update.bind(self)
           );
         },
@@ -154,18 +155,16 @@ Headroom.prototype = {
     }
   },
 
-  shouldUnpin: function(scrollY, lastScrollY, toleranceExceeded) {
-    var scrollingDown = scrollY > lastScrollY;
-    var pastOffset = scrollY >= this.offset;
+  shouldUnpin: function(details) {
+    var scrollingDown = details.direction === "down";
 
-    return scrollingDown && pastOffset && toleranceExceeded;
+    return scrollingDown && !details.top && details.toleranceExceeded;
   },
 
-  shouldPin: function(scrollY, lastScrollY, toleranceExceeded) {
-    var scrollingUp = scrollY < lastScrollY;
-    var pastOffset = scrollY <= this.offset;
+  shouldPin: function(details) {
+    var scrollingUp = details.direction === "up";
 
-    return (scrollingUp && toleranceExceeded) || pastOffset;
+    return (scrollingUp && details.toleranceExceeded) || details.top;
   },
 
   addClass: function(className) {
@@ -181,9 +180,6 @@ Headroom.prototype = {
   },
 
   update: function(details) {
-    var toleranceExceeded =
-      details.distance > this.tolerance[details.direction];
-
     if (details.isOutOfBounds) {
       // Ignore bouncy scrolling in OSX
       return;
@@ -205,13 +201,9 @@ Headroom.prototype = {
       this.notBottom();
     }
 
-    if (
-      this.shouldUnpin(details.scrollY, details.lastScrollY, toleranceExceeded)
-    ) {
+    if (this.shouldUnpin(details)) {
       this.unpin();
-    } else if (
-      this.shouldPin(details.scrollY, details.lastScrollY, toleranceExceeded)
-    ) {
+    } else if (this.shouldPin(details)) {
       this.pin();
     }
   }
