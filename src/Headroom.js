@@ -160,11 +160,17 @@ Headroom.prototype = {
   },
 
   addClass: function(className) {
-    this.elem.classList.add(...this.classes[className].split(' '));
+    this.elem.classList.add.apply(
+      this.elem.classList,
+      this.classes[className].split(" ")
+    );
   },
 
   removeClass: function(className) {
-    this.elem.classList.remove(...this.classes[className].split(' '));
+    this.elem.classList.remove.apply(
+      this.elem.classList,
+      this.classes[className].split(" ")
+    );
   },
 
   hasClass: function(className) {
