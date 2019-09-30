@@ -4,10 +4,15 @@
     "sourceType": "module"
   },
   "env": {
+    "cypress/globals": true,
     "browser": true,
     "node": true
   },
-  "extends": "eslint:recommended",
+  "plugins": ["cypress"],
+  "extends": [
+    "plugin:cypress/recommended",
+    "eslint:recommended"
+  ],
   "rules": {
     "no-unused-expressions": "error",
     "no-bitwise": "error",
