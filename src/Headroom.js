@@ -31,7 +31,7 @@ Headroom.prototype = {
    * @public
    */
   init: function() {
-    if (Headroom.cutsTheMustard && !this.initialised) {
+    if (!this.initialised) {
       this.addClass("initial");
       this.initialised = true;
 
@@ -224,6 +224,6 @@ Headroom.options = {
   }
 };
 
-Headroom.cutsTheMustard = isSupported();
+Headroom.isSupported = isSupported();
 
 export default Headroom;
