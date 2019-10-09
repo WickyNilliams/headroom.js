@@ -43,7 +43,7 @@ describe("Headroom", function() {
       .should("not.be.bottom");
 
     cy.window()
-      .then(win => createScroller(win.hr.scroller))
+      .then(win => createScroller(win))
       .then(scroller => {
         const distanceToBottom = scroller.scrollHeight() - scroller.height();
 
@@ -151,8 +151,8 @@ describe("Headroom", function() {
       .should("be.top")
       .should("not.be.bottom");
 
-    cy.window()
-      .then(win => createScroller(win.hr.scroller))
+    cy.get(".scroller")
+      .then(([element]) => createScroller(element))
       .then(scroller => {
         const distanceToBottom = scroller.scrollHeight() - scroller.height();
 
@@ -301,27 +301,41 @@ describe("Headroom", function() {
 
       initialiseHeadroom({ classes });
 
-      cy.window().then(win => {
-        expect(win.hr.classes).to.deep.contain(classes);
-        const { initial, pinned, ...defaultClasses } = win.hr.classes;
-        expect(win.hr.classes).to.deep.contain(defaultClasses);
-      });
-    });
+      cy.get("header").should("have.class", classes.initial);
 
-    it("assigns default classes if no options supplied", () => {
-      initialiseHeadroom();
+      cy.scrollTo(0, 50);
+      cy.window()
+        .then(win => win.headroom.options.classes.unpinned)
+        .then(defaultUnpinnedClass => {
+          cy.get("header").should("have.class", defaultUnpinnedClass);
+        });
 
-      cy.window().then(win => {
-        expect(win.hr.classes).to.deep.equal(win.headroom.options.classes);
-      });
+      cy.scrollTo(0, 25);
+      cy.get("header").should("have.class", classes.pinned);
     });
 
     it("assigns default classes if no no classes supplied", () => {
       initialiseHeadroom({ tolerance: 5 });
 
-      cy.window().then(win => {
-        expect(win.hr.classes).to.deep.equal(win.headroom.options.classes);
-      });
+      cy.window()
+        .then(win => win.headroom.options.classes.initial)
+        .then(defaultInitialClass => {
+          cy.get("header").should("have.class", defaultInitialClass);
+        });
+
+      cy.scrollTo(0, 50);
+      cy.window()
+        .then(win => win.headroom.options.classes.unpinned)
+        .then(defaultUnpinnedClass => {
+          cy.get("header").should("have.class", defaultUnpinnedClass);
+        });
+
+      cy.scrollTo(0, 25);
+      cy.window()
+        .then(win => win.headroom.options.classes.pinned)
+        .then(defaultPinnedClass => {
+          cy.get("header").should("have.class", defaultPinnedClass);
+        });
     });
   });
 });

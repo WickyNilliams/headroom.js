@@ -32,201 +32,181 @@ var defaultOptions = {
  * UI enhancement for fixed headers.
  * Hides header when scrolling down
  * Shows header when scrolling up
- * @constructor
- * @param {DOMElement} elem the header element
+ * @param {HTMLElement} elem the element
  * @param {Object} options options for the widget
  */
-function Headroom(elem, options) {
-  options = options || {};
-  Object.assign(this, defaultOptions, options);
-  this.classes = Object.assign({}, defaultOptions.classes, options.classes);
+function headroom(element, options) {
+  options = Object.assign({}, defaultOptions, options);
+  options.classes = Object.assign({}, defaultOptions.classes, options.classes);
+  options.tolerance = normalizeTolerance(options.tolerance);
 
-  this.elem = elem;
-  this.tolerance = normalizeTolerance(this.tolerance);
-  this.initialised = false;
-  this.frozen = false;
-}
-Headroom.prototype = {
-  constructor: Headroom,
+  var frozen = false;
 
-  /**
-   * Start listening to scrolling
-   * @public
-   */
-  init: function() {
-    if (!this.initialised) {
-      this.addClass("initial");
-      this.initialised = true;
+  addClass("initial");
 
-      this.scrollTracker = trackScroll(
-        this.scroller,
-        { offset: this.offset, tolerance: this.tolerance },
-        this.update.bind(this)
-      );
-    }
+  var scrollTracker = trackScroll(
+    options.scroller,
+    { offset: options.offset, tolerance: options.tolerance },
+    update
+  );
 
-    return this;
-  },
+  function addClass(className) {
+    element.classList.add(options.classes[className]);
+  }
 
-  /**
-   * Destroy the widget, clearing up after itself
-   * @public
-   */
-  destroy: function() {
-    this.initialised = false;
-    Object.keys(this.classes).forEach(this.removeClass, this);
-    this.scrollTracker.destroy();
-  },
+  function removeClass(className) {
+    element.classList.remove(options.classes[className]);
+  }
 
-  /**
-   * Unpin the element
-   * @public
-   */
-  unpin: function() {
-    if (this.hasClass("pinned") || !this.hasClass("unpinned")) {
-      this.addClass("unpinned");
-      this.removeClass("pinned");
+  function hasClass(className) {
+    return element.classList.contains(options.classes[className]);
+  }
 
-      if (this.onUnpin) {
-        this.onUnpin.call(this);
+  function top() {
+    if (!hasClass("top")) {
+      addClass("top");
+      removeClass("notTop");
+
+      if (options.onTop) {
+        options.onTop.call(this);
       }
     }
-  },
+  }
 
-  /**
-   * Pin the element
-   * @public
-   */
-  pin: function() {
-    if (this.hasClass("unpinned")) {
-      this.addClass("pinned");
-      this.removeClass("unpinned");
+  function notTop() {
+    if (!hasClass("notTop")) {
+      addClass("notTop");
+      removeClass("top");
 
-      if (this.onPin) {
-        this.onPin.call(this);
+      if (options.onNotTop) {
+        options.onNotTop.call(this);
       }
     }
-  },
+  }
 
-  /**
-   * Freezes the current state of the widget
-   * @public
-   */
-  freeze: function() {
-    this.frozen = true;
-    this.addClass("frozen");
-  },
+  function bottom() {
+    if (!hasClass("bottom")) {
+      addClass("bottom");
+      removeClass("notBottom");
 
-  /**
-   * Re-enables the default behaviour of the widget
-   * @public
-   */
-  unfreeze: function() {
-    this.frozen = false;
-    this.removeClass("frozen");
-  },
-
-  top: function() {
-    if (!this.hasClass("top")) {
-      this.addClass("top");
-      this.removeClass("notTop");
-
-      if (this.onTop) {
-        this.onTop.call(this);
+      if (options.onBottom) {
+        options.onBottom.call(this);
       }
     }
-  },
+  }
 
-  notTop: function() {
-    if (!this.hasClass("notTop")) {
-      this.addClass("notTop");
-      this.removeClass("top");
+  function notBottom() {
+    if (!hasClass("notBottom")) {
+      addClass("notBottom");
+      removeClass("bottom");
 
-      if (this.onNotTop) {
-        this.onNotTop.call(this);
+      if (options.onNotBottom) {
+        options.onNotBottom.call(this);
       }
     }
-  },
+  }
 
-  bottom: function() {
-    if (!this.hasClass("bottom")) {
-      this.addClass("bottom");
-      this.removeClass("notBottom");
-
-      if (this.onBottom) {
-        this.onBottom.call(this);
-      }
-    }
-  },
-
-  notBottom: function() {
-    if (!this.hasClass("notBottom")) {
-      this.addClass("notBottom");
-      this.removeClass("bottom");
-
-      if (this.onNotBottom) {
-        this.onNotBottom.call(this);
-      }
-    }
-  },
-
-  shouldUnpin: function(details) {
+  function shouldUnpin(details) {
     var scrollingDown = details.direction === "down";
-
     return scrollingDown && !details.top && details.toleranceExceeded;
-  },
+  }
 
-  shouldPin: function(details) {
+  function shouldPin(details) {
     var scrollingUp = details.direction === "up";
-
     return (scrollingUp && details.toleranceExceeded) || details.top;
-  },
+  }
 
-  addClass: function(className) {
-    this.elem.classList.add(this.classes[className]);
-  },
+  function destroy() {
+    Object.keys(options.classes).forEach(removeClass);
+    scrollTracker.destroy();
+  }
 
-  removeClass: function(className) {
-    this.elem.classList.remove(this.classes[className]);
-  },
+  function unpin() {
+    if (hasClass("pinned") || !hasClass("unpinned")) {
+      addClass("unpinned");
+      removeClass("pinned");
 
-  hasClass: function(className) {
-    return this.elem.classList.contains(this.classes[className]);
-  },
+      if (options.onUnpin) {
+        options.onUnpin.call(this);
+      }
+    }
+  }
 
-  update: function(details) {
+  function pin() {
+    if (hasClass("unpinned")) {
+      addClass("pinned");
+      removeClass("unpinned");
+
+      if (options.onPin) {
+        options.onPin.call(this);
+      }
+    }
+  }
+
+  function freeze() {
+    frozen = true;
+    addClass("frozen");
+  }
+
+  function unfreeze() {
+    frozen = false;
+    removeClass("frozen");
+  }
+
+  function update(details) {
     if (details.isOutOfBounds) {
       // Ignore bouncy scrolling in OSX
       return;
     }
 
-    if (this.frozen === true) {
+    if (frozen === true) {
       return;
     }
 
     if (details.top) {
-      this.top();
+      top();
     } else {
-      this.notTop();
+      notTop();
     }
 
     if (details.bottom) {
-      this.bottom();
+      bottom();
     } else {
-      this.notBottom();
+      notBottom();
     }
 
-    if (this.shouldUnpin(details)) {
-      this.unpin();
-    } else if (this.shouldPin(details)) {
-      this.pin();
+    if (shouldUnpin(details)) {
+      unpin();
+    } else if (shouldPin(details)) {
+      pin();
     }
   }
-};
 
-export default function headroom(element, options) {
-  return new Headroom(element, options).init();
+  return {
+    /**
+     * Pin the element
+     */
+    pin: pin,
+    /**
+     * Unpin the element
+     */
+    unpin: unpin,
+    /**
+     * Freezes the current state of the widget
+     */
+    freeze: freeze,
+    /**
+     * Re-enables the default behaviour of the widget
+     */
+    unfreeze: unfreeze,
+    /**
+     * Destroy the widget, clearing up after itself
+     */
+    destroy: destroy
+  };
 }
 
 headroom.options = defaultOptions;
 headroom.isSupported = isSupported();
+
+export default headroom;
