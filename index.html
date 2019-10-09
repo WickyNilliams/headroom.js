@@ -289,6 +289,14 @@ $("#header").headroom(options);
 <p>
     All of these APIs are capable of being polyfilled, so headroom.js can work with less-capable browsers if desired. Check the linked resources above to determine if you must polyfill to achieve your desired level of browser support.
 </p>
+<p>
+    If you do not want to polyfill each of the above APIs, you can test for browser support before initialising. This avoids errors in older browsers and treats headroom.js as a progressive enhancement:
+</p>
+<pre class="language-javascript"><code>if(Headroom.cutsTheMustard) {
+    var hr = new Headroom(element);
+    hr.init();
+}
+</code></pre>
 
 <h2>Changelog</h2>
 <h3 id="v0.10.3">v0.10.3 <time class="subdued">(2019-09-18)</time></h3>
