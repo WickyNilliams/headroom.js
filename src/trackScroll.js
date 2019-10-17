@@ -16,17 +16,15 @@ export default function trackScroll(element, options, callback) {
     var scrollY = Math.round(scroller.scrollY());
     var height = scroller.height();
     var scrollHeight = scroller.scrollHeight();
+    var distance = Math.abs(scrollY - lastScrollY);
 
     // reuse object for less memory churn
     details.scrollY = scrollY;
-    details.lastScrollY = lastScrollY;
     details.direction = scrollY > lastScrollY ? "down" : "up";
-    details.distance = Math.abs(scrollY - lastScrollY);
     details.isOutOfBounds = scrollY < 0 || scrollY + height > scrollHeight;
     details.top = scrollY <= options.offset;
     details.bottom = scrollY + height >= scrollHeight;
-    details.toleranceExceeded =
-      details.distance > options.tolerance[details.direction];
+    details.toleranceExceeded = distance > options.tolerance[details.direction];
 
     callback(details);
 

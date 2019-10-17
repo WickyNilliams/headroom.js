@@ -3,11 +3,11 @@ import { uglify } from "rollup-plugin-uglify";
 import filesize from "rollup-plugin-filesize";
 import { eslint } from "rollup-plugin-eslint";
 
-const input = "src/Headroom.js";
+const input = "src/index.js";
 
 const output = {
   format: "umd",
-  name: "Headroom"
+  name: "headroom"
 };
 
 const licensePlugin = license({
