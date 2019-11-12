@@ -324,5 +324,24 @@ describe("Headroom", function() {
         expect(win.hr.classes).to.deep.equal(win.Headroom.options.classes);
       });
     });
+
+    it("handles multiple classes", () => {
+      initialiseHeadroom({
+        classes: {
+          pinned: "headroom--pinned foo",
+          unpinned: "headroom--unpinned bar"
+        }
+      });
+
+      cy.scrollTo(0, 50);
+      cy.get("header")
+        .should("not.be.pinned")
+        .should("have.class", "bar");
+
+      cy.scrollTo(0, 25);
+      cy.get("header")
+        .should("be.pinned")
+        .should("have.class", "foo");
+    });
   });
 });
