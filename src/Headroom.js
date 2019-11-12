@@ -182,7 +182,9 @@ Headroom.prototype = {
   },
 
   hasClass: function(className) {
-    return this.elem.classList.contains(this.classes[className]);
+    return this.classes[className].split(" ").every(function(cls) {
+      return this.classList.contains(cls);
+    }, this.elem);
   },
 
   update: function(details) {
