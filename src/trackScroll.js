@@ -44,7 +44,9 @@ export default function trackScroll(element, options, callback) {
   var eventOptions = isPassiveSupported
     ? { passive: true, capture: false }
     : false;
+
   element.addEventListener("scroll", handleScroll, eventOptions);
+  update();
 
   return {
     destroy: function() {

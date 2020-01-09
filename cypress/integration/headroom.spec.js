@@ -24,7 +24,10 @@ describe("Headroom", function() {
   it("works!", function() {
     initialiseHeadroom();
 
-    cy.get("header").should("be.initialised");
+    cy.get("header")
+      .should("be.initialised")
+      .should("be.top")
+      .should("not.be.bottom");
 
     cy.scrollTo(0, 50);
     cy.get("header")
@@ -215,83 +218,61 @@ describe("Headroom", function() {
   });
 
   it("fires callbacks", () => {
-    const flags = {
-      pin: false,
-      unpin: false,
-      top: false,
-      notTop: false,
-      bottom: false,
-      notBottom: false
-    };
+    let pinStatus, topStatus, bottomStatus;
 
     initialiseHeadroom({
       onPin: () => {
-        flags.pin = true;
+        pinStatus = "pinned";
       },
       onUnpin: () => {
-        flags.unpin = true;
+        pinStatus = "unpinned";
       },
       onTop: () => {
-        flags.top = true;
+        topStatus = "top";
       },
       onNotTop: () => {
-        flags.notTop = true;
+        topStatus = "notTop";
       },
       onBottom: () => {
-        flags.bottom = true;
+        bottomStatus = "bottom";
       },
       onNotBottom: () => {
-        flags.notBottom = true;
+        bottomStatus = "notBottom";
       }
+    });
+
+    cy.wait(0).should(() => {
+      expect(topStatus).to.equal("top");
+      expect(pinStatus).to.equal(undefined);
+      expect(bottomStatus).to.equal("notBottom");
     });
 
     cy.scrollTo(0, 50);
     cy.should(() => {
-      expect(flags).to.deep.equal({
-        unpin: true,
-        notTop: true,
-        notBottom: true,
-        pin: false,
-        top: false,
-        bottom: false
-      });
+      expect(topStatus).to.equal("notTop");
+      expect(pinStatus).to.equal("unpinned");
+      expect(bottomStatus).to.equal("notBottom");
     });
 
     cy.scrollTo(0, 25);
     cy.should(() => {
-      expect(flags).to.deep.equal({
-        unpin: true,
-        notTop: true,
-        notBottom: true,
-        pin: true,
-        top: false,
-        bottom: false
-      });
+      expect(topStatus).to.equal("notTop");
+      expect(pinStatus).to.equal("pinned");
+      expect(bottomStatus).to.equal("notBottom");
     });
-    cy.wait(20).then(() => {});
 
     cy.scrollTo(0, 0);
     cy.should(() => {
-      expect(flags).to.deep.equal({
-        unpin: true,
-        notTop: true,
-        notBottom: true,
-        pin: true,
-        top: true,
-        bottom: false
-      });
+      expect(topStatus).to.equal("top");
+      expect(pinStatus).to.equal("pinned");
+      expect(bottomStatus).to.equal("notBottom");
     });
 
     cy.scrollTo("bottom");
     cy.should(() => {
-      expect(flags).to.deep.equal({
-        unpin: true,
-        notTop: true,
-        notBottom: true,
-        pin: true,
-        top: true,
-        bottom: true
-      });
+      expect(topStatus).to.equal("notTop");
+      expect(pinStatus).to.equal("unpinned");
+      expect(bottomStatus).to.equal("bottom");
     });
   });
 
