@@ -1,13 +1,13 @@
 {
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "env": {
     "browser": true,
     "node": true
   },
-  "extends": "eslint:recommended",
+  "extends": ["eslint:recommended"],
   "rules": {
     "no-unused-expressions": "error",
     "no-bitwise": "error",
