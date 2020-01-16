@@ -1,18 +1,13 @@
 {
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "env": {
-    "cypress/globals": true,
     "browser": true,
     "node": true
   },
-  "plugins": ["cypress"],
-  "extends": [
-    "plugin:cypress/recommended",
-    "eslint:recommended"
-  ],
+  "extends": ["eslint:recommended"],
   "rules": {
     "no-unused-expressions": "error",
     "no-bitwise": "error",

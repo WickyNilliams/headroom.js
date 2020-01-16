@@ -6,7 +6,7 @@ describe("Headroom", function() {
       win.hr = new win.Headroom(win.document.querySelector("header"), options);
       win.hr.init();
     });
-    cy.wait(200);
+    cy.wait(200); // eslint-disable-line cypress/no-unnecessary-waiting
   };
 
   beforeEach(() => {
@@ -241,6 +241,7 @@ describe("Headroom", function() {
       }
     });
 
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(0).should(() => {
       expect(topStatus).to.equal("top");
       expect(pinStatus).to.equal(undefined);
@@ -287,7 +288,7 @@ describe("Headroom", function() {
 
       cy.window().then(win => {
         expect(win.hr.classes).to.deep.contain(classes);
-        const { initial, pinned, ...defaultClasses } = win.hr.classes;
+        const { initial, pinned, ...defaultClasses } = win.hr.classes; // eslint-disable-line no-unused-vars
         expect(win.hr.classes).to.deep.contain(defaultClasses);
       });
     });
