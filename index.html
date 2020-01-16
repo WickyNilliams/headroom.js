@@ -150,6 +150,8 @@ headroom.init();
         notBottom : "headroom--not-bottom",
         // when frozen method has been called
         frozen: "headroom--frozen"
+        // multiple classes are also supported with a space-separated list
+        pinned: "headroom--pinned foo bar"
     },
     // element to listen to scroll events on, defaults to `window`
     scroller : someElement,
@@ -299,6 +301,10 @@ $("#header").headroom(options);
 </code></pre>
 
 <h2>Changelog</h2>
+<h3 id="v0.11.0">v0.11.0 <time class="subdued">(2020-01-16)</time></h3>
+<ul>
+    <li>Feature: <a href="https://github.com/WickyNilliams/headroom.js/pull/357">support multiple classes</a> (thanks to <a href="https://github.com/hacknug">Nestor Vera</a>)</li>
+</ul>
 <h3 id="v0.10.4">v0.10.4 <time class="subdued">(2020-01-09)</time></h3>
 <ul>
     <li>Bugfix: <a href="https://github.com/WickyNilliams/headroom.js/pull/356">ensure top/bottom classes are added on page load</a></li>
