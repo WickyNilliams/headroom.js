@@ -1,97 +1,164 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Hide your header on scroll - Headroom.js</title>
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="assets/styles/main.css?v=3">
-    <meta name="description" content="Headroom.js is a lightweight, pure JS widget for hiding elements until needed. Give your pages some headroom">
-    <meta property="og:title" content="Headroom.js - Give your pages some headroom. Hide your header until you need it.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="http://wicky.nillia.ms/headroom.js/">
-    <meta name="twitter:creator" content="@WickyNilliams">
-    <meta name="twitter:card" content="summary">
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="assets/styles/main.css?v=3" />
+    <meta
+      name="description"
+      content="Headroom.js is a lightweight, pure JS widget for hiding elements until needed. Give your pages some headroom"
+    />
+    <meta
+      property="og:title"
+      content="Headroom.js - Give your pages some headroom. Hide your header until you need it."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://wicky.nillia.ms/headroom.js/" />
+    <meta name="twitter:creator" content="@WickyNilliams" />
+    <meta name="twitter:card" content="summary" />
 
     <script type="text/javascript">
       var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-37435578-1']);
-      _gaq.push(['_trackPageview']);
+      _gaq.push(["_setAccount", "UA-37435578-1"]);
+      _gaq.push(["_trackPageview"]);
 
       (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        var ga = document.createElement("script");
+        ga.type = "text/javascript";
+        ga.async = true;
+        ga.src =
+          ("https:" == document.location.protocol
+            ? "https://ssl"
+            : "http://www") + ".google-analytics.com/ga.js";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(ga, s);
       })();
     </script>
-</head>
-<body>
-
-<header id="header" class="header header--fixed hide-from-print" role="banner">
-    <div class="container" >
-
+  </head>
+  <body>
+    <header
+      id="header"
+      class="header header--fixed hide-from-print"
+      role="banner"
+    >
+      <div class="container">
         <nav id="nav" class="nav-wrapper" role="navigation">
-            <ul class="nav">
-                <li class="nav__item ">
-                    <a class="header__link" href="https://www.github.com/WickyNilliams/headroom.js">
-                        <span aria-hidden="true" class="icon icon--gh"></span>
-                        <span class="complimentary push--left">GitHub</span>
-                    </a>
-                </li>
-                <li class="nav__item ">
-                    <a class="header__link" href="http://www.twitter.com/WickyNilliams">
-                        <span aria-hidden="true" class="icon icon--tw"></span>
-                        <span class="complimentary push--left">@WickyNilliams</span>
-                    </a>
-                </li>
-            </ul>
+          <ul class="nav">
+            <li class="nav__item ">
+              <a
+                class="header__link"
+                href="https://www.github.com/WickyNilliams/headroom.js"
+              >
+                <span aria-hidden="true" class="icon icon--gh"></span>
+                <span class="complimentary push--left">GitHub</span>
+              </a>
+            </li>
+            <li class="nav__item ">
+              <a
+                class="header__link"
+                href="http://www.twitter.com/WickyNilliams"
+              >
+                <span aria-hidden="true" class="icon icon--tw"></span>
+                <span class="complimentary push--left">@WickyNilliams</span>
+              </a>
+            </li>
+          </ul>
         </nav>
 
-        <a href="http://wicky.nillia.ms/headroom.js/" class="brand header__link">
-            <b class="brand__forename">Headroom</b><b class="brand__surname">.js</b>
+        <a
+          href="http://wicky.nillia.ms/headroom.js/"
+          class="brand header__link"
+        >
+          <b class="brand__forename">Headroom</b
+          ><b class="brand__surname">.js</b>
         </a>
-    </div>
-</header>
+      </div>
+    </header>
 
-<article>
-<header class="feature">
-    <div class="container container--wide">
-        <h1 class="feature__title">Headroom.js</h1>
-        <p class="feature__subtitle">Give your pages some headroom. Hide your header&nbsp;until&nbsp;you&nbsp;need&nbsp;it.</p>
-    </div>
-</header>
+    <article>
+      <header class="feature">
+        <div class="container container--wide">
+          <h1 class="feature__title">Headroom.js</h1>
+          <p class="feature__subtitle">
+            Give your pages some headroom. Hide your
+            header&nbsp;until&nbsp;you&nbsp;need&nbsp;it.
+          </p>
+        </div>
+      </header>
 
-<div class="container block main" role="main">
+      <div class="container block main" role="main">
+        <h2>Installation</h2>
+        <p>
+          Download here<span class="complimentary">
+            (sizes shown are after gzipping)</span
+          >:
+        </p>
 
-<h2>Installation</h2>
-<p>Download here<span class="complimentary"> (sizes shown are after gzipping)</span>:</p>
-
-<div class="downloads island">
-    <div class="grid">
-        <div class="grid__item one-half"><a class="btn btn--secondary btn--full" href="https://unpkg.com/headroom.js">Development <span class="complimentary subdued">(2.78KB)</span></a></div>
-        <div class="grid__item one-half"><a class="btn btn--secondary btn--full" href="https://unpkg.com/headroom.js/dist/headroom.min.js">Production <span class="complimentary subdued">(1.38KB)</span></a></div>
-    </div>
-</div>
-<p>Or install via npm/yarn:</p>
-<pre class="language-shell"><code>npm install headroom.js --save
+        <div class="downloads island">
+          <div class="grid">
+            <div class="grid__item one-half">
+              <a
+                class="btn btn--secondary btn--full"
+                href="https://unpkg.com/headroom.js"
+                >Development
+                <span class="complimentary subdued">(2.78KB)</span></a
+              >
+            </div>
+            <div class="grid__item one-half">
+              <a
+                class="btn btn--secondary btn--full"
+                href="https://unpkg.com/headroom.js/dist/headroom.min.js"
+                >Production
+                <span class="complimentary subdued">(1.38KB)</span></a
+              >
+            </div>
+          </div>
+        </div>
+        <p>Or install via npm/yarn:</p>
+        <pre class="language-shell"><code>npm install headroom.js --save
 yarn add headroom.js
 </code></pre>
 
-<h2>What's it all about?</h2>
+        <h2>What's it all about?</h2>
 
-<p>Headroom.js is a lightweight, high-performance JS widget (with no dependencies!) that allows you to react to the user's scroll. The header on this site is a living example, it slides out of view when scrolling down and slides back in when scrolling up.</p>
+        <p>
+          Headroom.js is a lightweight, high-performance JS widget (with no
+          dependencies!) that allows you to react to the user's scroll. The
+          header on this site is a living example, it slides out of view when
+          scrolling down and slides back in when scrolling up.
+        </p>
 
-<h3>Why use it?</h3>
+        <h3>Why use it?</h3>
 
-<p>Fixed headers are a popular approach for keeping the primary navigation in close proximity to the user. This can reduce the effort required for a user to quickly navigate a site, but they are not without problems&hellip; </p>
+        <p>
+          Fixed headers are a popular approach for keeping the primary
+          navigation in close proximity to the user. This can reduce the effort
+          required for a user to quickly navigate a site, but they are not
+          without problems&hellip;
+        </p>
 
-<p>Large screens are usually landscape-oriented, meaning less vertical than horizontal space. A fixed header can therefore occupy a significant portion of the content area. Small screens are typically used in a portrait orientation. Whilst this results in more vertical space, because of the overall height of the screen a meaningfully-sized header can still be quite imposing.</p>
+        <p>
+          Large screens are usually landscape-oriented, meaning less vertical
+          than horizontal space. A fixed header can therefore occupy a
+          significant portion of the content area. Small screens are typically
+          used in a portrait orientation. Whilst this results in more vertical
+          space, because of the overall height of the screen, a
+          meaningfully-sized header can still be quite imposing.
+        </p>
 
-<p>Headroom.js allows you to bring elements into view when appropriate, and give focus to your content the rest of the time.</p>
+        <p>
+          Headroom.js allows you to bring elements into view when appropriate,
+          and give focus to your content the rest of the time.
+        </p>
 
-<h3>How does it work?</h3>
+        <h3>How does it work?</h3>
 
-<p>At it's most basic headroom.js simply adds and removes CSS classes from an element in response to a scroll event:</p>
+        <p>
+          In response to scroll events, headroom.js adds and removes CSS classes
+          to an element:
+        </p>
 
-<pre class="language-markup"><code>&lt;!-- initially --&gt;
+        <pre class="language-markup"><code>&lt;!-- initially --&gt;
 &lt;header class="headroom"&gt;
 
 &lt;!-- scrolling down --&gt;
@@ -101,14 +168,26 @@ yarn add headroom.js
 &lt;header class="headroom headroom--pinned"&gt;
 </code></pre>
 
-<p>Relying on CSS classes affords headroom.js incredible flexibility. The choice of what to do when scrolling up or down is now entirely yours - anything you can do with CSS you can do in response to the user's scroll.</p>
+        <p>
+          Relying on CSS classes affords headroom.js great flexibility. The
+          choice of what to do when scrolling up or down is now entirely yours -
+          anything you can do with CSS you can do in response to the user's
+          scroll.
+        </p>
 
-<h2>Usage</h2>
+        <h2>Usage</h2>
 
-<p>Using headroom.js is really simple. It has a pure JS API, plus an optional jQuery plugin and AngularJS directive.</p>
+        <p>
+          Headroom.js has a pure JS API, plus an optional jQuery plugin and
+          AngularJS directive.
+        </p>
 
-<p>Include the <code>headroom.js</code> script in your page, and then:</p>
-<pre class="language-javascript"><code>// if you're using a bundler, first import:
+        <p>
+          Include the <code>headroom.js</code> script in your page, and then:
+        </p>
+        <pre
+          class="language-javascript"
+        ><code>// if you're using a bundler, first import:
 import Headroom from "headroom.js";
 // grab an element
 var myElement = document.querySelector("header");
@@ -118,11 +197,16 @@ var headroom  = new Headroom(myElement);
 headroom.init();
 </code></pre>
 
-<h3>Options</h3>
+        <h3>Options</h3>
 
-<p>Headroom.js can also accept an options object to alter the way it behaves. You can see the default options by inspecting <code>Headroom.options</code>. The full structure of an options object is as follows:</p>
+        <p>
+          Headroom.js can also accept an options object to alter the way it
+          behaves. You can see the default options by inspecting
+          <code>Headroom.options</code>. The full structure of an options object
+          is as follows:
+        </p>
 
-<pre class="language-javascript"><code>var options = {
+        <pre class="language-javascript"><code>var options = {
     // vertical offset in px before element is first unpinned
     offset : 0,
     // scroll tolerance in px before state changes
@@ -144,7 +228,7 @@ headroom.init();
         top : "headroom--top",
         // when below offset
         notTop : "headroom--not-top",
-        // when at bottom of scoll area
+        // when at bottom of scroll area
         bottom : "headroom--bottom",
         // when not at bottom of scroll area
         notBottom : "headroom--not-bottom",
@@ -173,24 +257,30 @@ headroom.init();
 var headroom = new Headroom(element, options);
 </code></pre>
 
-<h3>CSS</h3>
+        <h3>CSS</h3>
 
-<p>
-    Recall that headroom.js works by adding and removing CSS classes in reaction to the user's scroll. This means you will need some CSS to achieve the effect you want. For example, you could hide the header on scroll down, and reveal it again on scroll up. The most basic CSS for this would be:
-</p>
+        <p>
+          Recall that headroom.js works by adding and removing CSS classes in
+          response to the user's scroll. This means you will need some CSS to
+          achieve the effect you want. For example, you could hide the header on
+          scroll down, and reveal it again on scroll up. The most basic CSS for
+          this would be:
+        </p>
 
-<pre class="language-css"><code>.headroom--pinned {
+        <pre class="language-css"><code>.headroom--pinned {
     display: block;
 }
 .headroom--unpinned {
     display: none;
 }</code></pre>
 
-<p>
-    Whilst this is functional, it's a bit of a jarring effect. We could do better with some CSS transitions to smoothly move the header in and out of view:
-</p>
+        <p>
+          Whilst this is functional, it's a bit of a jarring effect. We could do
+          better with some CSS transitions to smoothly move the header in and
+          out of view:
+        </p>
 
-<pre class="language-css"><code>/**
+        <pre class="language-css"><code>/**
  * Note: I have omitted any vendor-prefixes for clarity.
  * Adding them is left as an exercise for the reader.
  */
@@ -205,226 +295,419 @@ var headroom = new Headroom(element, options);
     transform: translateY(-100%);
 }</code></pre>
 
+        <p>
+          Notice that we're transitioning the <code>transform</code> property.
+          The reason to transition this is because
+          <a
+            href="http://www.html5rocks.com/en/tutorials/speed/high-performance-animations/"
+            >transforms are much cheaper to animate</a
+          >
+          compared to <code>top</code>, <code>bottom</code> etc. Another benefit
+          is that translation percentage values are relative to the dimensions
+          of the element, whereas <code>top</code> etc. percentage values are
+          relative to the dimensions of the viewport. This means you don't need
+          to know the height of the element in advance, <code>-100%</code> will
+          always slide the element entirely out of view.
+        </p>
 
-<p>
-    Notice that we're transitioning the <code>transform</code> property. The reason to transition this is because <a href="http://www.html5rocks.com/en/tutorials/speed/high-performance-animations/">transforms are much cheaper to animate</a> compared to <code>top</code>, <code>bottom</code> etc. Another benefit is that translation percentage values are relative to the dimensions of the element, whereas <code>top</code> etc. percentage values are relative to the dimensions of the viewport. This means you don't need to know the height of the element in advance, <code>-100%</code> will always slide the element entirely out of view.
-</p>
+        <p>
+          The CSS above is enough to get you started, but feel free to try
+          something entirely different. Let you imagination run wild. But not
+          <em>too wild</em>, your users won't appreciate that.
+        </p>
 
-<p>
-    The CSS above is enough to get you started, but feel free to try something entirely different. Let you imagination run wild. But not <em>too wild</em>, your users won't appreciate that.
-</p>
+        <h3>Methods</h3>
 
-<h3>Methods</h3>
+        <p>
+          The following methods are available to be called on a headroom
+          instance:
+        </p>
 
-<p>The following methods are available to be called on a headroom instance:</p>
+        <ul>
+          <li>
+            <code>destroy()</code>: destroy the headroom instance, removing
+            event listeners and any classes added
+          </li>
+          <li>
+            <code>pin()</code>: forcibly set the headroom instance's state to
+            pinned
+          </li>
+          <li>
+            <code>unpin()</code>: forcibly set the headroom instance's state to
+            unpinned
+          </li>
+          <li>
+            <code>freeze()</code>: freeze the headroom instance's state (pinned
+            or unpinned), and no longer respond to scroll events
+          </li>
+          <li><code>unfreeze()</code>: resume responding to scroll events</li>
+        </ul>
 
-<ul>
-    <li>
-        <code>destroy()</code>: destroy the headroom instance, removing event listeners and any classes added
-    </li>
-    <li>
-        <code>pin()</code>: forcibly set the headroom instance's state to pinned
-    </li>
-    <li>
-        <code>unpin()</code>: forcibly set the headroom instance's state to unpinned
-    </li>
-    <li>
-        <code>freeze()</code>: freeze the headroom instance's state (pinned or unpinned), and no longer respond to scroll events
-    </li>
-    <li>
-        <code>unfreeze()</code>: resume responding to scroll events
-    </li>
-</ul>
+        <h3>Dealing with anchor links</h3>
 
-<h3>Dealing with anchor links</h3>
-
-<p>Clicking on anchor links (links within the same page) causes scrolling of the page. If this causes a scroll upwards, Headroom will pin the header. This can cause the linked element to be obscured by the header.</p>
-<p>To avoid this problem we can define <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-padding"><code>scroll-padding</code></a> in CSS, which is designed for just this purpose:</p>
-<pre class="language-css"><code>html,
+        <p>
+          Clicking on anchor links (links within the same page) causes scrolling
+          of the page. If this causes a scroll upwards, Headroom will pin the
+          header. This can cause the linked element to be obscured by the
+          header.
+        </p>
+        <p>
+          To avoid this problem we can define
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-padding"
+            ><code>scroll-padding</code></a
+          >
+          in CSS, which is designed for just this purpose:
+        </p>
+        <pre class="language-css"><code>html,
 body {
     scroll-padding-top: 65px; /* set to the height of your header */
 }</code></pre>
 
-<h3>Usage with jQuery</h3>
-<p>Include the <code>headroom.js</code> and <code>jQuery.headroom.js</code> scripts in your page, and then:</p>
-<pre class="language-javascript"><code>// simple as this!
+        <h3>Usage with jQuery</h3>
+        <p>
+          Include the <code>headroom.js</code> and
+          <code>jQuery.headroom.js</code> scripts in your page, and then:
+        </p>
+        <pre class="language-javascript"><code>// simple as this!
 // NOTE: init() is implicitly called with the plugin
 $("#header").headroom();
 // or with options
 $("#header").headroom(options);
 </code></pre>
 
-<p>The plugin also offers a data-* API if you prefer a declarative approach.</p>
+        <p>
+          The plugin also offers a data-* API if you prefer a declarative
+          approach.
+        </p>
 
-<pre class="language-markup"><code>&lt;!-- selects $(&quot;[data-headroom]&quot;) --&gt;
+        <pre
+          class="language-markup"
+        ><code>&lt;!-- selects $(&quot;[data-headroom]&quot;) --&gt;
 &lt;header data-headroom&gt;&lt;/header&gt;
 &lt;!-- or with options --&gt;
 &lt;header data-headroom data-tolerance="5" data-offset="205"&gt;&lt;/header&gt;
 </code></pre>
 
-<h3>Usage with AngularJS</h3>
-<p>Include the <code>headroom.js</code> and <code>angular.headroom.js</code> scripts in your page, and require the <code>headroom</code> module in your AngularJS application module. Then:</p>
-<pre class="language-markup"><code>&lt;header headroom&gt;&lt;/header&gt;
+        <h3>Usage with AngularJS</h3>
+        <p>
+          Include the <code>headroom.js</code> and
+          <code>angular.headroom.js</code> scripts in your page, and require the
+          <code>headroom</code> module in your AngularJS application module.
+          Then:
+        </p>
+        <pre
+          class="language-markup"
+        ><code>&lt;header headroom&gt;&lt;/header&gt;
 &lt;!-- or --&gt;
 &lt;headroom&gt;&lt;/headroom&gt;
 &lt;!-- or with options --&gt;
 &lt;headroom tolerance="0" offset="0" scroller=".my-scroller" classes="{pinned:'headroom--pinned',unpinned:'headroom--unpinned',initial:'headroom'}"&gt;&lt;/headroom&gt;
 </code></pre>
 
+        <h2>Examples</h2>
+        <p>
+          Head over to the <a href="playroom/">headroom.js playroom</a> if you
+          want see some example uses. There you can tweak all of headroom's
+          options and try out various CSS effects in an interactive demo.
+        </p>
 
-<h2>Examples</h2>
-<p>
-    Head over to the <a href="playroom/">headroom.js playroom</a> if you want see some example uses. There you can tweak all of headroom's options and try out various CSS effects in an interactive demo.
-</p>
-
-<h2>Browser support</h2>
-<p>
-    Headroom.js is dependent on the following browser APIs:
-</p>
-<ul>
-    <li><a href="http://caniuse.com/#feat=requestanimationframe"><code>requestAnimationFrame</code></a></li>
-    <li><a href="http://caniuse.com/#feat=classlist"><code>classList</code></a></li>
-    <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Browser_compatibility"><code>Function.prototype.bind</code></a></li>
-    <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Browser_compatibility"><code>Object.assign</code></a></li>
-    <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys#Browser_compatibility"><code>Object.keys</code></a></li>
-</ul>
-<p>
-    All of these APIs are capable of being polyfilled, so headroom.js can work with less-capable browsers if desired. Check the linked resources above to determine if you must polyfill to achieve your desired level of browser support.
-</p>
-<p>
-    If you do not want to polyfill each of the above APIs, you can test for browser support before initialising. This avoids errors in older browsers and treats headroom.js as a progressive enhancement:
-</p>
-<pre class="language-javascript"><code>if(Headroom.cutsTheMustard) {
+        <h2>Browser support</h2>
+        <p>
+          Headroom.js is dependent on the following browser APIs:
+        </p>
+        <ul>
+          <li>
+            <a href="http://caniuse.com/#feat=requestanimationframe"
+              ><code>requestAnimationFrame</code></a
+            >
+          </li>
+          <li>
+            <a href="http://caniuse.com/#feat=classlist"
+              ><code>classList</code></a
+            >
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Browser_compatibility"
+              ><code>Function.prototype.bind</code></a
+            >
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Browser_compatibility"
+              ><code>Object.assign</code></a
+            >
+          </li>
+          <li>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys#Browser_compatibility"
+              ><code>Object.keys</code></a
+            >
+          </li>
+        </ul>
+        <p>
+          All of these APIs are capable of being polyfilled, so headroom.js can
+          work with less-capable browsers if desired. Check the linked resources
+          above to determine if you must polyfill to achieve your desired level
+          of browser support.
+        </p>
+        <p>
+          If you do not want to polyfill each of the above APIs, you can test
+          for browser support before initialising. This avoids errors in older
+          browsers and treats headroom.js as a progressive enhancement:
+        </p>
+        <pre class="language-javascript"><code>if(Headroom.cutsTheMustard) {
     var hr = new Headroom(element);
     hr.init();
 }
 </code></pre>
 
-<h2>Changelog</h2>
-<h3 id="v0.11.0">v0.11.0 <time class="subdued">(2020-01-16)</time></h3>
-<ul>
-    <li>Feature: <a href="https://github.com/WickyNilliams/headroom.js/pull/357">support multiple classes</a> (thanks to <a href="https://github.com/hacknug">Nestor Vera</a>)</li>
-</ul>
-<h3 id="v0.10.4">v0.10.4 <time class="subdued">(2020-01-09)</time></h3>
-<ul>
-    <li>Bugfix: <a href="https://github.com/WickyNilliams/headroom.js/pull/356">ensure top/bottom classes are added on page load</a></li>
-</ul>
-<h3 id="v0.10.3">v0.10.3 <time class="subdued">(2019-09-18)</time></h3>
-<ul>
-    <li>Bugfix: <a href="https://github.com/WickyNilliams/headroom.js/pull/341">scroll-y values were not rounded, causing some calculations to be off</a></li>
-    <li>Bugfix: <a href="https://github.com/WickyNilliams/headroom.js/pull/343">incorrect logic for calculating top state</a></li>
-</ul>
-<h3 id="v0.10.2">v0.10.2 <time class="subdued">(2019-09-13)</time></h3>
-<ul>
-    <li>Bugfix: <a href="https://github.com/WickyNilliams/headroom.js/pull/337">not correctly merging user-supplied classes and defaults</a></li>
-</ul>
-<h3 id="v0.10.0">v0.10.0 <time class="subdued">(2019-09-11)</time></h3>
-<ul>
-    <li>Community: <a href="https://github.com/hacknug">hacknug</a> has kindly offered to assist in project maintenance</li>
-    <li>Performance: <a href="https://github.com/WickyNilliams/headroom.js/pull/288">switch to passive scroll event listeners</a> (thanks to <a href="https://github.com/nedbaldessin">Ned Baldessin</a>)</li>
-    <li>Feature: <a href="https://github.com/WickyNilliams/headroom.js/pull/309">Add freeze/unfreeze methods</a> (thanks to <a href="https://github.com/andreivictor">Andrei Victor Bulearca</a>)</li>
-    <li>Housekeeping: <a href="https://github.com/WickyNilliams/headroom.js/pull/324">modernise codebase and toolings</a></li>
-    <li>Bugfix: <a href="https://github.com/WickyNilliams/headroom.js/pull/326">incorrectly detecting scroll to bottom on non-window scrollers</a></li>
-    <li>Feature: <a href="https://github.com/WickyNilliams/headroom.js/pull/318">support importing on server for SSR</a> (thanks to <a href="https://github.com/r00dY">Andrzej</a>)</li>
-    <li>Bugfix: <a href="https://github.com/WickyNilliams/headroom.js/issues/329">support using an iframe's window as scroller</a></li>
-    <li>Performance: <a href="https://github.com/WickyNilliams/headroom.js/pull/330">optimise and reduce bundle size</a></li>
-</ul>
+        <h2>Changelog</h2>
+        <h3 id="v0.11.0">v0.11.0 <time class="subdued">(2020-01-16)</time></h3>
+        <ul>
+          <li>
+            Feature:
+            <a href="https://github.com/WickyNilliams/headroom.js/pull/357"
+              >support multiple classes</a
+            >
+            (thanks to <a href="https://github.com/hacknug">Nestor Vera</a>)
+          </li>
+        </ul>
+        <h3 id="v0.10.4">v0.10.4 <time class="subdued">(2020-01-09)</time></h3>
+        <ul>
+          <li>
+            Bugfix:
+            <a href="https://github.com/WickyNilliams/headroom.js/pull/356"
+              >ensure top/bottom classes are added on page load</a
+            >
+          </li>
+        </ul>
+        <h3 id="v0.10.3">v0.10.3 <time class="subdued">(2019-09-18)</time></h3>
+        <ul>
+          <li>
+            Bugfix:
+            <a href="https://github.com/WickyNilliams/headroom.js/pull/341"
+              >scroll-y values were not rounded, causing some calculations to be
+              off</a
+            >
+          </li>
+          <li>
+            Bugfix:
+            <a href="https://github.com/WickyNilliams/headroom.js/pull/343"
+              >incorrect logic for calculating top state</a
+            >
+          </li>
+        </ul>
+        <h3 id="v0.10.2">v0.10.2 <time class="subdued">(2019-09-13)</time></h3>
+        <ul>
+          <li>
+            Bugfix:
+            <a href="https://github.com/WickyNilliams/headroom.js/pull/337"
+              >not correctly merging user-supplied classes and defaults</a
+            >
+          </li>
+        </ul>
+        <h3 id="v0.10.0">v0.10.0 <time class="subdued">(2019-09-11)</time></h3>
+        <ul>
+          <li>
+            Community: <a href="https://github.com/hacknug">hacknug</a> has
+            kindly offered to assist in project maintenance
+          </li>
+          <li>
+            Performance:
+            <a href="https://github.com/WickyNilliams/headroom.js/pull/288"
+              >switch to passive scroll event listeners</a
+            >
+            (thanks to
+            <a href="https://github.com/nedbaldessin">Ned Baldessin</a>)
+          </li>
+          <li>
+            Feature:
+            <a href="https://github.com/WickyNilliams/headroom.js/pull/309"
+              >Add freeze/unfreeze methods</a
+            >
+            (thanks to
+            <a href="https://github.com/andreivictor">Andrei Victor Bulearca</a
+            >)
+          </li>
+          <li>
+            Housekeeping:
+            <a href="https://github.com/WickyNilliams/headroom.js/pull/324"
+              >modernise codebase and toolings</a
+            >
+          </li>
+          <li>
+            Bugfix:
+            <a href="https://github.com/WickyNilliams/headroom.js/pull/326"
+              >incorrectly detecting scroll to bottom on non-window scrollers</a
+            >
+          </li>
+          <li>
+            Feature:
+            <a href="https://github.com/WickyNilliams/headroom.js/pull/318"
+              >support importing on server for SSR</a
+            >
+            (thanks to <a href="https://github.com/r00dY">Andrzej</a>)
+          </li>
+          <li>
+            Bugfix:
+            <a href="https://github.com/WickyNilliams/headroom.js/issues/329"
+              >support using an iframe's window as scroller</a
+            >
+          </li>
+          <li>
+            Performance:
+            <a href="https://github.com/WickyNilliams/headroom.js/pull/330"
+              >optimise and reduce bundle size</a
+            >
+          </li>
+        </ul>
 
-<h3 id="v0.9.4">v0.9.4 <time class="subdued">(2017-07-05)</time></h3>
-<ul>
-    <li>Correctly remove all classes on destroy (thanks to <a href="https://github.com/sweetroll">sweetroll</a>)</li>
-</ul>
-<h3 id="v0.9.3">v0.9.3 <time class="subdued">(2016-04-15)</time></h3>
-<ul>
-    <li>Correctly destroy headroom instance in angular directive (thanks <em>again</em> to <a href="https://github.com/websirnik">Nikita Korotaev</a>)</li>
-</ul>
-<h3 id="v0.9.2">v0.9.2 <time class="subdued">(2016-04-15)</time></h3>
-<ul>
-    <li>Fix bugs with angular directive (thanks to <a href="https://github.com/websirnik">Nikita Korotaev</a>)</li>
-</ul>
-<h3 id="v0.9.1">v0.9.1 <time class="subdued">(2016-04-13)</time></h3>
-<ul>
-    <li>Add minified files to bower package</li>
-</ul>
-<h3 id="v0.9.0">v0.9.0 <time class="subdued">(2016-04-13)</time></h3>
-<ul>
-    <li>Improvements to angular directive (thanks to <a href="http://twitter.com/toddmotto">Todd Motto</a>)</li>
-    <li>Add bower.json to npm package</li>
-</ul>
-<h3 id="v0.8.0">v0.8.0 <time class="subdued">(2016-03-16)</time></h3>
-<ul>
-    <li>Now available on npm as <code>headroom.js</code>!</li>
-    <li>Fix attempting to use function binding before feature test (thanks to <a href="https://github.com/rajivm">Rajiv Makhijani</a>)</li>
-    <li>Add classes and callbacks for scrolling to and from bottom of page</li>
-    <li>Improve element selection in angular directive (thanks to <a href="https://github.com/zwacky">Simon</a>)</li>
-    <li>Fix bug where some classes not removed on destroy (thanks to <a href="https://github.com/burkovsky">Anton Burkovsky</a>)</li>
-    <li>Added UMD support</li>
-    <li>Correctly destroy headroom instance in angular directive (thanks to <a href="https://github.com/kmc059000">Kenneth Crawford</a>)</li>
-</ul>
-<h3 id="v0.7.0">v0.7.0 <time class="subdued">(2014-08-04)</time></h3>
-<ul>
-    <li>Can receive scroll events from elements other than window (thanks to <a href="https://github.com/pandaiolo">Pandaiolo</a> and <a href="https://github.com/homerjam">homerjam</a>)</li>
-</ul>
-<h3 id="v0.6.0">v0.6.0 <time class="subdued">(2014-05-29)</time></h3>
-<ul>
-    <li>Up/down tolerance can be specified separately (thanks to <a href="https://twitter.com/chiplay">Chip Lay</a>)</li>
-</ul>
+        <h3 id="v0.9.4">v0.9.4 <time class="subdued">(2017-07-05)</time></h3>
+        <ul>
+          <li>
+            Correctly remove all classes on destroy (thanks to
+            <a href="https://github.com/sweetroll">sweetroll</a>)
+          </li>
+        </ul>
+        <h3 id="v0.9.3">v0.9.3 <time class="subdued">(2016-04-15)</time></h3>
+        <ul>
+          <li>
+            Correctly destroy headroom instance in angular directive (thanks
+            <em>again</em> to
+            <a href="https://github.com/websirnik">Nikita Korotaev</a>)
+          </li>
+        </ul>
+        <h3 id="v0.9.2">v0.9.2 <time class="subdued">(2016-04-15)</time></h3>
+        <ul>
+          <li>
+            Fix bugs with angular directive (thanks to
+            <a href="https://github.com/websirnik">Nikita Korotaev</a>)
+          </li>
+        </ul>
+        <h3 id="v0.9.1">v0.9.1 <time class="subdued">(2016-04-13)</time></h3>
+        <ul>
+          <li>Add minified files to bower package</li>
+        </ul>
+        <h3 id="v0.9.0">v0.9.0 <time class="subdued">(2016-04-13)</time></h3>
+        <ul>
+          <li>
+            Improvements to angular directive (thanks to
+            <a href="http://twitter.com/toddmotto">Todd Motto</a>)
+          </li>
+          <li>Add bower.json to npm package</li>
+        </ul>
+        <h3 id="v0.8.0">v0.8.0 <time class="subdued">(2016-03-16)</time></h3>
+        <ul>
+          <li>Now available on npm as <code>headroom.js</code>!</li>
+          <li>
+            Fix attempting to use function binding before feature test (thanks
+            to <a href="https://github.com/rajivm">Rajiv Makhijani</a>)
+          </li>
+          <li>
+            Add classes and callbacks for scrolling to and from bottom of page
+          </li>
+          <li>
+            Improve element selection in angular directive (thanks to
+            <a href="https://github.com/zwacky">Simon</a>)
+          </li>
+          <li>
+            Fix bug where some classes not removed on destroy (thanks to
+            <a href="https://github.com/burkovsky">Anton Burkovsky</a>)
+          </li>
+          <li>Added UMD support</li>
+          <li>
+            Correctly destroy headroom instance in angular directive (thanks to
+            <a href="https://github.com/kmc059000">Kenneth Crawford</a>)
+          </li>
+        </ul>
+        <h3 id="v0.7.0">v0.7.0 <time class="subdued">(2014-08-04)</time></h3>
+        <ul>
+          <li>
+            Can receive scroll events from elements other than window (thanks to
+            <a href="https://github.com/pandaiolo">Pandaiolo</a> and
+            <a href="https://github.com/homerjam">homerjam</a>)
+          </li>
+        </ul>
+        <h3 id="v0.6.0">v0.6.0 <time class="subdued">(2014-05-29)</time></h3>
+        <ul>
+          <li>
+            Up/down tolerance can be specified separately (thanks to
+            <a href="https://twitter.com/chiplay">Chip Lay</a>)
+          </li>
+        </ul>
 
-<h3 id="v0.5.0">v0.5.0 <time class="subdued">(2014-03-03)</time></h3>
-<ul>
-    <li>Classes added above and below offset, with corresponding callbacks (thanks to <a href="https://twitter.com/andyhot">Andreas Andreou</a>)</li>
-</ul>
-<h3 id="v0.4.0">v0.4.0 <time class="subdued">(2014-01-10)</time></h3>
-<ul>
-    <li>Options merged with defaults, even with plain JS</li>
-    <li>Callbacks for pinning and unpinning</li>
-    <li>AngularJS plugin (thanks to <a href="https://twitter.com/pitrapen">Pitr Vernigorov</a>)</li>
-    <li>UX improvements (thanks to <a href="https://twitter.com/davidkaneda">David Kaneda</a>)</li>
-</ul>
-<h3 id="v0.3.11">v0.3.11</h3>
-<ul>
-    <li>Various bug fixes</li>
-</ul>
+        <h3 id="v0.5.0">v0.5.0 <time class="subdued">(2014-03-03)</time></h3>
+        <ul>
+          <li>
+            Classes added above and below offset, with corresponding callbacks
+            (thanks to
+            <a href="https://twitter.com/andyhot">Andreas Andreou</a>)
+          </li>
+        </ul>
+        <h3 id="v0.4.0">v0.4.0 <time class="subdued">(2014-01-10)</time></h3>
+        <ul>
+          <li>Options merged with defaults, even with plain JS</li>
+          <li>Callbacks for pinning and unpinning</li>
+          <li>
+            AngularJS plugin (thanks to
+            <a href="https://twitter.com/pitrapen">Pitr Vernigorov</a>)
+          </li>
+          <li>
+            UX improvements (thanks to
+            <a href="https://twitter.com/davidkaneda">David Kaneda</a>)
+          </li>
+        </ul>
+        <h3 id="v0.3.11">v0.3.11</h3>
+        <ul>
+          <li>Various bug fixes</li>
+        </ul>
 
-<h2>License</h2>
-<p>
-    Licensed under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT License</a>.
-</p>
+        <h2>License</h2>
+        <p>
+          Licensed under the
+          <a href="http://www.opensource.org/licenses/mit-license.php"
+            >MIT License</a
+          >.
+        </p>
 
-<h2>Share this on:</h2>
-<div class="sharing island">
-<div class="grid">
-  <div class="grid__item one-third">
-    <a class="sharing__button btn btn--secondary btn--full" href="//facebook.com/sharer.php?u=http://wicky.nillia.ms/headroom.js/">Facebook</a>
-  </div>
-  <div class="grid__item one-third">
-    <a class="sharing__button btn btn--secondary btn--full" href="//twitter.com/intent/tweet?url=http://wicky.nillia.ms/headroom.js/&amp;text=Headroom.js. Give your pages some headroom&amp;via=WickyNilliams">Twitter</a>
-  </div>
-  <div class="grid__item one-third">
-    <a class ="sharing__button btn btn--secondary btn--full" href="//plus.google.com/share?url=http://wicky.nillia.ms/headroom.js/">Google+</a>
-  </div>
-</div>
-</div>
+        <h2>Share this on:</h2>
+        <div class="island">
+          <div class="grid">
+            <div class="grid__item one-half">
+              <a
+                class="btn btn--secondary btn--full"
+                href="//facebook.com/sharer.php?u=http://wicky.nillia.ms/headroom.js/"
+                >Facebook</a
+              >
+            </div>
+            <div class="grid__item one-half">
+              <a
+                class="btn btn--secondary btn--full"
+                href="//twitter.com/intent/tweet?url=http://wicky.nillia.ms/headroom.js/&amp;text=Headroom.js. Give your pages some headroom&amp;via=WickyNilliams"
+                >Twitter</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
 
-</div>
-</article>
+    <script src="assets/scripts/main.js?v=3"></script>
+    <script>
+      (function() {
+        var header = document.querySelector("#header");
 
-<script src="assets/scripts/main.js?v=3"></script>
-<script>
-(function() {
-    var header = document.querySelector("#header");
-
-    var headroom = new Headroom(header, {
-        tolerance: {
-            down : 10,
-            up : 20
-        },
-        offset : 15,
-    });
-    headroom.init();
-
-}());
-</script>
-
-</body>
+        var headroom = new Headroom(header, {
+          tolerance: {
+            down: 10,
+            up: 20
+          },
+          offset: 15
+        });
+        headroom.init();
+      })();
+    </script>
+  </body>
 </html>
