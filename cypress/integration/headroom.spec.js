@@ -106,6 +106,35 @@ describe("Headroom", function() {
       .should("be.top");
   });
 
+  it("handles up/down offset correctly", () => {
+    initialiseHeadroom({
+      offset: {
+        up: 70,
+        down: 120,
+      }
+    });
+
+    cy.scrollTo(0, 119);
+    cy.get("header")
+      .should("be.initialised")
+      .should("be.top");
+
+    cy.scrollTo(0, 140);
+    cy.get("header")
+      .should("not.be.pinned")
+      .should("not.be.top");
+
+    cy.scrollTo(0, 121);
+    cy.get("header")
+      .should("be.pinned")
+      .should("not.be.top");
+
+    cy.scrollTo(0, 69);
+    cy.get("header")
+      .should("be.pinned")
+      .should("be.top");
+  });
+
   it("can be frozen / unfrozen", () => {
     initialiseHeadroom();
 

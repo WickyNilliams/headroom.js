@@ -1,7 +1,7 @@
 import { isBrowser, isSupported } from "./features";
 import trackScroll from "./trackScroll";
 
-function normalizeTolerance(t) {
+function normalizeUpDown(t) {
   return t === Object(t) ? t : { down: t, up: t };
 }
 
@@ -19,7 +19,8 @@ function Headroom(elem, options) {
   this.classes = Object.assign({}, Headroom.options.classes, options.classes);
 
   this.elem = elem;
-  this.tolerance = normalizeTolerance(this.tolerance);
+  this.tolerance = normalizeUpDown(this.tolerance);
+  this.offset = normalizeUpDown(this.offset);
   this.initialised = false;
   this.frozen = false;
 }
