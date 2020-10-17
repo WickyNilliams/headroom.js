@@ -1,0 +1,18 @@
+{
+  "name": "CuriousCactus/headroomjs",
+  "description": "Headroom.js for Drupal",
+  "type": "drupal-library",
+  "license": "MIT",
+  "authors": [
+      {
+          "name": "WickyNilliams"
+      }
+  ],
+  "require": {},
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/CuriousCactus/headroomjs"
+    }
+  ]
+}
