@@ -23,8 +23,8 @@ export default function trackScroll(element, options, callback) {
     details.direction = scrollY > lastScrollY ? "down" : "up";
     details.distance = Math.abs(scrollY - lastScrollY);
     details.isOutOfBounds = scrollY < 0 || scrollY + height > scrollHeight;
-    details.top = scrollY <= options.offset[details.direction];
-    details.bottom = scrollY + height >= scrollHeight;
+    details.top = scrollY <= options.offset.up;
+    details.bottom = scrollY + height >= scrollHeight - options.offset.down;
     details.toleranceExceeded =
       details.distance > options.tolerance[details.direction];
 
