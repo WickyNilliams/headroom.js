@@ -10,7 +10,7 @@ function normalizeUpDown(t) {
  * Hides header when scrolling down
  * Shows header when scrolling up
  * @constructor
- * @param {DOMElement} elem the header element
+ * @param {HTMLElement} elem the header element
  * @param {Object} options options for the widget
  */
 function Headroom(elem, options) {
