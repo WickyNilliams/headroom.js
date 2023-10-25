@@ -30,13 +30,13 @@
     "url": "https://github.com/WickyNilliams/headroom.js/issues"
   },
   "devDependencies": {
-    "cypress": "^3.4.1",
+    "cypress": "^13.3.3",
     "eslint": "^6.5.0",
     "eslint-plugin-cypress": "^2.7.0",
     "rollup": "^1.19.4",
     "rollup-plugin-eslint": "^7.0.0",
     "rollup-plugin-filesize": "^6.2.0",
-    "rollup-plugin-license": "^0.12.1",
+    "rollup-plugin-license": "^3.2.0",
     "rollup-plugin-uglify": "^6.0.2"
   }
 }
